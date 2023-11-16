@@ -1,0 +1,62 @@
+.ad_overview {
+    display: flex;
+    flex-direction: row;
+
+    width: 55%;
+
+    background-color: var(--element_background);
+    border: 2px solid var(--element_stroke);
+    border-radius: 5px;
+
+    margin: 1vw 1vw;
+}
+
+.ad_image {
+    margin: 1vw 1vw;
+}
+
+.ad_information {
+    display: flex;
+    flex-direction: column;
+}
+
+.ad_information h2{
+    padding: 0;
+    margin: 0;
+    margin-top: 1vw;
+
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.ad_information h3{
+    padding: 0;
+    margin: 0;
+    margin-top: 1vw;
+    
+    color: var(--button_background);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.ad_information h4{
+    padding: 0;
+    margin: 0;
+    margin-top: 1vw;
+    
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.ad_information p{
+    padding: 0;
+    margin: 0;
+    margin: 1vw 0;
+    
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+.ad_information span{
+    margin: 1vw 0;
+}

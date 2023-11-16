@@ -1,0 +1,138 @@
+.create_ad {
+    display: flex;
+    flex-direction: column;
+}
+
+.ad_section {
+    display: flex;
+    flex-direction: row;
+
+    margin: 1vw;
+}
+
+.ad_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 48%;
+    padding: 0.5vw 0;
+    margin-left: 15%;
+
+    border: 2px solid #D3D3D3;
+    border-radius: 5px;
+
+    background-color: #FAFAFA;
+}
+
+.ad_main textarea {
+    height: 20vh;
+    max-height: 50vh;
+    resize: vertical;
+}
+
+.input_field {
+    width: 95%;
+    height: 2vw;
+
+    margin: 0.2vw 0;
+    padding-left: 10px;
+
+    border-radius: 5px;
+    border: 1px solid #D3D3D3;
+
+    font-family: Inter, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+
+    color: var(--secondary_text);
+}
+
+.input_field::placeholder {
+    color: var(--secondary_text);
+}
+
+.ad_side {
+    width: 20%;
+    margin-left: 2%;
+}
+
+.price_section {
+    width: 95%;
+    padding-left: 10px;
+    margin: 0.2vw 0;
+
+    background-color: #FAFAFA;
+    border: 2px solid #D3D3D3;
+    border-radius: 5px;
+}
+
+.price_section p {
+    color: var(--secondary_text);
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    margin-top: 0.2vw;
+}
+
+.price_swap_section {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.2vw;
+    align-items: center;
+}
+
+.input_field_price {
+    width: 70%;
+    height: 1.5vw;
+
+    margin: 0.2vw 0;
+    padding-left: 10px;
+
+    border-radius: 5px;
+    border: 1px solid #D3D3D3;
+
+    font-family: Inter, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+
+    color: var(--secondary_text);
+}
+
+.input_field_swap {
+    width: 70%;
+    height: 1.5vw;
+
+    margin: 0.2vw 0;
+    margin-right: 0.4vw;
+    padding-left: 10px;
+
+    border-radius: 5px;
+    border: 1px solid #D3D3D3;
+
+    font-family: Inter, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+
+    color: var(--secondary_text);
+}
+
+.post_button {
+    width: 15%;
+    height: 2.7vw;
+    padding: 0 1.4vw;
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: 1.3rem;
+    font-weight: 700;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: var(--button_background);
+}
+
+.field_error {
+    background-color: rgb(246, 180, 180);
+}

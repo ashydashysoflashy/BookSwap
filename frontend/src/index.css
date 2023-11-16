@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --button_background: #8BA5FF;
+    --secondary_text: #949494;
+    --secondary_background: #EED5C2;
+    --element_background: #FAFAFA;
+    --element_stroke: #D3D3D3;
+}
+
+body, html {
+    padding: 0;
+    margin: 0;
+    font-family: Inter, sans-serif;
+}

@@ -1,0 +1,117 @@
+.navbar_container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.9vw 2vw;
+    background-color: var(--secondary_background);
+}
+
+.navbar_top {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar_logo {
+    width: 15vw;
+    height: auto;
+}
+
+.navbar_search_section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navbar_searchbar {
+    width: 31vw;
+    height: 2.7vw;
+
+    padding-left: 35px;
+    margin: 0 1vw;
+    font-size: 1.1rem;
+
+    background-image: url('../assets/search_icon.png');
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+    background-position: 0 40%;
+
+    border: none;
+    border-radius: 5px;
+}
+
+.navbar_searchbar::placeholder {
+    color: var(--secondary_text);
+    font-size: 1.1rem;
+}
+
+.navbar_search_button {
+    height: 2.7vw;
+    padding: 0 1.4vw;
+    margin-right: 1vw;
+
+    font-size: 1.3rem;
+    font-weight: 700;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: var(--button_background);
+}
+
+.navbar_search_section img {
+    width: 1vw;
+    height: auto;
+    margin: 0 0.4vw;
+}
+
+#navbar_location_text {
+    margin-left: 0.6vw;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.navbar_acc_section {
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar_acc_section a{
+    font-size: 1rem;
+    font-weight: 400;
+    color: black;
+    margin: 0 1vw;
+    align-self: center;
+}
+
+.navbar_login_button {
+    height: 2.7vw;
+    padding: 0 1.4vw;
+
+    font-size: 1.3rem;
+    font-weight: 700;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: var(--button_background);
+}
+
+.navbar_bottom {
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar_bottom ul {
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0;
+    padding-left: 10px;
+}
+
+.navbar_bottom li {
+    display: inline-block;
+    margin-right: 3.5vw;
+}
