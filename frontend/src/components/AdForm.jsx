@@ -13,7 +13,7 @@ const AdForm = () => {
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [tags, setTags] = useState('');
-  const [price, setPrice] = useState(-1);
+  const [price, setPrice] = useState(undefined);
   const [swapBook, setSwapBook] = useState("");
 
   const handleSubmit = async (e) => {
@@ -32,13 +32,14 @@ const AdForm = () => {
     const json = await response.json();
 
     if (!response.ok) {
+      console.log("error", json);
       setError(json.error);
       setEmptyFields(json.emptyFields);
     }
     if (response.ok) {
       setTitle("");
       setDescription("");
-      setPrice(-1);
+      setPrice(undefined);
       setError(null);
       setEmptyFields([]);
       dispatch({type: 'CREATE_AD', payload: json})
