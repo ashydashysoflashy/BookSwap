@@ -28,7 +28,7 @@
 }
 
 .register_page input {
-    width: 95%; /* Temporary fix, need to come back and adjust */
+    width: 100%; /* Temporary fix, need to come back and adjust */
     padding: 0.5rem;
     margin-bottom: 1rem;
     background-color: #D7DEFA;
