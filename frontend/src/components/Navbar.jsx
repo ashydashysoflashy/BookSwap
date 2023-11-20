@@ -11,7 +11,7 @@ const Navbar = () => {
     <header>
       <div className="navbar_container">
         <div className="navbar_top">
-          <img className='navbar_logo' src={logo} alt='Logo'></img>
+          <Link to="/"><img className='navbar_logo' src={logo} alt='Logo'></img></Link>
           <div className="navbar_search_section">
             <input className='navbar_searchbar' type='text' placeholder='Search for any textbook'></input>
             <Link to="/Browse"><button className='navbar_search_button'>Search</button></Link>
@@ -19,8 +19,8 @@ const Navbar = () => {
             <p id='navbar_location_text'>Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
-            <Link to="/">Create an Account</Link>
-            <button className='navbar_login_button'>Log In</button>
+            <Link to="/register">Create an Account</Link>
+            <Link to="/login"><button className='navbar_login_button'>Log In</button></Link>
           </div>
         </div>
         <div className="navbar_bottom">

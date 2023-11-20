@@ -59,6 +59,12 @@
     border-radius: 7px;
 
     background-color: var(--button_background);
+    cursor:pointer; /* Fixes issue with pointer not showing up on search button */
+}
+
+.navbar_search_button:hover { /* Adds hover effect for button */
+    background-color: #003d82;
+    color:white;
 }
 
 .navbar_search_section img {
@@ -84,9 +90,14 @@
     color: black;
     margin: 0 1vw;
     align-self: center;
+    text-decoration: none; /* Removes initial underline of text before hover effect */
 }
 
-.navbar_login_button {
+.navbar_acc_section a:hover { /* Adds fixed hover effect for "Create an account" */
+    text-decoration: underline;
+}
+
+.navbar_login_button { /* Adds hover effect for button */
     height: 2.7vw;
     padding: 0 1.4vw;
 
@@ -97,7 +108,14 @@
     border-radius: 7px;
 
     background-color: var(--button_background);
+    cursor:pointer; /* Fix pointer issue (not showing up on button) */
 }
+
+.navbar_login_button:hover{
+    background-color: #003d82;
+    color:white;
+}
+
 
 .navbar_bottom {
     display: flex;
@@ -107,8 +125,7 @@
 .navbar_bottom ul {
     font-size: 1rem;
     font-weight: 400;
-    padding: 0;
-    padding-left: 10px;
+    padding: 0 0 0 10px;
 }
 
 .navbar_bottom li {
