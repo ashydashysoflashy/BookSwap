@@ -7,6 +7,8 @@ import Browse from './pages/Browse';
 
 //Components
 import Navbar from './components/Navbar';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
@@ -15,8 +17,10 @@ function App() {
       <Navbar />
         <div className='pages'>
           <Routes>
-            <Route path='/' element={<CreateAd />}/>
-            <Route path='/browse' element={<Browse />}/>
+              <Route path='/' element={<CreateAd />}/>
+              <Route path='/browse' element={<Browse />}/>
+              <Route path='/login' element={<LoginPage />}/>
+              <Route path='/register' element={<RegisterPage />}/>
           </Routes>
         </div>
       </BrowserRouter>
