@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Hero Section */
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 400px; /* Increase the height of the hero image if needed here */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+}
+
+.hero-text {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay for better readability */
+    padding: 20px;
+    border-radius: 10px;
+
+    position: relative;
+    z-index: 2; /* Ensure the text is above the overlay */
+}
+
+/* Features Section */
+.features-section {
+    padding: 2rem;
+    text-align: center;
+    background-color: #f9f9f9; /* Light grey background for contrast */
+}
+
+.features-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.feature {
+    margin-bottom: 1rem;
+}
+
+.feature h3 {
+    font-size: 1.5rem;
+    color: var(--button_background);
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+    padding: 2rem;
+}
+
+.how-it-works-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.how-it-works-section ol {
+    list-style: none;
+    counter-reset: step-counter;
+    padding: 0;
+}
+
+.how-it-works-section ol li {
+    counter-increment: step-counter;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    position: relative;
+    padding-left: 40px;
+}
+
+.how-it-works-section ol li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: var(--button_background);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Call to Action Section */
+.cta-section {
+    text-align: center;
+    padding: 2rem;
+    background-color: #fff; /* White background for a clean look */
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.cta-section p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.btn-register,
+.btn-browse {
+    padding: 10px 20px;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--button_background); /* Primary button color */
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-register:hover,
+.btn-browse:hover {
+    background-color: #003d82; /* Darker shade for hover state */
+}
+
+/* Added dark overlay for landing page image so text is easier to read */
+.dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+    z-index: 1; /* Ensure it's above the background image but below the text */
+}
