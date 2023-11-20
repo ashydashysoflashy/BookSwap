@@ -27,7 +27,7 @@
 }
 
 .login_page input {
-    width: 95%; /* Temporary fix, need to fix */
+    width: 100%; /* Temporary fix, need to fix */
     display: block;
     padding: 0.5rem;
     background-color: #D7DEFA;
