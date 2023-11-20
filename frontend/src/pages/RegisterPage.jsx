@@ -10,7 +10,7 @@ const RegisterPage = () => {
         e.preventDefault();
         // Handle registration logic here
         console.log('Register with:', email, password, confirmPassword);
-        // Redirect or show error messages based on registration success or failure
+        // Redirect or show error messages based on registration success/failure
     };
 
     return (
