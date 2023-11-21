@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from "./pages/HomePage";
+import ListingPage from './pages/ListingPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path='/login' element={<LoginPage />}/>
               <Route path='/register' element={<RegisterPage />}/>
               <Route path='/create' element={<CreateAd />}/>
+              <Route path = '/listings/:id' element={<ListingPage/>}/>
           </Routes>
         </div>
       </BrowserRouter>
