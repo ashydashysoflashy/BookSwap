@@ -24,11 +24,11 @@ export default function Listing({id}) {
 
       <div className='listing-images-container'>
         <div className='images-left'>
-          <img className='listing-image' src={Book1}/>
+          <img className='listing-image' src={Book1} alt='book1'/>
         </div>
         <div className='images-right'>
-          <img className='listing-image' src={Book2}/>
-          <img className='listing-image' src={Book3}/>
+          <img className='listing-image' src={Book2} alt='book2'/>
+          <img className='listing-image' src={Book3} alt='book3'/>
         </div>
       </div>
 
