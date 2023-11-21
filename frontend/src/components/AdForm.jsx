@@ -10,6 +10,7 @@ const AdForm = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [files, setFiles] = useState([]);
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [tags, setTags] = useState('');
@@ -46,6 +47,23 @@ const AdForm = () => {
     }
   }
 
+  const handleImage = (e) => {
+    if (e.target.files.length > 0) {
+      let tempFiles = [];
+      for (let i = 0; i < e.target.files.length; i++) {
+        if (!files.some(file=>file.name === e.target.files[i].name)) {
+          let temp = {
+            name: e.target.files[i].name,
+            src: URL.createObjectURL(e.target.files[i])
+          }
+          tempFiles.push(temp);
+        }
+      }
+      setFiles([...files, ...tempFiles]);
+    }
+    e.target.value = null;
+  }
+
   return (
     <form className="create_ad" onSubmit={handleSubmit}>
       <div className="ad_section">
@@ -56,6 +74,7 @@ const AdForm = () => {
           value={title}
           placeholder="Add Title"
           className={emptyFields.includes('title') ? 'input_field field_error' : 'input_field'}
+          required
           />
 
           <textarea
@@ -64,7 +83,17 @@ const AdForm = () => {
           value={description}
           placeholder="Description"
           className={emptyFields.includes('description') ? 'input_field field_error' : 'input_field'}
+          required
           />
+
+          <div className="ad_images">
+            <p>Images</p>
+            {files.map((file, i) => (
+              <img key={i} src={file.src} alt="test"/>
+            ))}
+            <label id="upload_button" htmlFor="upload_image"></label>
+            <input type="file" id="upload_image" style={{display: "none"}} onChange={handleImage}></input>
+          </div>
         </div>
         <div className="ad_side">
           <input
@@ -73,6 +102,7 @@ const AdForm = () => {
             value={category}
             placeholder="Select Category"
             className={emptyFields.includes('category') ? 'input_field field_error' : 'input_field'}
+            required
           />
 
           <input
@@ -81,6 +111,7 @@ const AdForm = () => {
             value={location}
             placeholder="Location"
             className={emptyFields.includes('location') ? 'input_field field_error' : 'input_field'}
+            required
           />
 
           <input
