@@ -27,7 +27,7 @@ const getAd = async (req, res) => {
 //Post an Ad
 const createAd = async (req, res) => {
     //Get Title and Description from Request
-    const {title, description, price} = req.body;
+    const {title, description, files, category, location, tags, price, swapBook} = req.body;
     let emptyFields = [];
 
     if (!title) {
@@ -45,7 +45,7 @@ const createAd = async (req, res) => {
 
     try {
         //Try and create an Ad Model and respond with status
-        const ad = await Ad.create({title, description, price});
+        const ad = await Ad.create({title, description, files, category, location, tags, price, swapBook});
         res.status(200).json(ad);
     } catch (error) {
         //If an error occurs, respond with 400 status and error message
