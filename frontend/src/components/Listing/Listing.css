@@ -91,3 +91,42 @@
     width:100%;
     margin-bottom:10%;
 }
+
+.listing-action-menu{
+    display:none;
+    margin-bottom:3%;
+    margin-top:3%;
+}
+
+.listing-action-menu div{
+    margin-right:5%;
+}
+
+@media screen and (max-width:700px) {
+    .main-container{
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .listing-container{
+        width:95%;
+    } 
+
+    .images-left{
+        margin-right:5%;
+    }
+
+    .listing-action-menu{
+        display:flex;
+        width:100%;
+        align-items: center;
+        justify-content: flex-start;
+    }    
+}
+
+@media screen and (min-width:701px) and (max-width: 1300px)  {
+    .listing-container{
+        width:63%;
+    }
+    
+}

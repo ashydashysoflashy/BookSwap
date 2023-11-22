@@ -4,6 +4,12 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import Book1 from '../../assets/book1.jpg'
 import Book2 from '../../assets/book2.jpg'
 import Book3 from '../../assets/book3.jpg'
+import { FaRegHeart, FaRegFlag } from "react-icons/fa";
+import { FaRegMessage } from "react-icons/fa6";
+import { MdOutlineEmail } from "react-icons/md";
+
+
+
 
 
 export default function Listing({id}) {
@@ -20,6 +26,21 @@ export default function Listing({id}) {
           <FaMapMarkerAlt color='grey' size={24}/>
         </div>
         <div className='listing-location'>Posted 2 minutes ago, near University of Calgary</div>
+      </div>
+
+      <div className='listing-action-menu'>
+        <div>
+          <FaRegHeart size={30}/>
+        </div>
+        <div>
+          <FaRegFlag size={30}/>
+        </div>
+        <div>
+          <FaRegMessage size={30}/>
+        </div>
+        <div>
+          <MdOutlineEmail size={30}/>
+        </div>
       </div>
 
       <div className='listing-images-container'>
