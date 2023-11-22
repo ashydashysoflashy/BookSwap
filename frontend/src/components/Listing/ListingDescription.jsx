@@ -15,7 +15,7 @@ export default function ListingDescription() {
         Can only do on-campus exchange
       </div>
       <div className='description-views-container'>
-        <FaRegEye color='blue' size={30} />
+        <FaRegEye color='#8ba5ff' size={30} />
         <div className='description-views'>20 views</div>
       </div>
     </div>

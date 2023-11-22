@@ -1,11 +1,12 @@
 
 .listing-container{
     width:50%;
-    border:1px solid red;
+    border:1px solid #dedede;
+    border-radius: 10px;
     margin-top: 2%;
     margin-right:1%;
     margin-bottom:2%;
-    background-color:rgb(243, 243, 243);
+    background-color:#fafafa;
     display:flex;
     flex-direction: column;
     align-items: flex-start;
