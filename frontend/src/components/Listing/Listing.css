@@ -1,4 +1,12 @@
 
+.main-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    height:100%;
+}
+
 .listing-container{
     width:50%;
     border:1px solid #dedede;
@@ -51,6 +59,7 @@
     display:flex;
     align-items: center;
     justify-content: center;
+    height:500px;
 }
 
 .images-left{
@@ -72,7 +81,13 @@
     height:100%;
 }
 
-.listing-image{
+.listing-image-left{
     height:100%;
+    width:100%;
+}
+
+.listing-image-right{
+    height:45%;
+    width:100%;
     margin-bottom:10%;
 }

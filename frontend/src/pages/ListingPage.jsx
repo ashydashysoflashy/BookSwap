@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react'
 import { useParams } from 'react-router-dom';
 import Listing from '../components/Listing/Listing'
 import ListingDetails from '../components/Listing/ListingDetails'
+import '../components/Listing/Listing.css'
 
 export default function ListingPage() {
   const [id,setId] = useState("")
@@ -15,7 +16,7 @@ export default function ListingPage() {
   },[routeId])
 
   return (
-    <div style={{width:'100%',display:'flex',justifyContent:'center',alignItems:'flex-start',height:'100%'}}>
+    <div className='main-container'>
         <Listing id={id}/>
         <ListingDetails id={id}/>
     </div>

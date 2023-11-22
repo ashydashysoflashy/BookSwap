@@ -1,9 +1,9 @@
 import React from 'react'
 import './Listing.css'
 import { FaMapMarkerAlt } from "react-icons/fa";
-import Book1 from '../../assets/book1.png'
-import Book2 from '../../assets/book2.png'
-import Book3 from '../../assets/book3.png'
+import Book1 from '../../assets/book1.jpg'
+import Book2 from '../../assets/book2.jpg'
+import Book3 from '../../assets/book3.jpg'
 
 
 export default function Listing({id}) {
@@ -24,11 +24,11 @@ export default function Listing({id}) {
 
       <div className='listing-images-container'>
         <div className='images-left'>
-          <img className='listing-image' src={Book1} alt='book1'/>
+          <img className='listing-image-left' src={Book1} alt='book1'/>
         </div>
         <div className='images-right'>
-          <img className='listing-image' src={Book2} alt='book2'/>
-          <img className='listing-image' src={Book3} alt='book3'/>
+          <img className='listing-image-right' src={Book2} alt='book2'/>
+          <img className='listing-image-right' src={Book3} alt='book3'/>
         </div>
       </div>
 
