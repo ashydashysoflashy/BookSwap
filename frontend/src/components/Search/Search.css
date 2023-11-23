@@ -21,6 +21,7 @@
 .filters-title{
     font-size:36px;
     font-weight: 700;
+    text-align: center;
     margin-bottom:5%;
 }
 
@@ -62,7 +63,6 @@
     display:flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom:2%;
 }
 
 .react-select-container-results{
@@ -71,4 +71,33 @@
 
 .show{
     font-weight: 700;
+}
+
+@media screen and (max-width:700px) {
+
+}
+
+@media screen and (min-width:701px) and (max-width: 1300px)  {
+    .filters-container{
+        width:33%;
+        margin-right:1%;
+    }
+
+    .results-container{
+        width:65%;
+    }
+
+    .filter-by{
+        width:85%;
+    }
+
+    .filters-title{
+
+        font-size: 25px;
+    }
+
+    .react-select-container{
+        width:85%;
+    }
+    
 }
