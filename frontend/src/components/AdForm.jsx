@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
 import { useNavigate } from 'react-router-dom';
+import { tagOptions } from './tagOptions';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
+
 
 import './AdForm.css'
 
@@ -20,6 +24,17 @@ const AdForm = () => {
   const [price, setPrice] = useState(0);
   const [swapBook, setSwapBook] = useState("");
   const [priceEnabled, setPriceEnabled] = useState(true);
+
+  const categoryOptions = [
+    { value: 'business', label: 'Business' },
+    { value: 'computerScience', label: 'Computer Science' },
+    { value: 'education', label: 'Education' },
+    { value: 'engineering', label: 'Engineering' },
+    { value: 'law', label: 'Law' },
+    { value: 'math', label: 'Mathematics' },
+    { value: 'medicine', label: 'Medicine' },
+    { value: 'naturalScience', label: 'Natural Science' }
+  ];
 
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
@@ -112,13 +127,11 @@ const AdForm = () => {
           </div>
         </div>
         <div className="ad_side">
-          <input
-            type="text"
-            onChange={(e) => setCategory(e.target.value)}
-            value={category}
+          <Select 
+            options={categoryOptions}
+            className={emptyFields.includes('category') ? 'react-select-container select_field field_error' : 'react-select-container select_field'}
+            classNamePrefix="react-select"
             placeholder="Select Category"
-            className={emptyFields.includes('category') ? 'input_field field_error' : 'input_field'}
-            required
           />
 
           <input
@@ -130,13 +143,14 @@ const AdForm = () => {
             required
           />
 
-          <input
-            type="text"
-            onChange={(e) => setTags(e.target.value)}
-            value={tags}
-            placeholder="Tags (optional)"
-            className={emptyFields.includes('tags') ? 'input_field field_error' : 'input_field'}
+          <CreatableSelect  
+            isMulti
+            options={tagOptions}
+            className={emptyFields.includes('tags') ? 'react-select-container select_field field_error' : 'react-select-container select_field'}
+            classNamePrefix="react-select"
+            placeholder="Select Tags"
           />
+
           <div className="price_section">
             <p>Price / Swap</p>
             <div className="price_swap_section">
