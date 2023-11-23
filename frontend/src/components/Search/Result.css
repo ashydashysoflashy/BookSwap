@@ -33,7 +33,14 @@
     margin-bottom:2%;
 }
 
-.result-price{
+.result-title-mobile{
+    font-weight: 700;
+    font-size:26px;
+    margin-bottom:2%;
+    display:none;
+}
+
+.result-price, .result-price-mobile{
     color:#97aefd;
     font-weight: 700;
     font-size:24px;
@@ -50,6 +57,13 @@
     font-size:13px;
 }
 
+.result-price-message-container{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    display:none;
+}
+
 @media screen and (max-width:700px) {
 
     .result-container{
@@ -59,16 +73,34 @@
         display:none;
     }
 
-    .result-title{
-        font-size: 18px;
-    }
-
     .result-price{
         font-size:17px;
     }
     
     .result-location{
         font-size:12px;
+    }
+
+    .result-title{
+        display:none;
+    }
+
+    .result-price{
+        display:none;
+    }
+
+    .result-price-message-container{
+        display:flex;
+        margin-bottom:5%;
+    }
+
+    .result-title-mobile{
+        display:flex;
+        font-size:18px;
+    }
+
+    .result-price-mobile{
+        font-size:19px;
     }
     
 }
