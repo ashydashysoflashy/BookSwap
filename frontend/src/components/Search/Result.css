@@ -4,7 +4,7 @@
     border:1px solid #dedede;
     border-radius: 10px;
     padding:2%;
-    min-height:200px;
+    min-height:100px;
     margin-top:2%;
     display:flex;
     align-items: flex-start;
@@ -29,14 +29,14 @@
 
 .result-title{
     font-weight: 700;
-    font-size:24px;
+    font-size:26px;
     margin-bottom:2%;
 }
 
 .result-price{
     color:#97aefd;
     font-weight: 700;
-    font-size:16px;
+    font-size:24px;
     margin-bottom:2%;
 }
 
@@ -48,4 +48,32 @@
     color:grey;
     margin-top:5%;
     font-size:13px;
+}
+
+@media screen and (max-width:700px) {
+
+    .result-container{
+        margin-top:4%;
+    }
+    .result-description{
+        display:none;
+    }
+
+    .result-title{
+        font-size: 18px;
+    }
+
+    .result-price{
+        font-size:17px;
+    }
+    
+    .result-location{
+        font-size:12px;
+    }
+    
+}
+
+@media screen and (min-width:701px) and (max-width: 1300px)  {
+
+    
 }

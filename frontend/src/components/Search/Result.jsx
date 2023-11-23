@@ -1,8 +1,6 @@
 import React from 'react'
 import './Result.css'
 import Book1 from '../../assets/book1.jpg'
-import Book2 from '../../assets/book2.jpg'
-import Book3 from '../../assets/book3.jpg'
 
 export default function ResultItem() {
   return (
