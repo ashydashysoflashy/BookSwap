@@ -11,6 +11,8 @@ import NavbarLoggedIn from './components/Navbar-LoggedIn';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from "./pages/HomePage";
+import ListingPage from './pages/ListingPage';
+import SearchPage from './pages/SearchPage';
 
 function App() {
 
@@ -28,6 +30,8 @@ function App() {
               <Route path='/register' element={<RegisterPage />}/>
               <Route path='/create' element={<CreateAd />}/>
               <Route path='/home' element={<Browse />}/>
+              <Route path = '/listings/:id' element={<ListingPage/>}/>
+              <Route path = '/search' element={<SearchPage/>}/>
           </Routes>
         </div>
       </BrowserRouter>
