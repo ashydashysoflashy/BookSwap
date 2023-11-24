@@ -12,9 +12,25 @@ const adSchema = new Schema({
         type: String,
         required: true
     },
+    files: [{
+        type: String
+    }],
+    category: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+    tags: [{
+        type: String
+    }],
     price: {
         type: Number,
-        required: true
+    },
+    swapBook: {
+        type: String,
     }
 }, {timestamps: true});
 

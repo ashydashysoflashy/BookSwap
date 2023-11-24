@@ -27,25 +27,19 @@ const getAd = async (req, res) => {
 //Post an Ad
 const createAd = async (req, res) => {
     //Get Title and Description from Request
-    const {title, description, price} = req.body;
+    const {title, description, files, category, location, tags, price, swapBook} = req.body;
     let emptyFields = [];
 
-    if (!title) {
-        emptyFields.push('title');
-    }
-    if (!description) {
-        emptyFields.push('description');
-    }
-    if (!price) {
-        emptyFields.push('price');
-    }
-    if (emptyFields.length > 0) {
-        return res.status(400).json({error: 'Please fill the required fields', emptyFields});
-    }
+    if (!title) emptyFields.push('title');
+    if (!description) emptyFields.push('description');
+    if (!category) emptyFields.push('category');
+    if (!location) emptyFields.push('location');
+    if (!price) emptyFields.push('price');
+    if (emptyFields.length > 0) return res.status(400).json({error: 'Please fill the required fields', emptyFields});
 
     try {
         //Try and create an Ad Model and respond with status
-        const ad = await Ad.create({title, description, price});
+        const ad = await Ad.create({title, description, files, category, location, tags, price, swapBook});
         res.status(200).json(ad);
     } catch (error) {
         //If an error occurs, respond with 400 status and error message
