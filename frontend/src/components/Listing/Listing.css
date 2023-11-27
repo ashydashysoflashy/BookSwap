@@ -63,6 +63,7 @@
 }
 
 .listing-images-container img{
+   max-width:30%; 
    object-fit: contain;
 }
 

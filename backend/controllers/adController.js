@@ -76,21 +76,34 @@ const deleteAd = async (req, res) => {
     res.status(200).json(ad);
 }
 
-//Update an Ad
+// Update an Ad
 const updateAd = async (req, res) => {
-    //Check if the ID is valid
-    const {id} = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) 
-        return res.status(404).json({error: "The Ad does not exist"});
+    const { id } = req.params;
 
-    //Try finding Ad by ID and updating
-    const ad = await Ad.findOneAndUpdate({_id: id}, {
-        ...req.body
-    });
-    if (!ad) return res.status(404).json({error: "The Ad does not exist"});
-    res.status(200).json(ad);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: "The Ad does not exist" });
+    }
 
-}
+    try {
+        // Find the ad by ID and update it with the request body
+        const ad = await Ad.findOneAndUpdate(
+            { _id: id },
+            { ...req.body },
+            { new: true } // This option asks Mongoose to return the updated document
+        );
+
+        // If the ad wasn't found, return an error
+        if (!ad) {
+            return res.status(404).json({ error: "The Ad does not exist" });
+        }
+
+        // Return the updated ad
+        res.status(200).json(ad);
+    } catch (error) {
+        // If an error occurs, return an error status
+        res.status(400).json({ error: error.message });
+    }
+};
 
 //Export these functions
 module.exports = {
