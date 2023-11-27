@@ -82,6 +82,8 @@
 .navbar_acc_section {
     display: flex;
     flex-direction: row;
+
+    align-items: center;
 }
 
 .navbar_acc_section a{
@@ -95,6 +97,42 @@
 
 .navbar_acc_section a:hover { /* Adds fixed hover effect for "Create an account" */
     text-decoration: underline;
+}
+
+.book_check,
+.chat,
+.notif,
+.profile {
+    width: 1.8vw;
+    height: 1.8vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+    border: none;
+    background-color: transparent;
+    background-size: contain;
+}
+
+.book_check:hover,
+.chat:hover,
+.notif:hover,
+.profile:hover {
+    opacity: 0.5;
+}
+
+.book_check {
+    background-image: url('../assets/Book_check.png');
+}
+
+.chat {
+    background-image: url('../assets/chat.png');
+}
+
+.notif {
+    background-image: url('../assets/bell.png');
+}
+
+.profile {
+    background-image: url('../assets/user.png');
 }
 
 .navbar_login_button { /* Adds hover effect for button */
