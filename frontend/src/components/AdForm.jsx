@@ -5,7 +5,6 @@ import { tagOptions } from './tagOptions';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-
 import './AdForm.css'
 
 const AdForm = () => {
