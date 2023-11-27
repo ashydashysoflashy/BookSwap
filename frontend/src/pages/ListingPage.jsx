@@ -4,10 +4,11 @@ import Listing from '../components/Listing/Listing';
 import ListingDetails from '../components/Listing/ListingDetails';
 import '../components/Listing/Listing.css';
 import { useAdsContext } from '../hooks/useAdsContext';
+import { S3 } from 'aws-sdk'; // Make sure to import AWS SDK
 
 export default function ListingPage() {
   const [id, setId] = useState();
-  const { ads, dispatch } = useAdsContext();
+  const { dispatch } = useAdsContext();
   const { id: routeId } = useParams();
   const [adItem, setAdItem] = useState({
     id: null,
@@ -15,63 +16,85 @@ export default function ListingPage() {
     description: '',
     location: '',
     createdAt: '',
-    price:null,
-    category:'',
+    price: null,
+    category: '',
+    files: [] // Assuming your ad object has a 'files' field with filenames
   });
+  const [imageUrls, setImageUrls] = useState([]); // State to hold the image URLs
 
-  // on load get the id from the page parameters
   useEffect(() => {
     setId(routeId);
   }, [routeId]);
 
-  // on load get the listing
+  useEffect(() => {
+    const fetchImageUrls = async () => {
+      const s3 = new S3({
+        region: process.env.REACT_APP_BUCKET_REGION,
+        accessKeyId: process.env.REACT_APP_ACCESS_KEY,
+        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
+      });
+
+      const urls = await Promise.all(adItem.files.map(fileName => { // Use adItem.files
+        const filePath = `images/${fileName}`;
+        return s3.getSignedUrlPromise('getObject', {
+          Bucket: process.env.REACT_APP_BUCKET_NAME,
+          Key: filePath,
+          Expires: 60
+        });
+      }));
+
+      setImageUrls(urls);
+    };
+
+    if (adItem.files && adItem.files.length > 0) {
+      fetchImageUrls();
+    }
+  }, [adItem.files]); // Depend on adItem.files
+
   useEffect(() => {
     const fetchAd = async () => {
       try {
-        //get the ad and return the details
         const response = await fetch(`http://localhost:4000/api/ads/${id}`);
+        if (!response.ok) {
+          throw new Error('Ad not found');
+        }
         const json = await response.json();
         return json;
-        //in case of error just console log for now
       } catch (error) {
         console.error('Error fetching ad:', error);
         return null;
       }
     };
 
-    // fetch the ad only if the ID is available
     if (id) {
-      //wait to get the ad and then set the aditem
       (async () => {
         const ad = await fetchAd();
         if (ad) {
-          console.log('ad',ad);
-          setAdItem({
-            id: ad._id,
-            title: ad.title,
-            price: ad.price,
-            description: ad.description,
-            location: ad.location,
-            createdAt: ad.createdAt,
-            category: ad.category,
-          });
+          setAdItem(ad); // Set the entire ad object
         } else {
           console.log('ad not found');
-          // Redirect to ad not found page
+          // Redirect to ad not found page or handle accordingly
         }
       })();
     }
   }, [id]);
 
-  // for debugging, log the adItem to be passed to children props
-  useEffect(() => {
-    console.log(adItem);
-  }, [adItem]);
-
   return (
     <div className="main-container">
-      {adItem.title && <Listing ad={adItem} />}
-      {adItem.title && <ListingDetails ad={adItem} />}
+      {adItem.title && <Listing ad={adItem} imageUrls={imageUrls} />}
+      {adItem.title && (
+        <ListingDetails ad={adItem}>
+          <div className="ad_images">
+            {imageUrls.length > 0 ? (
+              imageUrls.map((url, index) => (
+                <img key={index} src={url} alt={`Content ${index + 1}`} />
+              ))
+            ) : (
+              <img src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="Not available" />
+            )}
+          </div>
+        </ListingDetails>
+      )}
     </div>
   );
 }
