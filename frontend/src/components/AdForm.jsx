@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import { tagOptions } from './tagOptions';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-
+import S3FileUpload from 'react-s3';
 import './AdForm.css'
+
+const config = {
+  bucketName: process.env.REACT_APP_BUCKET_NAME,
+  dirName: 'images', /* optional */
+  region: process.env.REACT_APP_BUCKET_REGION,
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+}
 
 const AdForm = () => {
   let navigate = useNavigate();
@@ -19,7 +27,7 @@ const AdForm = () => {
   const [files, setFiles] = useState([]);
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState([]);
   const [price, setPrice] = useState(0);
   const [swapBook, setSwapBook] = useState("");
   const [priceEnabled, setPriceEnabled] = useState(true);
@@ -42,8 +50,12 @@ const AdForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const ad = {title, description, files, category, location, tags, price, swapBook};
+    
+    for(const file of files) {
+      
+      await S3FileUpload.uploadFile(file, config)
+    }
+    const ad = {title, description, files: files.map((file) => ({name: file.name, src: URL.createObjectURL(file)})), category, location, tags, price, swapBook};
     const response = await fetch('http://localhost:4000/api/ads', {
       method: 'POST',
       body: JSON.stringify(ad),
@@ -75,22 +87,42 @@ const AdForm = () => {
     }
   }
 
+  // const handleImage = (e) => {
+  //   if (e.target.files.length > 0) {
+  //     let tempFiles = [];
+  //     for (let i = 0; i < e.target.files.length; i++) {
+  //       if (!files.some(file=>file.name === e.target.files[i].name)) {
+  //         console.log(e.target.files[i])
+  //         let temp = {
+  //           name: e.target.files[i].name,
+  //           src: URL.createObjectURL(e.target.files[i]),
+  //           type: e.target.files[i].type
+  //         }
+  //         tempFiles.push(temp);
+  //       }
+  //     }
+  //     setFiles([...files, ...tempFiles]);
+  //   }
+  //   e.target.value = null;
+
+  // }
+
   const handleImage = (e) => {
     if (e.target.files.length > 0) {
-      let tempFiles = [];
+      let newFiles = [...files];
+  
       for (let i = 0; i < e.target.files.length; i++) {
-        if (!files.some(file=>file.name === e.target.files[i].name)) {
-          let temp = {
-            name: e.target.files[i].name,
-            src: URL.createObjectURL(e.target.files[i])
-          }
-          tempFiles.push(temp);
+        const file = e.target.files[i];
+        
+        if (!newFiles.some(f => f.name === file.name)) {
+          newFiles.push(file);
         }
       }
-      setFiles([...files, ...tempFiles]);
+      setFiles([...newFiles]);
     }
     e.target.value = null;
-  }
+  };
+
 
   return (
     <form className="create_ad" onSubmit={handleSubmit}>
@@ -117,7 +149,7 @@ const AdForm = () => {
           <div className="ad_images">
             <p>Images</p>
             {files.map((file, i) => (
-              <img key={i} src={file.src} alt="test"/>
+              <img key={i} src={URL.createObjectURL(file)} alt="test"/>
             ))}
             <label id="upload_button" htmlFor="upload_image"></label>
             <input type="file" id="upload_image" style={{display: "none"}} onChange={handleImage}></input>
@@ -147,6 +179,8 @@ const AdForm = () => {
           <CreatableSelect  
             isMulti
             options={tagOptions}
+            onChange={(selectedOptions) => setTags(selectedOptions ? selectedOptions.map(option => option.value) : [])}
+            value={tags.map(tag => ({ label: tag, value: tag }))}
             className={emptyFields.includes('tags') ? 'react-select-container select_field field_error' : 'react-select-container select_field'}
             classNamePrefix="react-select"
             placeholder="Select Tags"

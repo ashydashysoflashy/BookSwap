@@ -13,7 +13,7 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from "./pages/HomePage";
 import ListingPage from './pages/ListingPage';
 import SearchPage from './pages/SearchPage';
-
+window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);

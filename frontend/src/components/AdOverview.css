@@ -11,13 +11,21 @@
     margin: 1vw 1vw;
 }
 
-.ad_image {
+.ad_images {
+    display: flex;
     margin: 1vw 1vw;
+}
+
+.ad_images img {
+    max-width: 300px;
+    object-fit: contain;
 }
 
 .ad_information {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    min-width: 30%;
 }
 
 .ad_information h2{
