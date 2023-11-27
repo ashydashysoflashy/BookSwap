@@ -39,7 +39,9 @@ const createAd = async (req, res) => {
 
     try {
         //Try and create an Ad Model and respond with status
-        const ad = await Ad.create({title, description, files, category, location, tags, price, swapBook});
+        // using just the file names in MongoDB
+        const fileNames = files.map((file) => file.name);
+        const ad = await Ad.create({title, description, files: fileNames, category, location, tags, price, swapBook});
         res.status(200).json(ad);
     } catch (error) {
         //If an error occurs, respond with 400 status and error message
