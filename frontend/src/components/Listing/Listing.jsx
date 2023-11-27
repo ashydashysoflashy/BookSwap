@@ -13,22 +13,38 @@ import { MdOutlineEmail } from "react-icons/md";
 
 
 export default function Listing({ad, imageUrls}) {
+ // Function to format the date
+  const formatDate = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }) + ' at ' + date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+};
+
   useEffect(() => {
   },[])
 
   return (
     <div className='listing-container'>
 
-      <div className='listing-directory'>Home &gt; Calgary &gt; Philosophy Textbooks &gt; Under $60</div>
-
       <div className='listing-title'>{ad.title}</div>
-
       <div className='price-location-container'>
         <div className='listing-price'>{`$${ad.price}.00`}</div>
         <div className='map-icon'>
           <FaMapMarkerAlt color='grey' size={24}/>
         </div>
-        <div className='listing-location'>Posted 2 minutes ago, near University of Calgary</div>
+        <div className='ad-info-container'> 
+          <div className='listing-date'>Post Date: {formatDate(ad.createdAt)}. </div>
+          <div> Post Location: {ad.location} </div>
+          <div className='course-codes'>Course Codes: {ad.tags}</div>
+        </div>
+
       </div>
 
       <div className='listing-action-menu'>

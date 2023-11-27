@@ -8,20 +8,34 @@ const getAds = async (req, res) => {
     res.status(200).json(ads);
 }
 
-//Get a single Ad
+// Get a single Ad
 const getAd = async (req, res) => {
-    //Check if the ID is valid
+    // Check if the ID is valid
     const {id} = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: "The Ad does not exist"});
     }
 
-    //Try finding Ad by ID
-    const ad = await Ad.findById(id);
+    try {
+        // Find the ad by ID
+        const ad = await Ad.findById(id);
 
-    //If could not find, send error otherwise send good status
-    if (!ad) return res.status(404).json({error: "The Ad does not exist"});
-    res.status(200).json(ad);
+        // If the ad doesn't exist, return an error
+        if (!ad) {
+            return res.status(404).json({error: "The Ad does not exist"});
+        }
+
+        // Increment the views count
+        ad.views = (ad.views || 0) + 1; // If views is not defined, start at 0
+        await ad.save(); // Save the ad with the incremented view count
+
+        // Return the ad with the updated views
+        res.status(200).json(ad);
+
+    } catch (error) {
+        // If an error occurs, return an error status
+        res.status(400).json({error: error.message});
+    }
 }
 
 //Post an Ad

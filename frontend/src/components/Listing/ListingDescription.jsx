@@ -12,7 +12,7 @@ export default function ListingDescription({ad}) {
       </div>
       <div className='description-views-container'>
         <FaRegEye color='#8ba5ff' size={30} />
-        <div className='description-views'>20 views</div>
+        <div className='description-views'>{ad.views}</div>
       </div>
     </div>
   );

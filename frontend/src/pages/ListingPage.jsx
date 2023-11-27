@@ -83,17 +83,7 @@ export default function ListingPage() {
     <div className="main-container">
       {adItem.title && <Listing ad={adItem} imageUrls={imageUrls} />}
       {adItem.title && (
-        <ListingDetails ad={adItem}>
-          <div className="ad_images">
-            {imageUrls.length > 0 ? (
-              imageUrls.map((url, index) => (
-                <img key={index} src={url} alt={`Content ${index + 1}`} />
-              ))
-            ) : (
-              <img src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="Not available" />
-            )}
-          </div>
-        </ListingDetails>
+        <ListingDetails ad={adItem}/>
       )}
     </div>
   );

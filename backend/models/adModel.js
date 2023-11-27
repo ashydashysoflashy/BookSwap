@@ -31,6 +31,10 @@ const adSchema = new Schema({
     },
     swapBook: {
         type: String,
+    },
+    views: { 
+        type: Number, 
+        default: 0 
     }
 }, {timestamps: true});
 
