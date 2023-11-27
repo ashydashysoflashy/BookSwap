@@ -128,8 +128,8 @@ const AdForm = () => {
         <div className="ad_side">
           <Select 
             options={categoryOptions}
-            onChange={(e) => setCategory(e.value)}
             value={category}
+            onChange={(e) => setCategory(e.value)}
             className={emptyFields.includes('category') ? 'react-select-container select_field field_error' : 'react-select-container select_field'}
             classNamePrefix="react-select"
             placeholder="Select Category"
