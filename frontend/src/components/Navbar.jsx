@@ -2,10 +2,20 @@ import { Link } from 'react-router-dom'
 
 import logo from '../assets/logo_large.png'
 import locationIcon from '../assets/location_icon.png'
+import {useAuthContext} from '../hooks/useAuthContext'
+import {useLogout} from '../hooks/useLogout'
 
 import './Navbar.css'
 
 const Navbar = () => {
+  //get the user
+  const {user} = useAuthContext()
+  const {logout} = useLogout()
+
+  const handleLogout = async () => {
+    console.log("logging out")
+    await logout()
+  }
 
   return (
     <header>
@@ -19,8 +29,9 @@ const Navbar = () => {
             <p id='navbar_location_text'>Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
-            <Link to="/register">Create an Account</Link>
-            <Link to="/login"><button className='navbar_login_button'>Log In</button></Link>
+            {!user && <Link to="/register">Create an Account</Link>}
+            {!user && <Link to="/login"><button className='navbar_login_button'>Log In</button></Link>}
+            {user && <button className='navbar_logout_button' onClick={handleLogout}>Log Out</button>}
           </div>
         </div>
         <div className="navbar_bottom">
