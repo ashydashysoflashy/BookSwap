@@ -5,6 +5,7 @@ require('dotenv').config({ path: './.env'});
 const express = require('express');
 const app = express();
 
+//Require mongoose for creating schemas
 const mongoose = require('mongoose');
 
 //Setup CORS (Cross Origin Resource Sharing)
@@ -19,6 +20,9 @@ app.use(express.json());
 
 //Route for Ads
 app.use('/api/ads', require('./routes/ads'));
+
+//Route for user info (login/signup)
+app.use('/api/user',require('./routes/user'))
 
 //Connect with database
 mongoose.connect(process.env.MONGO_URI)
