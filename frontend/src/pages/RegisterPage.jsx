@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './RegisterPage.css'; // Make sure to create this CSS file
+import './RegisterPage.css';
+import {useSignup} from '../hooks/useSignup'
+import {useNavigate} from 'react-router-dom';
+import {useAuthContext} from '../hooks/useAuthContext'
 
 const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
+    //get the signup function from the hook
+    const {signup,loading,error,setError} = useSignup()
+    let navigate = useNavigate();
+    const {user} = useAuthContext()
 
     // Used ChatGPT to understand how to add functionality for special case checks in password field.
     useEffect(() => {
@@ -19,30 +26,20 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validPassword && password === confirmPassword) {
-            // Handle registration logic here
-            console.log('Register with:', email, password, confirmPassword);
-            //object for user
-            const userDetails = {email,password};
-            const response = await fetch('http://localhost:4000/api/user/signup', {
-                method: 'POST',
-                body: JSON.stringify(userDetails),
-                headers: {
-                  'Content-type': 'application/json'
-                }
-              });
-            const json = await response.json();
-            if (!response.ok) {
-                console.log("error", json);
-            }
-            if (response.ok) {
-                console.log("success",json)
-            }
-            // Redirect or show error messages based on registration success/failure
+            //wait to sign up
+            await signup(email,password)
         } else {
             // Show an error message
-            console.error('Password does not meet requirements or passwords do not match.');
+            console.log("passwords dont match")
         }
     };
+
+    //check everytime user updates if there is one then go home page
+    useEffect(() => {
+        if(user){
+            navigate('/Home')
+          }
+    },[user])
 
     return (
         <div className="register_page">
@@ -78,7 +75,8 @@ const RegisterPage = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="register-button" >Register</button>
+                <button type="submit" className="register-button" disabled={loading}>Register</button>
+                {error && <div className='register-error'>{error}</div>}
             </form>
             <p className="login-text">
                 Already Registered? <Link to="/login">Login</Link>

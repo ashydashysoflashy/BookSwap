@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
+import {useLogin} from '../hooks/useLogin'
+import { useEffect } from 'react';
+import {useAuthContext} from '../hooks/useAuthContext'
 
 const LoginPage = (props) => {
-  let navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  //get the signup function from the hook
+  const {login,loading,error} = useLogin()
+  let navigate = useNavigate();
+  const {user} = useAuthContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login with:', email, password);
-    //object for user
-    const userDetails = {email,password};
-    const response = await fetch('http://localhost:4000/api/user/login', {
-        method: 'POST',
-        body: JSON.stringify(userDetails),
-        headers: {
-          'Content-type': 'application/json'
-        }
-      });
-    const json = await response.json();
-    if (!response.ok) {
-        console.log("error", json);
-    }
-    if (response.ok) {
-        console.log("success",json)
-        navigate('/Home');
-        props.setLoggedIn(true);
-    }
-
+    //wait to login 
+    await login(email,password)
   };
+  
+  //if theres a user go back to home page
+  useEffect(() => {
+    if(user){
+      navigate('/Home')
+    }
+  },[user])
 
   // Used ChatGPT to understand how to add functionality onChange.
   return (
@@ -61,7 +56,8 @@ const LoginPage = (props) => {
             Forgot Password?
           </button>
         </div>
-        <button type="submit" className="login-button">Log In</button>
+        <button type="submit" className="login-button" disabled={loading}>Log In</button>
+        {error && <div className='login-error'>{error}</div>}
       </form>
       <p className="register-text">
         Not Registered? <Link to="/register">Create an Account</Link>

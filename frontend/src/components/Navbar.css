@@ -135,7 +135,7 @@
     background-image: url('../assets/user.png');
 }
 
-.navbar_login_button { /* Adds hover effect for button */
+.navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
     height: 2.7vw;
     padding: 0 1.4vw;
 
@@ -149,7 +149,7 @@
     cursor:pointer; /* Fix pointer issue (not showing up on button) */
 }
 
-.navbar_login_button:hover{
+.navbar_login_button:hover,.navbar_logout_button:hover{
     background-color: #003d82;
     color:white;
 }
