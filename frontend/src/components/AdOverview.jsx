@@ -47,12 +47,16 @@ const AdOverview = ({ ad }) => {
     }
   }
 
-  const handleAdClick = () => {
+  const handleUpdate = async () => {
+    navigate(`../update/${ad._id}`)
+  }
+
+  const handleViewAd = () => {
     navigate(`../listings/${ad._id}`)
   };
 
   return (
-    <div className="ad_overview" onClick={handleAdClick}>
+    <div className="ad_overview">
       <div className="ad_images">
         {imageUrls.length > 0 ? (
           imageUrls.map((url, index) => (
@@ -67,7 +71,9 @@ const AdOverview = ({ ad }) => {
         <h3>${ad.price}</h3>
         <h4>{ad.description}</h4>
         <p>{ad.createdAt}</p>
+        <button onClick={handleViewAd}>View Ad Details</button>
         <button onClick={handleDelete}>Test Delete Ad</button>
+        <button onClick={handleUpdate}>Test Update Ad</button>
       </div>
     </div>
   );
