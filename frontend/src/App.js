@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 //Pages
 import CreateAd from './pages/CreateAd';
+import UpdateAd from './pages/UpdateAd';
 import Browse from './pages/Browse';
 
 //Components
@@ -29,6 +30,7 @@ function App() {
               <Route path='/login' element={<LoginPage setLoggedIn={setLoggedIn}/>}/>
               <Route path='/register' element={<RegisterPage />}/>
               <Route path='/create' element={<CreateAd />}/>
+              <Route path='/update/:id' element={<UpdateAd /> }/>
               <Route path='/home' element={<Browse />}/>
               <Route path = '/listings/:id' element={<ListingPage/>}/>
               <Route path = '/search' element={<SearchPage/>}/>

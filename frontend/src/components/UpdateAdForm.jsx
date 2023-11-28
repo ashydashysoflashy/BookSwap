@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
-import { json, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { tagOptions } from './tagOptions';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import S3FileUpload from 'react-s3';
-import './AdForm.css'
+import { S3 } from 'aws-sdk';
+import './AdForm.css';
 
 const config = {
   bucketName: process.env.REACT_APP_BUCKET_NAME,
@@ -13,24 +14,27 @@ const config = {
   region: process.env.REACT_APP_BUCKET_REGION,
   accessKeyId: process.env.REACT_APP_ACCESS_KEY,
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
-}
+};
 
-const AdForm = () => {
-  let navigate = useNavigate();
+const UpdateAdForm = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { dispatch } = useAdsContext();
 
-  const {dispatch} = useAdsContext();
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
-
+  const [ad, setAd] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [files, setFiles] = useState([]);
+  const [newFiles, setNewFiles] = useState([]);
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [tags, setTags] = useState([]);
   const [price, setPrice] = useState(0);
   const [swapBook, setSwapBook] = useState("");
   const [priceEnabled, setPriceEnabled] = useState(true);
+  const [fetchedImageUrls, setFetchedImageUrls] = useState([]);
+
 
   const categoryOptions = [
     { value: 'business', label: 'Business' },
@@ -43,6 +47,51 @@ const AdForm = () => {
     { value: 'naturalScience', label: 'Natural Science' }
   ];
 
+  useEffect(() => {
+    const fetchAd = async () => {
+      const response = await fetch(`http://localhost:4000/api/ads/${id}`);
+      const adData = await response.json();
+      if (response.ok) {
+        setAd(adData);
+        setTitle(adData.title);
+        setDescription(adData.description);
+        setCategory(adData.category);
+        setLocation(adData.location);
+        setTags(adData.tags);
+        setPrice(adData.price);
+        setSwapBook(adData.swapBook);
+        setFetchedImageUrls(adData.imageUrls);
+      } else {
+        // Handle errors or redirect if the ad couldn't be fetched
+      }
+    };
+
+    fetchAd();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchImageUrls = async () => {
+      if (ad && ad.files) {
+        const s3 = new S3(config);
+  
+        const urls = await Promise.all(ad.files.map(fileName => {
+          const filePath = `images/${fileName}`;
+          return s3.getSignedUrlPromise('getObject', {
+            Bucket: config.bucketName,
+            Key: filePath,
+            Expires: 60
+          });
+        }));
+  
+        setFetchedImageUrls(urls);
+      }
+    };
+
+    if (ad && ad.files && ad.files.length > 0) {
+      fetchImageUrls();
+    }
+  }, [ad]);
+  
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
     else setPriceEnabled(false);
@@ -50,58 +99,54 @@ const AdForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    for(const file of files) {
-      
-      await S3FileUpload.uploadFile(file, config)
-    }
-    const ad = {title, description, files: files.map((file) => ({name: file.name, src: URL.createObjectURL(file)})), category, location, tags, price, swapBook};
-    const response = await fetch('http://localhost:4000/api/ads', {
-      method: 'POST',
-      body: JSON.stringify(ad),
+
+    await Promise.all(newFiles.map(file => {
+      return S3FileUpload.uploadFile(file, config).then(response => response.location);
+    }));
+
+    const adData = {
+      title,
+      description,
+      files: [...ad.files, ...newFiles.map((file) => file.name)],
+      category,
+      location,
+      tags: tags.map(t => t.value),
+      price,
+      swapBook
+    };
+
+    const response = await fetch(`http://localhost:4000/api/ads/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(adData),
       headers: {
-        'Content-type': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
 
-    const json = await response.json();
+    const jsonData = await response.json();
     if (!response.ok) {
-      console.log("error", json);
-      setError(json.error);
-      setEmptyFields(json.emptyFields);
-    }
-    if (response.ok) {
+      setError(jsonData.error);
+      setEmptyFields(jsonData.emptyFields);
+    } else {
       setTitle("");
       setDescription("");
-      setFiles([]);
+      setNewFiles([]);
       setCategory("");
       setLocation("");
-      setTags('');
+      setTags([]);
       setPrice(0);
-      setSwapBook('');
+      setSwapBook("");
       setError(null);
       setEmptyFields([]);
-      dispatch({type: 'CREATE_AD', payload: json})
-
-      navigate('/home');
+      dispatch({ type: 'UPDATE_AD', payload: jsonData });
+      navigate(`/listings/${id}`);
     }
   }
 
   const handleImage = (e) => {
-    if (e.target.files.length > 0) {
-      let newFiles = [...files];
-  
-      for (let i = 0; i < e.target.files.length; i++) {
-        const file = e.target.files[i];
-        
-        if (!newFiles.some(f => f.name === file.name)) {
-          newFiles.push(file);
-        }
-      }
-      setFiles([...newFiles]);
-    }
+    const uploadedFiles = Array.from(e.target.files);
+    setNewFiles([...newFiles, ...uploadedFiles]);
     e.target.value = null;
-
   };
 
 
@@ -127,14 +172,17 @@ const AdForm = () => {
           required
           />
 
-          <div className="ad_images">
-            <p>Images</p>
-            {files.map((file, i) => (
+<div className="ad_images">
+  <p>Images</p>
+  {fetchedImageUrls?.map((imageUrl, index) => (
+    <img key={index} src={imageUrl} alt={`Content ${index + 1}`} />
+  ))}
+   {newFiles.map((file, i) => (
               <img key={i} src={URL.createObjectURL(file)} alt="test"/>
             ))}
-            <label id="upload_button" htmlFor="upload_image"></label>
-            <input type="file" id="upload_image" style={{display: "none"}} onChange={handleImage}></input>
-          </div>
+  <label id="upload_button" htmlFor="upload_image">Upload Image</label>
+  <input type="file" id="upload_image" style={{display: "none"}} multiple onChange={handleImage}></input>
+</div>
         </div>
         <div className="ad_side">
           <Select 
@@ -199,4 +247,4 @@ const AdForm = () => {
   )
 }
 
-export default AdForm;
+export default UpdateAdForm;
