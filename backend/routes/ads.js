@@ -1,6 +1,7 @@
 //Create the express router
 const express = require('express');
 const router = express.Router();
+const requireAuth = require('../middleware/requireAuth')
 
 //All Ad Controller functions
 const {
@@ -16,6 +17,9 @@ router.get('/', getAds);
 
 //Get a single Ad
 router.get('/:id', getAd);
+
+//ALL THE FUNCTIONS AFTER THIS LINE OF CODE REQUIRE AUTHORIZATION
+router.use(requireAuth)
 
 //Post an Ad
 router.post('/', createAd);
