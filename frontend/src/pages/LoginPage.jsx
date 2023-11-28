@@ -7,17 +7,28 @@ const LoginPage = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-
     console.log('Login with:', email, password);
-    // Redirect or show error messages based on login success or failure
+    //object for user
+    const userDetails = {email,password};
+    const response = await fetch('http://localhost:4000/api/user/login', {
+        method: 'POST',
+        body: JSON.stringify(userDetails),
+        headers: {
+          'Content-type': 'application/json'
+        }
+      });
+    const json = await response.json();
+    if (!response.ok) {
+        console.log("error", json);
+    }
+    if (response.ok) {
+        console.log("success",json)
+        navigate('/Home');
+        props.setLoggedIn(true);
+    }
 
-    //---------------------TEMPORARY TO SEE OTHER SCREENS---------------------
-    navigate('/Home');
-    props.setLoggedIn(true);
-    //------------------------------------------------------------------------
   };
 
   // Used ChatGPT to understand how to add functionality onChange.
