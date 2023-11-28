@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 
 import { AdsContextProvider } from './context/AdContext';
+import { AuthContextProvider } from './context/AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AdsContextProvider>
-      <App />
-    </AdsContextProvider>
+    <AuthContextProvider>
+      <AdsContextProvider>
+        <App />
+      </AdsContextProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );
