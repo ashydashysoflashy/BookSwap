@@ -5,6 +5,7 @@ import { tagOptions } from "./tagOptions";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
+import { useAuthContext } from "../hooks/useAuthContext";
 import "./AdForm.css";
 
 const config = {
@@ -16,6 +17,8 @@ const config = {
 };
 
 const AdForm = () => {
+  //get the user
+  const { user } = useAuthContext();
   let navigate = useNavigate();
 
   const { dispatch } = useAdsContext();
@@ -51,6 +54,11 @@ const AdForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      setError("Must be logged in to create an ad");
+      return;
+    }
+
     for (const file of files) {
       await S3FileUpload.uploadFile(file, config);
     }
@@ -72,6 +80,7 @@ const AdForm = () => {
       body: JSON.stringify(ad),
       headers: {
         "Content-type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
     });
 

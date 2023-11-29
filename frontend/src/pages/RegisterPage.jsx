@@ -1,31 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './RegisterPage.css'; // Make sure to create this CSS file
+import './RegisterPage.css';
+import {useSignup} from '../hooks/useSignup'
+import {useNavigate} from 'react-router-dom';
+import {useAuthContext} from '../hooks/useAuthContext'
 
 const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
+    //get the signup function from the hook
+    const {signup,loading,error,setError} = useSignup()
+    let navigate = useNavigate();
+    const {user} = useAuthContext()
 
     // Used ChatGPT to understand how to add functionality for special case checks in password field.
     useEffect(() => {
         // Password must be at least 9 characters, include an uppercase letter and a non-alphabetical character
-        const passwordRegex = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{9,}/;
-        setValidPassword(passwordRegex.test(password));
+        //const passwordRegex = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{9,}/;
+        //setValidPassword(passwordRegex.test(password));
+        setValidPassword(password)
     }, [password]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validPassword && password === confirmPassword) {
-            // Handle registration logic here
-            console.log('Register with:', email, password, confirmPassword);
-            // Redirect or show error messages based on registration success/failure
+            //wait to sign up
+            await signup(email,password)
         } else {
             // Show an error message
-            console.error('Password does not meet requirements or passwords do not match.');
+            console.log("passwords dont match")
         }
     };
+
+    //check everytime user updates if there is one then go home page
+    useEffect(() => {
+        if(user){
+            navigate('/Home')
+          }
+    },[user])
 
     return (
         <div className="register_page">
@@ -61,7 +75,8 @@ const RegisterPage = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="register-button" >Register</button>
+                <button type="submit" className="register-button" disabled={loading}>Register</button>
+                {error && <div className='register-error'>{error}</div>}
             </form>
             <p className="login-text">
                 Already Registered? <Link to="/login">Login</Link>
