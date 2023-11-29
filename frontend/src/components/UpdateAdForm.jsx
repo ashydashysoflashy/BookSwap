@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
-import { useNavigate, useParams } from 'react-router-dom';
-import { tagOptions } from './tagOptions';
-import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
-import S3FileUpload from 'react-s3';
-import { S3 } from 'aws-sdk';
-import './AdForm.css';
+import { useNavigate, useParams } from "react-router-dom";
+import { tagOptions } from "./tagOptions";
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+import S3FileUpload from "react-s3";
+import { S3 } from "aws-sdk";
+import "./AdForm.css";
 
 const config = {
   bucketName: process.env.REACT_APP_BUCKET_NAME,
-  dirName: 'images', /* optional */
+  dirName: "images" /* optional */,
   region: process.env.REACT_APP_BUCKET_REGION,
   accessKeyId: process.env.REACT_APP_ACCESS_KEY,
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
@@ -35,16 +35,15 @@ const UpdateAdForm = () => {
   const [priceEnabled, setPriceEnabled] = useState(true);
   const [fetchedImageUrls, setFetchedImageUrls] = useState([]);
 
-
   const categoryOptions = [
-    { value: 'business', label: 'Business' },
-    { value: 'computerScience', label: 'Computer Science' },
-    { value: 'education', label: 'Education' },
-    { value: 'engineering', label: 'Engineering' },
-    { value: 'law', label: 'Law' },
-    { value: 'math', label: 'Mathematics' },
-    { value: 'medicine', label: 'Medicine' },
-    { value: 'naturalScience', label: 'Natural Science' }
+    { value: "business", label: "Business" },
+    { value: "computerScience", label: "Computer Science" },
+    { value: "education", label: "Education" },
+    { value: "engineering", label: "Engineering" },
+    { value: "law", label: "Law" },
+    { value: "math", label: "Mathematics" },
+    { value: "medicine", label: "Medicine" },
+    { value: "naturalScience", label: "Natural Science" },
   ];
 
   useEffect(() => {
@@ -73,16 +72,18 @@ const UpdateAdForm = () => {
     const fetchImageUrls = async () => {
       if (ad && ad.files) {
         const s3 = new S3(config);
-  
-        const urls = await Promise.all(ad.files.map(fileName => {
-          const filePath = `images/${fileName}`;
-          return s3.getSignedUrlPromise('getObject', {
-            Bucket: config.bucketName,
-            Key: filePath,
-            Expires: 60
-          });
-        }));
-  
+
+        const urls = await Promise.all(
+          ad.files.map((fileName) => {
+            const filePath = `images/${fileName}`;
+            return s3.getSignedUrlPromise("getObject", {
+              Bucket: config.bucketName,
+              Key: filePath,
+              Expires: 60,
+            });
+          })
+        );
+
         setFetchedImageUrls(urls);
       }
     };
@@ -91,18 +92,22 @@ const UpdateAdForm = () => {
       fetchImageUrls();
     }
   }, [ad]);
-  
+
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
     else setPriceEnabled(false);
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await Promise.all(newFiles.map(file => {
-      return S3FileUpload.uploadFile(file, config).then(response => response.location);
-    }));
+    await Promise.all(
+      newFiles.map((file) => {
+        return S3FileUpload.uploadFile(file, config).then(
+          (response) => response.location
+        );
+      })
+    );
 
     const adData = {
       title,
@@ -110,17 +115,17 @@ const UpdateAdForm = () => {
       files: [...ad.files, ...newFiles.map((file) => file.name)],
       category,
       location,
-      tags: tags.map(t => t.value),
+      tags: tags.map((t) => t.value),
       price,
-      swapBook
+      swapBook,
     };
 
     const response = await fetch(`http://localhost:4000/api/ads/${id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(adData),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     const jsonData = await response.json();
@@ -138,60 +143,123 @@ const UpdateAdForm = () => {
       setSwapBook("");
       setError(null);
       setEmptyFields([]);
-      dispatch({ type: 'UPDATE_AD', payload: jsonData });
+      dispatch({ type: "UPDATE_AD", payload: jsonData });
       navigate(`/listings/${id}`);
     }
-  }
+  };
 
-  const handleImage = (e) => {
+  const handleAddImage = (e) => {
     const uploadedFiles = Array.from(e.target.files);
     setNewFiles([...newFiles, ...uploadedFiles]);
     e.target.value = null;
   };
 
+  const handleRemoveExistingImage = (event, fileNameToRemove) => {
+    event.preventDefault();
+
+    if (!ad || !ad.files) return;
+
+    // Filter out the file to be removed
+    const updatedFiles = ad.files.filter(
+      (fileName) => fileName !== fileNameToRemove
+    );
+
+    // Update the ad state
+    setAd({ ...ad, files: updatedFiles });
+
+    // Also update the fetchedImageUrls to reflect this change
+    const updatedUrls = fetchedImageUrls.filter(
+      (_, index) => ad.files[index] !== fileNameToRemove
+    );
+    setFetchedImageUrls(updatedUrls);
+  };
+
+  const handleRemoveNewImage = (index) => {
+    const updatedFiles = newFiles.filter((_, i) => i !== index);
+    setNewFiles(updatedFiles);
+  };
 
   return (
     <form className="create_ad" onSubmit={handleSubmit}>
       <div className="ad_section">
         <div className="ad_main">
           <input
-          type="text"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-          placeholder="Add Title"
-          className={emptyFields.includes('title') ? 'input_field field_error' : 'input_field'}
-          required
+            type="text"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            placeholder="Add Title"
+            className={
+              emptyFields.includes("title")
+                ? "input_field field_error"
+                : "input_field"
+            }
+            required
           />
 
           <textarea
-          type="text"
-          onChange={(e) => setDescription(e.target.value)}
-          value={description}
-          placeholder="Description"
-          className={emptyFields.includes('description') ? 'input_field field_error' : 'input_field'}
-          required
+            type="text"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
+            placeholder="Description"
+            className={
+              emptyFields.includes("description")
+                ? "input_field field_error"
+                : "input_field"
+            }
+            required
           />
 
-<div className="ad_images">
-  <p>Images</p>
-  {fetchedImageUrls?.map((imageUrl, index) => (
-    <img key={index} src={imageUrl} alt={`Content ${index + 1}`} />
-  ))}
-   {newFiles.map((file, i) => (
-              <img key={i} src={URL.createObjectURL(file)} alt="test"/>
-            ))}
-  <label id="upload_button" htmlFor="upload_image">Upload Image</label>
-  <input type="file" id="upload_image" style={{display: "none"}} multiple onChange={handleImage}></input>
-</div>
+          <div className="ad_images">
+            <p>Images</p>
+            {fetchedImageUrls &&
+              fetchedImageUrls.length > 0 &&
+              fetchedImageUrls.map((imageUrl, index) => (
+                <div key={index} className="image-container">
+                  <img src={imageUrl} alt={`Content ${index + 1}`} />
+                  <button
+                    onClick={(e) =>
+                      handleRemoveExistingImage(e, ad.files[index])
+                    }
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+
+            {newFiles &&
+              newFiles.length > 0 &&
+              newFiles.map((file, i) => (
+                <div key={i} className="image-container">
+                  <img src={URL.createObjectURL(file)} alt={file.name} />
+                  <button onClick={() => handleRemoveNewImage(i)}>
+                    Remove
+                  </button>
+                </div>
+              ))}
+
+            <label id="upload_button" htmlFor="upload_image">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              id="upload_image"
+              style={{ display: "none" }}
+              multiple
+              onChange={handleAddImage}
+            ></input>
+          </div>
         </div>
         <div className="ad_side">
-          <Select 
+          <Select
             options={categoryOptions}
             onChange={(e) => {
-               setCategory(e.label);
-              }
+              setCategory(e.label);
+            }}
+            className={
+              emptyFields.includes("category")
+                ? "react-select-container select_field field_error"
+                : "react-select-container select_field"
             }
-            className={emptyFields.includes('category') ? 'react-select-container select_field field_error' : 'react-select-container select_field'}
             classNamePrefix="react-select"
             placeholder="Select Category"
           />
@@ -201,16 +269,30 @@ const UpdateAdForm = () => {
             onChange={(e) => setLocation(e.target.value)}
             value={location}
             placeholder="Location"
-            className={emptyFields.includes('location') ? 'input_field field_error' : 'input_field'}
+            className={
+              emptyFields.includes("location")
+                ? "input_field field_error"
+                : "input_field"
+            }
             required
           />
 
-          <CreatableSelect  
+          <CreatableSelect
             isMulti
             options={tagOptions}
-            onChange={(selectedOptions) => setTags(selectedOptions ? selectedOptions.map(option => option.value) : [])}
-            value={tags.map(tag => ({ label: tag, value: tag }))}
-            className={emptyFields.includes('tags') ? 'react-select-container select_field field_error' : 'react-select-container select_field'}
+            onChange={(selectedOptions) =>
+              setTags(
+                selectedOptions
+                  ? selectedOptions.map((option) => option.value)
+                  : []
+              )
+            }
+            value={tags.map((tag) => ({ label: tag, value: tag }))}
+            className={
+              emptyFields.includes("tags")
+                ? "react-select-container select_field field_error"
+                : "react-select-container select_field"
+            }
             classNamePrefix="react-select"
             placeholder="Select Tags"
           />
@@ -218,23 +300,42 @@ const UpdateAdForm = () => {
           <div className="price_section">
             <p>Price / Swap</p>
             <div className="price_swap_section">
-              <input id="price_radio" type="radio" name="price" onChange={radioChanged} checked={priceEnabled}></input>
+              <input
+                id="price_radio"
+                type="radio"
+                name="price"
+                onChange={radioChanged}
+                checked={priceEnabled}
+              ></input>
               <input
                 type="number"
                 onChange={(e) => setPrice(e.target.value)}
                 value={price}
                 min={0}
                 placeholder="Price"
-                className={emptyFields.includes('price') ? 'input_field_price field_error' : 'input_field_price'}
+                className={
+                  emptyFields.includes("price")
+                    ? "input_field_price field_error"
+                    : "input_field_price"
+                }
                 disabled={priceEnabled ? false : true}
               />
-              <input id="swap_radio" type="radio" name="price" onChange={radioChanged}></input>
+              <input
+                id="swap_radio"
+                type="radio"
+                name="price"
+                onChange={radioChanged}
+              ></input>
               <input
                 type="text"
                 onChange={(e) => setSwapBook(e.target.value)}
                 value={swapBook}
                 placeholder="Swap Book"
-                className={emptyFields.includes('swap') ? 'input_field_swap field_error' : 'input_field_swap'}
+                className={
+                  emptyFields.includes("swap")
+                    ? "input_field_swap field_error"
+                    : "input_field_swap"
+                }
                 disabled={priceEnabled ? true : false}
               />
             </div>
@@ -244,7 +345,7 @@ const UpdateAdForm = () => {
       <button className="post_button">Post Ad</button>
       {error && <div className="error">{error}</div>}
     </form>
-  )
-}
+  );
+};
 
 export default UpdateAdForm;

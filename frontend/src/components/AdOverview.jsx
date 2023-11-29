@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
 import { useNavigate } from "react-router-dom";
-import './AdOverview.css';
-import { S3 } from 'aws-sdk';
-
+import "./AdOverview.css";
+import { S3 } from "aws-sdk";
 
 const AdOverview = ({ ad }) => {
   const { dispatch } = useAdsContext();
@@ -15,17 +14,19 @@ const AdOverview = ({ ad }) => {
       const s3 = new S3({
         region: process.env.REACT_APP_BUCKET_REGION,
         accessKeyId: process.env.REACT_APP_ACCESS_KEY,
-        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
+        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
       });
 
-      const urls = await Promise.all(ad.files.map(fileName => {
-        const filePath = `images/${fileName}`; 
-        return s3.getSignedUrlPromise('getObject', {
-          Bucket: process.env.REACT_APP_BUCKET_NAME,
-          Key: filePath, 
-          Expires: 60 
-        });
-      }));
+      const urls = await Promise.all(
+        ad.files.map((fileName) => {
+          const filePath = `images/${fileName}`;
+          return s3.getSignedUrlPromise("getObject", {
+            Bucket: process.env.REACT_APP_BUCKET_NAME,
+            Key: filePath,
+            Expires: 60,
+          });
+        })
+      );
 
       setImageUrls(urls);
     };
@@ -36,23 +37,23 @@ const AdOverview = ({ ad }) => {
   }, [ad.files]);
 
   const handleDelete = async () => {
-    const response = await fetch('http://localhost:4000/api/ads/' + ad._id, {
-      method: 'DELETE'
+    const response = await fetch("http://localhost:4000/api/ads/" + ad._id, {
+      method: "DELETE",
     });
 
     const json = await response.json();
 
     if (response.ok) {
-      dispatch({type: 'DELETE_AD', payload: json});
+      dispatch({ type: "DELETE_AD", payload: json });
     }
-  }
+  };
 
   const handleUpdate = async () => {
-    navigate(`../update/${ad._id}`)
-  }
+    navigate(`../update/${ad._id}`);
+  };
 
   const handleViewAd = () => {
-    navigate(`../listings/${ad._id}`)
+    navigate(`../listings/${ad._id}`);
   };
 
   return (
@@ -63,7 +64,10 @@ const AdOverview = ({ ad }) => {
             <img key={index} src={url} alt={`Content ${index + 1}`} />
           ))
         ) : (
-          <img src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="Not available" />
+          <img
+            src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
+            alt="Not available"
+          />
         )}
       </div>
       <div className="ad_information">
