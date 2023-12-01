@@ -4,9 +4,37 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  //Find all the Ads, and sort them according to date created
-  const ads = await Ad.find({}).sort({ createdAt: -1 });
-  res.status(200).json(ads);
+  const { search, location, minPrice, maxPrice, sort } = req.query;
+
+  let query = {};
+
+  if (search) {
+    query.$text = { $search: search }; // Assuming you have a text index
+  }
+
+  console.log(req.query);
+  console.log("uh");
+
+  if (location) {
+    query.location = location;
+  }
+
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = minPrice;
+    if (maxPrice) query.price.$lte = maxPrice;
+  }
+
+  let sortOptions = { createdAt: -1 }; // default sorting
+  if (sort === "new") sortOptions = { createdAt: -1 };
+  if (sort === "old") sortOptions = { createdAt: 1 };
+
+  try {
+    const ads = await Ad.find(query).sort(sortOptions);
+    res.status(200).json(ads);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 // Get a single Ad

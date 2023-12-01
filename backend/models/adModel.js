@@ -50,5 +50,8 @@ const adSchema = new Schema(
   { timestamps: true }
 );
 
+// Creating a text index
+adSchema.index({ title: "text", location: "text", description: "text" });
+
 //Export the Schema
 module.exports = mongoose.model("Ad", adSchema);

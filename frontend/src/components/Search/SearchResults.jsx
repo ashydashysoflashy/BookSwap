@@ -1,24 +1,72 @@
-import React from 'react'
-import './Search.css'
-import Select from 'react-select'
-import Result from './Result'
+import React, { useEffect, useState } from "react";
+import AdOverview from "../AdOverview";
 
-export default function SearchResults() {
-    const optionsSort = [
-        { value: 'new', label: 'Posted: newest first' },
-        { value: 'old', label: 'Posted: oldest first' },
-    ]
+export default function SearchResults({
+  location,
+  courseCode,
+  minPrice,
+  maxPrice,
+  school,
+  searchQuery,
+  sortOption,
+}) {
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // Construct the query parameters
+        const params = new URLSearchParams({
+          location,
+          courseCode,
+          minPrice,
+          maxPrice,
+          school,
+          search: searchQuery,
+          sort: sortOption,
+        });
+
+        const response = await fetch(`http://localhost:4000/api/ads?${params}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setResults(data);
+        } else {
+          throw new Error(data.error || "Failed to fetch results");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [
+    location,
+    courseCode,
+    minPrice,
+    maxPrice,
+    school,
+    searchQuery,
+    sortOption,
+  ]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className='results-container'>
-        <div className='showing-sort'>
-            <div className='show'>Showing 1-40 of 340 results</div>
-            <Select options={optionsSort} className="react-select-container-results" classNamePrefix="react-select" placeholder="Sort by" />
-        </div>
-        <Result/>
-        <Result/>
-        <Result/>
+    <div className="results-container">
+      {results.length > 0 ? (
+        results.map((result) => <AdOverview key={result._id} ad={result} />)
+      ) : (
+        <div>No results found.</div>
+      )}
     </div>
-  )
+  );
 }
