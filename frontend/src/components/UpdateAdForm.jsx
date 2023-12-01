@@ -58,7 +58,12 @@ const UpdateAdForm = () => {
         setDescription(adData.description);
         setCategory(adData.category);
         setLocation(adData.location);
-        setTags(adData.tags);
+        // Transform the tags into the format expected by CreatableSelect
+        const transformedTags = adData.tags.map((tag) => ({
+          label: tag,
+          value: tag,
+        }));
+        setTags(transformedTags);
         setPrice(adData.price);
         setSwapBook(adData.swapBook);
         setFetchedImageUrls(adData.imageUrls);
@@ -134,7 +139,6 @@ const UpdateAdForm = () => {
     const jsonData = await response.json();
     if (!response.ok) {
       setError(jsonData.error);
-      console.log("here");
       navigate(`/Browse`);
       // setEmptyFields(jsonData.emptyFields);
     } else {
@@ -257,13 +261,11 @@ const UpdateAdForm = () => {
         <div className="ad_side">
           <Select
             options={categoryOptions}
-            onChange={(e) => {
-              setCategory(e.label);
-            }}
+            value={categoryOptions.find((option) => option.value === category)}
+            onChange={(selectedOption) => setCategory(selectedOption.value)}
             className={
-              emptyFields.includes("category")
-                ? "react-select-container select_field field_error"
-                : "react-select-container select_field"
+              "react-select-container select_field" +
+              (emptyFields.includes("category") ? " field_error" : "")
             }
             classNamePrefix="react-select"
             placeholder="Select Category"
@@ -285,18 +287,11 @@ const UpdateAdForm = () => {
           <CreatableSelect
             isMulti
             options={tagOptions}
-            onChange={(selectedOptions) =>
-              setTags(
-                selectedOptions
-                  ? selectedOptions.map((option) => option.value)
-                  : []
-              )
-            }
-            value={tags.map((tag) => ({ label: tag, value: tag }))}
+            value={tags} // tags should be an array of objects like [{ label: 'tag1', value: 'tag1' }]
+            onChange={(selectedOptions) => setTags(selectedOptions || [])}
             className={
-              emptyFields.includes("tags")
-                ? "react-select-container select_field field_error"
-                : "react-select-container select_field"
+              "react-select-container select_field" +
+              (emptyFields.includes("tags") ? " field_error" : "")
             }
             classNamePrefix="react-select"
             placeholder="Select Tags"
