@@ -7,41 +7,41 @@ export const AuthContext = createContext();
 export const authReducer = (state, action) => {
   switch (action.type) {
     //when logging in update the global state to have the user
-    case 'LOGIN':
+    case "LOGIN":
       return {
-        user: action.payload
-      }
+        user: action.payload,
+      };
     //when logging out update the global context to remove the user by setting them to null
-    case 'LOGOUT':
+    case "LOGOUT":
       return {
-        user: null
-      }
+        user: null,
+      };
     //default case (no case) dont change state and just return it
     default:
-      return state
+      return state;
   }
-}
+};
 
 //the provider is what we wrap the index.js app component in so every component can see this global state
 export const AuthContextProvider = ({ children }) => {
   //initially user is null
   const [state, dispatch] = useReducer(authReducer, {
-    user: null
+    user: null,
   });
 
   //on page load see if theres a user and update state and token
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    if(user){
-      dispatch({type:'LOGIN',payload:user})
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      dispatch({ type: "LOGIN", payload: user });
     }
-  },[])
+  }, []);
 
-  console.log('AuthContext state:',state)
+  // console.log('AuthContext state:',state)
 
   return (
-    <AuthContext.Provider value={{...state, dispatch}}>
-      { children }
+    <AuthContext.Provider value={{ ...state, dispatch }}>
+      {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

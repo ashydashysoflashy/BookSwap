@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import "./AdOverview.css";
 import { S3 } from "aws-sdk";
 
 const AdOverview = ({ ad }) => {
   const { dispatch } = useAdsContext();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
   const [imageUrls, setImageUrls] = useState([]);
 
@@ -39,6 +41,9 @@ const AdOverview = ({ ad }) => {
   const handleDelete = async () => {
     const response = await fetch("http://localhost:4000/api/ads/" + ad._id, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
     });
 
     const json = await response.json();
@@ -54,6 +59,24 @@ const AdOverview = ({ ad }) => {
 
   const handleViewAd = () => {
     navigate(`../listings/${ad._id}`);
+  };
+
+  // Function to format the date
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return (
+      date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }) +
+      " at " +
+      date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+    );
   };
 
   return (
@@ -73,8 +96,8 @@ const AdOverview = ({ ad }) => {
       <div className="ad_information">
         <h2>{ad.title}</h2>
         <h3>${ad.price}</h3>
-        <h4>{ad.description}</h4>
-        <p>{ad.createdAt}</p>
+        <h4>Description: {ad.description}</h4>
+        <p>Date Created: {formatDate(ad.createdAt)}</p>
         <button onClick={handleViewAd}>View Ad Details</button>
         <button onClick={handleDelete}>Test Delete Ad</button>
         <button onClick={handleUpdate}>Test Update Ad</button>

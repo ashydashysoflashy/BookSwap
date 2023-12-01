@@ -63,6 +63,7 @@ const AdForm = () => {
       await S3FileUpload.uploadFile(file, config);
     }
     const ad = {
+      user_id: user.id,
       title,
       description,
       files: files.map((file) => ({
@@ -75,6 +76,7 @@ const AdForm = () => {
       price,
       swapBook,
     };
+
     const response = await fetch("http://localhost:4000/api/ads", {
       method: "POST",
       body: JSON.stringify(ad),

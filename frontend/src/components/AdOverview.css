@@ -1,30 +1,38 @@
 .ad_overview {
     display: flex;
     flex-direction: row;
-
+    
     width: 55%;
+    
 
     background-color: var(--element_background);
     border: 2px solid var(--element_stroke);
     border-radius: 5px;
-
     margin: 1vw 1vw;
+    overflow: hidden;
 }
 
 .ad_images {
+    flex: 1; /* Adjusts based on content */
+    padding: 1vw;
     display: flex;
-    margin: 1vw 1vw;
+    align-items: center; /* Center images vertically */
+    justify-content: start; /* Center images horizontally */
+    overflow: hidden; /* Hides overflow */
 }
 
 .ad_images img {
-    max-width: 300px;
-    object-fit: contain;
-}
+    max-height: 200px; /* Example fixed height */
+    width: auto;
+    object-fit: cover; /* Adjusts image fit */
+    margin-right: 10px; /* Space between images */}
 
 .ad_information {
+    flex: 2; /* Larger flex grow factor */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    padding: 1vw;
     min-width: 30%;
 }
 

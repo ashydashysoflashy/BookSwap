@@ -6,6 +6,7 @@ import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
 import { S3 } from "aws-sdk";
+import { useAuthContext } from "../hooks/useAuthContext";
 import "./AdForm.css";
 
 const config = {
@@ -17,6 +18,7 @@ const config = {
 };
 
 const UpdateAdForm = () => {
+  const { user } = useAuthContext();
   const { id } = useParams();
   const navigate = useNavigate();
   const { dispatch } = useAdsContext();
@@ -125,13 +127,16 @@ const UpdateAdForm = () => {
       body: JSON.stringify(adData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
     });
 
     const jsonData = await response.json();
     if (!response.ok) {
       setError(jsonData.error);
-      setEmptyFields(jsonData.emptyFields);
+      console.log("here");
+      navigate(`/Browse`);
+      // setEmptyFields(jsonData.emptyFields);
     } else {
       setTitle("");
       setDescription("");
