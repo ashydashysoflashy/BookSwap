@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Search.css";
 import Select from "react-select";
+import ReactSlider from "react-slider";
+import { tagOptions } from "../tagOptions"; //Use Tag Options for the Course Code
+
 import { IoFilter } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
@@ -25,17 +28,15 @@ export default function SearchFilters({
     { value: "CPSC457", label: "CPSC 457" },
   ];
 
-  const optionsPrice = [
-    { value: "5", label: "$5" },
-    { value: "10", label: "$10" },
-    { value: "15", label: "$15" },
-  ];
-
   const optionsSchool = [
     { value: "uofc", label: "University of Calgary" },
     { value: "mru", label: "Mount Royal University" },
     { value: "sait", label: "SAIT" },
   ];
+
+  // Replace optionsPrice with min and max price state
+  const [minPriceValue, setMinPriceValue] = useState(0);
+  const [maxPriceValue, setMaxPriceValue] = useState(999); // Assuming 999 is the maximum price
 
   return (
     <div className="filters-container">
@@ -77,20 +78,7 @@ export default function SearchFilters({
         placeholder="Course Code"
         onChange={(selectedOption) => setCourseCode(selectedOption.value)}
       />
-      <Select
-        options={optionsPrice}
-        className="react-select-container"
-        classNamePrefix="react-select"
-        placeholder="Minimum Price"
-        onChange={(selectedOption) => setMinPrice(selectedOption.value)}
-      />
-      <Select
-        options={optionsPrice}
-        className="react-select-container"
-        classNamePrefix="react-select"
-        placeholder="Maximum Price"
-        onChange={(selectedOption) => setMaxPrice(selectedOption.value)}
-      />
+
       <Select
         options={optionsSchool}
         className="react-select-container"
@@ -98,6 +86,31 @@ export default function SearchFilters({
         placeholder="School"
         onChange={(selectedOption) => setSchool(selectedOption.value)}
       />
+      <div className="filter-item">
+        <label>
+          Price Range: ${minPriceValue} - ${maxPriceValue}
+        </label>
+        <ReactSlider
+          thumbClassName="example-thumb"
+          trackClassName="example-track"
+          defaultValue={[0, 999]} // Set initial values
+          ariaLabel={["Lower thumb", "Upper thumb"]}
+          ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
+          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+          pearling
+          minDistance={10}
+          min={0} // Minimum value of the slider
+          max={999} // Maximum value of the slider
+          onChange={(values) => {
+            setMinPriceValue(values[0]);
+            setMaxPriceValue(values[1]);
+            setMinPrice(values[0]);
+            setMaxPrice(values[1]);
+          }}
+          className="react-select-container"
+          classNamePrefix="react-select"
+        />
+      </div>
     </div>
   );
 }

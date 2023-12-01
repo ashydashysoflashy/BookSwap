@@ -25,9 +25,12 @@ const Navbar = () => {
   };
 
   const handleSearchSubmit = () => {
-    if (searchQuery.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
-    }
+    // Construct the search URL based on whether there's a query or not
+    const searchURL = searchQuery.trim()
+      ? `/search?query=${encodeURIComponent(searchQuery.trim())}`
+      : "/search";
+
+    navigate(searchURL);
   };
 
   return (
