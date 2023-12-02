@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 //Pages
@@ -14,30 +14,27 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ListingPage from "./pages/ListingPage";
 import SearchPage from "./pages/SearchPage";
+import { useAuthContext } from "./hooks/useAuthContext"
 import UserAdsPage from "./pages/UserAdsPage";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { user } = useAuthContext();
 
   return (
     <div className="App">
       <BrowserRouter>
-        {loggedIn ? <NavbarLoggedIn /> : <Navbar />}
+        {user ? <NavbarLoggedIn /> : <Navbar />}
         <div className="pages">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/browse" element={<Browse />} />
-            <Route
-              path="/login"
-              element={<LoginPage setLoggedIn={setLoggedIn} />}
-            />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/create" element={<CreateAd />} />
-            <Route path="/update/:id" element={<UpdateAd />} />
+            <Route path="/" element={!user ? <HomePage /> : <Navigate to='/home'/>} />
+            <Route path="/login" element={!user ? <LoginPage/> : <Navigate to='/'/>}/>
+            <Route path="/register" element={!user ? <RegisterPage/> : <Navigate to='/'/>}/>
+            <Route path="/create" element={user ? <CreateAd /> : <Navigate to='/register'/>} />
+            <Route path="/update/:id" element={user ? <UpdateAd /> : <Navigate to='/register'/>} />
             <Route path="/home" element={<Browse />} />
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/myads" element={<UserAdsPage />} />
+            <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
           </Routes>
         </div>
       </BrowserRouter>
@@ -46,3 +43,4 @@ function App() {
 }
 
 export default App;
+

@@ -15,15 +15,15 @@ const HomePage = () => {
       </div>
       <div className="features-section">
         <h2>Why BookSwap?</h2>
-        <div className="feature sustainable">
+        <div className="feature feature-sustainable">
           <h3>Sustainable</h3>
           <p>Reusing textbooks reduces waste and helps protect the environment.</p>
         </div>
-        <div className="feature community">
+        <div className="feature feature-community">
           <h3>Community Driven</h3>
           <p>A marketplace built by students, for students, to support each other's educational journey.</p>
         </div>
-        <div className="feature chat">
+        <div className="feature feature-chat">
           <h3>Real-time Chat</h3>
           <p>Communicate instantly and securely with other students within BookSwap.</p>
         </div>

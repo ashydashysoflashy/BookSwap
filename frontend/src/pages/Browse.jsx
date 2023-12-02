@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
 
 import AdOverview from "../components/AdOverview";
+import ResultItem from '../components/Search/Result'
+import './Browse.css'
 
 const Browse = () => {
   const { ads, dispatch } = useAdsContext();
@@ -19,10 +21,10 @@ const Browse = () => {
   }, [dispatch]);
 
   return (
-    <div>
-      <h1>Recent Posts</h1>
-      <div className="ads">
-        {ads && ads.map((ad) => <AdOverview key={ad._id} ad={ad} />)}
+    <div className='browse-container'>
+      <h1>Posts For You</h1>
+      <div className="ads-grid">
+        {ads && ads.map((ad) => <ResultItem key={ad._id} ad={ad} />)}
       </div>
     </div>
   );
