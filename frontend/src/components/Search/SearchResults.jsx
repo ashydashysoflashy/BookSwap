@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import AdOverview from "../AdOverview";
+import ResultItem from './Result'
 
 export default function SearchResults({
   location,
@@ -67,9 +68,6 @@ export default function SearchResults({
     setSortOption(selectedOption.value);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <div className="results-container">
       <Select
@@ -80,11 +78,14 @@ export default function SearchResults({
         classNamePrefix="react-select"
         placeholder="Sort by"
       />
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error:{error}</div>}
       {results.length > 0 ? (
-        results.map((result) => <AdOverview key={result._id} ad={result} />)
+        results.map((result) => <ResultItem key={result._id} ad={result}/>)
       ) : (
         <div>No results found.</div>
       )}
     </div>
   );
 }
+

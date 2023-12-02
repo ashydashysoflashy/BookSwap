@@ -1,3 +1,4 @@
+
 .search-container{
     width:100%;
     display:flex;
@@ -86,40 +87,49 @@
     display:none;
 }
 
-/* Slider Track */
-.horizontal-slider {
-    width: 75%;
-    height: 12px;
-    margin: 20px 0;
-    background: #f0f0f0; /* Match the background color of your Select */
-    border-radius: 6px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+.filter-item{
+    width:75%;
+    padding:1%;
+    border:1px solid #dedede;
+    border-radius: 1%;
+    height:100%;
 }
 
-/* Slider Thumb (Handle) */
+.filter-item label{
+    margin-left:1%;
+    color:grey;
+}
+
+.react-slider-container{
+    margin-top:1%;
+    height:30px;
+}
+
+
 .example-thumb {
-    height: 22px;
-    width: 22px;
-    background-color: var(--button_background); /* Match the primary color of your design */
-    border: 2px solid white; /* White border for contrast */
-    border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Shadow for a raised effect */
+    background: rgb(104, 117, 217);
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
     outline: none;
+    text-align: center;
 }
 
-/* When thumb is active or focused */
-.example-thumb:active, 
-.example-thumb:focus {
-    background-color: #367c39; /* Darker shade for active state */
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3); /* Increased shadow for emphasis */
+
+.example-thumb:hover {
+    box-shadow: 0 0 0 8px rgb(104, 117, 217, 0.2);
+  }
+
+.example-track{
+    height:4px;
+    top:25%;
+    background: #ddd;
 }
 
-/* Slider Filled Track (to the left of the thumb) */
 .example-track.example-track-0 {
-    background: #007bff; /* Color of the filled part */
-    border-radius: 6px;
-}
+    background: rgb(104, 117, 217);
+  }
 
 @media screen and (max-width:700px) {
     .search-container{
@@ -130,6 +140,12 @@
     .filters-container{
         width:95%;
         margin-right: 0%;
+    }
+
+    .filter-item{
+        width:95%;
+        margin-right:0%;
+        margin-top:2%;
     }
 
     .results-container{
