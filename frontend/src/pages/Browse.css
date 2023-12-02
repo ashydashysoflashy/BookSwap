@@ -12,8 +12,8 @@
 
   .ads-grid {
     display: grid;
-    width:100%;
+    width:90%;
     grid-template-columns: repeat(2, 50%);
     grid-gap: 2%;
-    grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));  
+    grid-template-rows: repeat(auto-fill, 1fr);  
   }
