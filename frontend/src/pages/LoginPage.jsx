@@ -5,7 +5,7 @@ import {useLogin} from '../hooks/useLogin'
 import { useEffect } from 'react';
 import {useAuthContext} from '../hooks/useAuthContext'
 
-const LoginPage = (props) => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //get the signup function from the hook

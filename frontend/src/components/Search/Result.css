@@ -11,6 +11,11 @@
     justify-content: space-around;
 }
 
+.result-container:hover{
+    cursor:pointer;
+    opacity:0.8;
+}
+
 .result-image-container{
     width:25%;
     height:100%;
@@ -52,6 +57,7 @@
 }
 
 .result-location{
+    height:50%;
     color:grey;
     margin-top:5%;
     font-size:13px;
