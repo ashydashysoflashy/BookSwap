@@ -97,7 +97,7 @@ export default function SearchFilters({
           defaultValue={[0, 999]} // Set initial values
           ariaLabel={["Lower thumb", "Upper thumb"]}
           ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
-          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+          renderThumb={(props, state) => <div {...props}></div>}
           pearling
           minDistance={10}
           min={0} // Minimum value of the slider
@@ -108,8 +108,8 @@ export default function SearchFilters({
             setMinPrice(values[0]);
             setMaxPrice(values[1]);
           }}
-          className="react-select-container"
-          classNamePrefix="react-select"
+          className="react-slider-container"
+          classNamePrefix="react-slider"
         />
       </div>
     </div>
