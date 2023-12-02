@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { tagOptions } from "./tagOptions";
+import { universityOptions } from "./universityOptions";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
@@ -30,6 +31,7 @@ const UpdateAdForm = () => {
   const [description, setDescription] = useState("");
   const [newFiles, setNewFiles] = useState([]);
   const [category, setCategory] = useState("");
+  const [university, setUniversity] = useState("");
   const [location, setLocation] = useState("");
   const [tags, setTags] = useState([]);
   const [price, setPrice] = useState(0);
@@ -53,10 +55,12 @@ const UpdateAdForm = () => {
       const response = await fetch(`http://localhost:4000/api/ads/${id}`);
       const adData = await response.json();
       if (response.ok) {
+        console.log(adData);
         setAd(adData);
         setTitle(adData.title);
         setDescription(adData.description);
         setCategory(adData.category);
+        setUniversity(adData.university);
         setLocation(adData.location);
         // Transform the tags into the format expected by CreatableSelect
         const transformedTags = adData.tags.map((tag) => ({
@@ -121,6 +125,7 @@ const UpdateAdForm = () => {
       description,
       files: [...ad.files, ...newFiles.map((file) => file.name)],
       category,
+      university,
       location,
       tags: tags.map((t) => t.value),
       price,
@@ -269,6 +274,16 @@ const UpdateAdForm = () => {
             }
             classNamePrefix="react-select"
             placeholder="Select Category"
+          />
+          <Select
+            options={universityOptions}
+            value={universityOptions.find(
+              (option) => option.value === university
+            )}
+            onChange={(selectedOption) => setUniversity(selectedOption.value)}
+            className="react-select-container"
+            classNamePrefix="react-select"
+            placeholder="Select University"
           />
 
           <input

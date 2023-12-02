@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  const { search, location, minPrice, maxPrice, sort } = req.query;
+  const { search, courseCode, location, minPrice, maxPrice, school, sort } =
+    req.query;
 
   let query = {};
 
@@ -12,8 +13,12 @@ const getAds = async (req, res) => {
     query.$text = { $search: search }; // Assuming you have a text index
   }
 
+  if (courseCode) {
+    // Match any ad that has the specified courseCode in its tags
+    query.tags = { $in: [courseCode] };
+  }
+
   console.log(req.query);
-  console.log("uh");
 
   if (location) {
     query.location = location;
@@ -23,6 +28,10 @@ const getAds = async (req, res) => {
     query.price = {};
     if (minPrice) query.price.$gte = minPrice;
     if (maxPrice) query.price.$lte = maxPrice;
+  }
+
+  if (school) {
+    query.university = school;
   }
 
   let sortOptions = { createdAt: -1 }; // default sorting
@@ -79,6 +88,7 @@ const createAd = async (req, res) => {
     tags,
     price,
     swapBook,
+    university,
   } = req.body;
   let emptyFields = [];
 
@@ -88,6 +98,8 @@ const createAd = async (req, res) => {
   if (!category) emptyFields.push("category");
   if (!location) emptyFields.push("location");
   if (!price) emptyFields.push("price");
+  if (!university) emptyFields.push("university");
+
   if (emptyFields.length > 0)
     return res
       .status(400)
@@ -107,6 +119,7 @@ const createAd = async (req, res) => {
       tags,
       price,
       swapBook,
+      university,
     });
 
     // Update the User's ad_ids array

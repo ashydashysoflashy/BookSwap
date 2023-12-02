@@ -46,6 +46,10 @@ const adSchema = new Schema(
       type: Number,
       default: 0,
     },
+    university: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

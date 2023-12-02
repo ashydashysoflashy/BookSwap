@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./Search.css";
 import Select from "react-select";
 import ReactSlider from "react-slider";
-import { tagOptions } from "../tagOptions"; //Use Tag Options for the Course Code
+import { tagOptions } from "../tagOptions"; //**Reminder: Use Tag Options for the Course Code
+import { universityOptions } from "../universityOptions";
 
 import { IoFilter } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -72,7 +73,7 @@ export default function SearchFilters({
         onChange={(selectedOption) => setLocation(selectedOption.value)}
       />
       <Select
-        options={optionsCourseCode}
+        options={tagOptions}
         className="react-select-container"
         classNamePrefix="react-select"
         placeholder="Course Code"
@@ -80,7 +81,7 @@ export default function SearchFilters({
       />
 
       <Select
-        options={optionsSchool}
+        options={universityOptions}
         className="react-select-container"
         classNamePrefix="react-select"
         placeholder="School"

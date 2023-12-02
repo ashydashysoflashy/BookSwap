@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
 import { json, useNavigate } from "react-router-dom";
 import { tagOptions } from "./tagOptions";
+import { universityOptions } from "./universityOptions";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
@@ -28,6 +29,7 @@ const AdForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
+  const [university, setUniversity] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [tags, setTags] = useState([]);
@@ -71,6 +73,7 @@ const AdForm = () => {
         src: URL.createObjectURL(file),
       })),
       category,
+      university,
       location,
       tags,
       price,
@@ -182,7 +185,7 @@ const AdForm = () => {
           <Select
             options={categoryOptions}
             onChange={(e) => {
-              setCategory(e.label);
+              setCategory(e.value);
             }}
             className={
               emptyFields.includes("category")
@@ -191,6 +194,17 @@ const AdForm = () => {
             }
             classNamePrefix="react-select"
             placeholder="Select Category"
+          />
+
+          <Select
+            options={universityOptions}
+            onChange={(selectedOption) => setUniversity(selectedOption.value)}
+            className="react-select-container"
+            classNamePrefix="react-select"
+            placeholder="Select University"
+            value={universityOptions.find(
+              (option) => option.value === university
+            )}
           />
 
           <input
