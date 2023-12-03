@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
 import logo from "../assets/logo_large.png";
 import locationIcon from "../assets/location_icon.png";
@@ -20,18 +20,25 @@ const Navbar = () => {
     await logout();
   };
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
   const handleSearchSubmit = () => {
     // Construct the search URL based on whether there's a query or not
     const searchURL = searchQuery.trim()
       ? `/search?query=${encodeURIComponent(searchQuery.trim())}`
       : "/search";
-
     navigate(searchURL);
   };
+
+  function keyboardHandler(e) {
+    const input = document.getElementById("navbar_logged_out_search")
+    if (input.contains(e.target) && e.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyboardHandler)
+    return () => { document.removeEventListener('keydown', keyboardHandler) }
+  })
 
   return (
     <header>
@@ -42,11 +49,12 @@ const Navbar = () => {
           </Link>
           <div className="navbar_search_section">
             <input
+              id="navbar_logged_out_search"
               className="navbar_searchbar"
               type="text"
               placeholder="Search for any textbook"
               value={searchQuery}
-              onChange={handleSearchChange}
+              onChange={(e)=>setSearchQuery(e.target.value)}
             ></input>
 
             <button

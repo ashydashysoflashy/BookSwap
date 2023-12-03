@@ -17,7 +17,7 @@
     padding: 1vw;
     display: flex;
     align-items: center; /* Center images vertically */
-    justify-content: start; /* Center images horizontally */
+    justify-content: flex-start; /* Center images horizontally */
     overflow: hidden; /* Hides overflow */
 }
 

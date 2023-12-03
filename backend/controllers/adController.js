@@ -4,35 +4,27 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  const { search, courseCode, location, minPrice, maxPrice, school, sort } =
-    req.query;
-
+  const { search, courseCode, location, minPrice, maxPrice, school, sort } = req.query;
   let query = {};
 
-  if (search) {
-    query.$text = { $search: search }; // Assuming you have a text index
-  }
+  //Using regex to match the search query to the title of an ad
+  if (search) query.title = { $regex: search, $options: "i" };
 
-  if (courseCode) {
-    // Match any ad that has the specified courseCode in its tags
-    query.tags = { $in: [courseCode] };
-  }
+  //match any ad that has the query course code
+  if (courseCode) query.tags = { $in: [courseCode] };
 
-  console.log(req.query);
+  //Match any ad that has the query location
+  if (location) query.location = location;
 
-  if (location) {
-    query.location = location;
-  }
-
+  //Find the ad within the range of the price
   if (minPrice || maxPrice) {
     query.price = {};
     if (minPrice) query.price.$gte = minPrice;
     if (maxPrice) query.price.$lte = maxPrice;
   }
 
-  if (school) {
-    query.university = school;
-  }
+  //Match any ad that has the query school
+  if (school) query.university = school;
 
   let sortOptions = { createdAt: -1 }; // default sorting
   if (sort === "new") sortOptions = { createdAt: -1 };

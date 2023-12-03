@@ -1,11 +1,35 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import logo from '../assets/logo_large.png'
 import locationIcon from '../assets/location_icon.png'
 
 import './Navbar.css'
 
+
+
 const Navbar = () => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchSubmit = () => {
+    const searchURL = searchQuery.trim()
+      ? `/search?query=${encodeURIComponent(searchQuery.trim())}`
+      : "/search";
+    navigate(searchURL);
+  };
+
+  function keyboardHandler(e) {
+    const input = document.getElementById("navbar_logged_in_search")
+    if (input.contains(e.target) && e.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyboardHandler)
+    return () => { document.removeEventListener('keydown', keyboardHandler) }
+  })
 
   return (
     <header>
@@ -13,8 +37,15 @@ const Navbar = () => {
         <div className="navbar_top">
           <Link to="/"><img className='navbar_logo' src={logo} alt='Logo'></img></Link>
           <div className="navbar_search_section">
-            <input className='navbar_searchbar' type='text' placeholder='Search for any textbook'></input>
-            <Link to="/Browse"><button className='navbar_search_button'>Search</button></Link>
+            <input
+              id="navbar_logged_in_search"
+              className='navbar_searchbar'
+              type='text'
+              placeholder='Search for any textbook'
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}>
+            </input>
+            <Link to="/search"><button className='navbar_search_button'>Search</button></Link>
             <img src={locationIcon} alt='Location Icon'></img>
             <p id='navbar_location_text'>Calgary, AB</p>
           </div>
