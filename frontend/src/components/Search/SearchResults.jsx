@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import AdOverview from "../AdOverview";
 import ResultItem from './Result'
 
 export default function SearchResults({
