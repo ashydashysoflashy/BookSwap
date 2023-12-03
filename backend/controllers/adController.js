@@ -4,11 +4,17 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  const { search, courseCode, location, minPrice, maxPrice, school, sort } = req.query;
+  const { search, courseCode, location, minPrice, maxPrice, school, sort } =
+    req.query;
   let query = {};
 
-  //Using regex to match the search query to the title of an ad
-  if (search) query.title = { $regex: search, $options: "i" };
+  // Using regex to match the search query to the title and description of an ad
+  if (search) {
+    query.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
+    ];
+  }
 
   //match any ad that has the query course code
   if (courseCode) query.tags = { $in: [courseCode] };
