@@ -62,7 +62,7 @@ export default function ResultItem({ad}) {
     <div className='result-container' onClick={handleClick}>
         <div className='result-image-container'>
           {imageUrls.length > 0 ? (
-            imageUrls[0]
+            <img className='result-image' src={imageUrls[0]} alt={`Listing Content Displayed`} />
           ) : (
             <img
               src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
