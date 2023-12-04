@@ -80,29 +80,31 @@ const AdOverview = ({ ad }) => {
   };
 
   return (
-    <div className="ad_overview">
-      <div className="ad_images">
-        {imageUrls.length > 0 ? (
-          imageUrls.map((url, index) => (
-            <img key={index} src={url} alt={`Content ${index + 1}`} />
-          ))
-        ) : (
-          <img
-            src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
-            alt="Not available"
-          />
-        )}
+      <div className="ad_overview">
+        <div className="ad_images">
+          {imageUrls.length > 0 ? (
+              imageUrls.map((url, index) => (
+                  <img key={index} src={url} alt={`Content ${index + 1}`} />
+              ))
+          ) : (
+              <img
+                  src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
+                  alt="Not available"
+              />
+          )}
+        </div>
+        <div className="ad_information">
+          <h2>{ad.title}</h2>
+          <p className="ad_price">${ad.price}</p>
+          <p className="ad_description">Description: {ad.description}</p>
+          <p>Date Created: {formatDate(ad.createdAt)}</p>
+          <div className="ad_actions">
+            <button onClick={handleViewAd}>View Ad Details</button>
+            <button onClick={handleDelete}>Delete Ad</button>
+            <button onClick={handleUpdate}>Update Ad</button>
+          </div>
+        </div>
       </div>
-      <div className="ad_information">
-        <h2>{ad.title}</h2>
-        <h3>${ad.price}</h3>
-        <h4>Description: {ad.description}</h4>
-        <p>Date Created: {formatDate(ad.createdAt)}</p>
-        <button onClick={handleViewAd}>View Ad Details</button>
-        <button onClick={handleDelete}>Test Delete Ad</button>
-        <button onClick={handleUpdate}>Test Update Ad</button>
-      </div>
-    </div>
   );
 };
 

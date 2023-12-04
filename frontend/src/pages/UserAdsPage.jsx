@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-import AdOverview from "../components/AdOverview"; // Assuming you want to use the same component to display ads
+import AdOverview from "../components/AdOverview";
+import './UserAdsPage.css';
 
 const UserAdsPage = () => {
   const { user } = useAuthContext();
@@ -14,14 +15,11 @@ const UserAdsPage = () => {
       setError(null);
 
       try {
-        const response = await fetch(
-          `http://localhost:4000/api/ads/user/${user.id}`,
-          { headers: { Authorization: `Bearer ${user.token}` } }
-        );
+        const response = await fetch(`http://localhost:4000/api/ads/user/${user.id}`, {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
 
         const data = await response.json();
         setAds(data);
@@ -32,23 +30,23 @@ const UserAdsPage = () => {
       }
     };
 
-    if (user) {
-      fetchAds();
-    }
+    if (user) fetchAds();
   }, [user]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
-    <div>
-      <h1>My Posts</h1>
-      <div className="ads">
-        {ads.map((ad) => (
-          <AdOverview key={ad._id} ad={ad} />
-        ))}
+      <div className="user-ads-page">
+        <h1 className="page-title">My Ads</h1>
+        <p className="user-instruction">View, edit, and manage your posted ads.</p>
+        {isLoading && <div className="loading">Loading...</div>}
+        {error && <div className="error-message">Error: {error}</div>}
+        <div className="ads-container">
+          {ads.length > 0 ? (
+              ads.map(ad => <AdOverview key={ad._id} ad={ad} />)
+          ) : (
+              <p className="no-ads-message">You haven't posted any ads yet.</p>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
