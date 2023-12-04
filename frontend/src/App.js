@@ -15,6 +15,7 @@ import HomePage from "./pages/HomePage";
 import ListingPage from "./pages/ListingPage";
 import SearchPage from "./pages/SearchPage";
 import { useAuthContext } from "./hooks/useAuthContext"
+import NotFoundPage from './pages/NotFoundPage';
 import UserAdsPage from "./pages/UserAdsPage";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
             <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </BrowserRouter>
