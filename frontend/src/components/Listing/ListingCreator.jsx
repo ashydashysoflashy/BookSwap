@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import './ListingDetails.css'
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
@@ -39,5 +39,6 @@ export default function ListingCreator() {
       <button className='other-button'>View Other Listings</button>
       <button className='contact-button'>Contact Seller</button>
     </div>
+    
   )
 }

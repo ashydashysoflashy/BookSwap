@@ -45,5 +45,18 @@ const signupUser = async (req, res) => {
   }
 };
 
+const getUserEmailById = async (userId) => {
+
+  try {
+    const user = await User.findById(userId).select('email');
+
+
+    if (!user) throw new Error('User not found');
+    return user.email;
+  } catch (error) {
+    throw error;
+  }
+};
+
 //export these functions
-module.exports = { loginUser, signupUser };
+module.exports = { loginUser, signupUser, getUserEmailById };
