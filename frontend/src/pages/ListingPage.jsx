@@ -5,6 +5,7 @@ import ListingDetails from '../components/Listing/ListingDetails';
 import '../components/Listing/Listing.css';
 import { useAdsContext } from '../hooks/useAdsContext';
 import { S3 } from 'aws-sdk'; // Make sure to import AWS SDK
+import ContactForm from '../components/Listing/ContactForm';
 
 export default function ListingPage() {
   const [id, setId] = useState();
@@ -85,6 +86,7 @@ export default function ListingPage() {
       {adItem.title && (
         <ListingDetails ad={adItem}/>
       )}
+       
     </div>
   );
 }

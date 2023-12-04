@@ -24,6 +24,10 @@ app.use('/api/ads', require('./routes/ads'));
 //Route for user info (login/signup)
 app.use('/api/user',require('./routes/user'))
 
+// Route for email sending
+app.use('/api/email',require('./routes/emails'))
+
+
 //Connect with database
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
