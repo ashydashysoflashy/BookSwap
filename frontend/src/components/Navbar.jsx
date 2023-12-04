@@ -1,10 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 import logo from "../assets/logo_large.png";
 import locationIcon from "../assets/location_icon.png";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 import "./Navbar.css";
 
@@ -15,9 +16,20 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Toggle menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef();
+
+  // Mobile menu closed when clicking menu item
+  const closeMenu = () => setIsMenuOpen(false);
+  useOutsideClick(menuRef, closeMenu); // Close menu when clicking outside
+
+  // Fix issue with Mobile Menu staying open
+  const location = useLocation();
+
   const handleLogout = async () => {
-    console.log("logging out");
     await logout();
+    closeMenu(); // Close menu after logging out
   };
 
   const handleSearchSubmit = () => {
@@ -36,6 +48,11 @@ const Navbar = () => {
   }
 
   useEffect(() => {
+    // Close the menu whenever the location changes
+    setIsMenuOpen(false);
+  }, [location]); // This useEffect is specifically for handling location changes
+
+  useEffect(() => {
     document.addEventListener('keydown', keyboardHandler)
     return () => { document.removeEventListener('keydown', keyboardHandler) }
   })
@@ -47,6 +64,21 @@ const Navbar = () => {
           <Link to="/">
             <img className="navbar_logo" src={logo} alt="Logo"></img>
           </Link>
+
+          {/* Hamburger Menu Button */}
+          <button className="hamburger_menu" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            ☰
+          </button>
+
+          {/* Conditionally render mobile menu options */}
+          {isMenuOpen && (
+              <div className="mobile_menu_options">
+                {!user && <Link to="/login" onClick={closeMenu}>Log In</Link>}
+                {!user && <Link to="/register" onClick={closeMenu}>Create an Account</Link>}
+                <Link to="/search" onClick={closeMenu}>View Listings</Link>
+              </div>
+          )}
+
           <div className="navbar_search_section">
             <input
               id="navbar_logged_out_search"
@@ -80,7 +112,8 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className="navbar_bottom">
+        {/* Bottom Navbar */}
+        <div className={`navbar_bottom ${window.innerWidth <= 768 && isMenuOpen ? 'show' : ''}`}>
           <ul>
             <li>Business</li>
             <li>Computer Science</li>

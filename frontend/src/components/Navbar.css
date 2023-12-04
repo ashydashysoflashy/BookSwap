@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     padding: 0.9vw 2vw;
+    position: relative; /* Set relative positioning */
     background-color: var(--secondary_background);
 }
 
@@ -15,6 +16,7 @@
 
 .navbar_logo {
     width: 15vw;
+    min-width:180px;
     height: auto;
 }
 
@@ -137,7 +139,8 @@
 
 .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
     height: 2.7vw;
-    padding: 0 1.4vw;
+    padding: 10px 10px 35px 10px;
+    width:90px;
 
     font-size: 1.3rem;
     font-weight: 700;
@@ -169,4 +172,83 @@
 .navbar_bottom li {
     display: inline-block;
     margin-right: 3.5vw;
+}
+
+/* Toggle mobile menu - Navbar toggle*/
+.hamburger_menu {
+    display: none; /* Hide by default */
+    background: none;
+    border: none;
+    font-size: 2rem; /* Adjust the size as needed */
+    color: #8BA5FFFF; /* Use your primary color */
+    cursor: pointer;
+    padding: 0.5rem; /* Add some padding for touch friendliness */
+}
+
+.mobile_menu_options {
+    position: absolute;
+    width: 100%; /* Set the width to match the container */
+    top: 100%; /* Position right below the navbar top */
+    left: 0;
+    z-index: 10; /* Ensure it's above other content */
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    align-items: start; /* Align items to the start */
+    padding: 1rem; /* Add some padding */
+    background-color: white; /* Choose a background color for readability */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional shadow for depth */
+}
+
+.mobile_menu_options a {
+    padding: 0.5rem; /* Spacing between items */
+    color: black; /* Text color */
+    font-size: 1rem; /* Adjust font size */
+    display: block; /* Ensure each link takes its own line */
+}
+
+
+.mobile_menu_options a:hover {
+    text-decoration: underline; /* Hover effect */
+    background-color: #8BA5FFFF; /* Background color on hover */
+}
+
+@media screen and (max-width: 768px) {
+    .navbar_search_section, .navbar_acc_section, .navbar_bottom ul {
+        display: none; /* Hide elements on mobile */
+    }
+
+    .hamburger_menu {
+        display: block; /* Show hamburger menu on mobile */
+    }
+
+    .mobile_menu_options {
+        display: block; /* Show mobile menu options when hamburger menu is clicked */
+    }
+
+    .navbar_bottom.show {
+        display: block; /* Show bottom navbar when isMenuOpen is true */
+    }
+}
+
+/* Inside the media query */
+.navbar_bottom {
+    display: flex; /* Always show on desktop */
+}
+
+@media (min-width:769px) and (max-width:1115px) {
+    .navbar_search_section img {
+        display:none;
+    }
+    #navbar_location_text {
+        display: none;
+    }
+
+    .navbar_bottom {
+        display: none;
+    }
+
+    .navbar_acc_section a {
+        width: 80px;
+        text-align: center;
+    }
 }
