@@ -9,7 +9,7 @@ import { IoMdStarOutline } from "react-icons/io";
 
 
 
-export default function ListingCreator() {
+export default function ListingCreator({ onContactClick }) {
   return (
     <div className='creator-container'>
       <div className='creator-info-container'>
@@ -37,7 +37,7 @@ export default function ListingCreator() {
       </div>
 
       <button className='other-button'>View Other Listings</button>
-      <button className='contact-button'>Contact Seller</button>
+      <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
     </div>
     
   )
