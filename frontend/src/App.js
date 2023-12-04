@@ -16,6 +16,8 @@ import ListingPage from "./pages/ListingPage";
 import SearchPage from "./pages/SearchPage";
 import { useAuthContext } from "./hooks/useAuthContext"
 import UserAdsPage from "./pages/UserAdsPage";
+import OtherUserAdsPage from "./pages/OtherUserAdsPage";
+
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
   const user = localStorage.getItem('user');
@@ -34,6 +36,7 @@ function App() {
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
+            <Route path="/userads/:id" element={user ? <OtherUserAdsPage/> : <Navigate to='/register'/>} />
             <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
           </Routes>
         </div>

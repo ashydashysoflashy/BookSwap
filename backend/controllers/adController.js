@@ -199,9 +199,9 @@ const getAdsByUser = async (req, res) => {
     const { user_id } = req.params;
 
     // Check if the logged-in user is the same as the user_id
-    if (req.user._id.toString() !== user_id) {
-      return res.status(403).json({ error: "Unauthorized access" });
-    }
+    // if (req.user._id.toString() !== user_id) {
+    //  return res.status(403).json({ error: "Unauthorized access" });
+    // }
 
     const ads = await Ad.find({ user_id: user_id }).sort({ createdAt: -1 });
 
