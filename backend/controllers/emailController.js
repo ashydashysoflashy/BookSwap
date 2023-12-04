@@ -10,7 +10,6 @@ const sendEmail = async (req, res) => {
 
   // Get the receipient (seller) email by their user id
   const recipientEmail = await getUserEmailById(receiverID);
-  console.log(recipientEmail);
   // Nodemailer configuration
   const transporter = nodemailer.createTransport({
     service: 'gmail', 
@@ -28,8 +27,6 @@ const sendEmail = async (req, res) => {
     text: message,
   };
 
-  console.log(transporter.options.auth)
-  console.log(mailOptions)
 
   try {
     await transporter.sendMail(mailOptions);

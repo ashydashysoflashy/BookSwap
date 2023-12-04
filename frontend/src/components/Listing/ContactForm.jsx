@@ -58,7 +58,7 @@ const ContactForm = ({ ad }) => {
   };
 
   return (
-    <div className="contact-form-container">
+    <div className="description-container">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="senderEmail">Your Email:</label>
