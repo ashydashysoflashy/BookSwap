@@ -18,16 +18,16 @@ export default function SearchPage() {
   const [showFilters, setShowFilters] = useState(window.innerWidth > 768);
   // Update searchQuery state when URL search param changes
   useEffect(() => {
-
+    // Set search query from URL params
+    setSearchQuery(searchParams.get("query") || "");
     const handleResize = () => {
       setShowFilters(window.innerWidth > 768);
     };
 
+    // Add event listener for window resize
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-
-    setSearchQuery(searchParams.get("query") || "");
   }, [searchParams]);
 
     return (
