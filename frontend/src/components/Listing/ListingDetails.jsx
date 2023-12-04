@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react';
+import './ListingDetails.css';
+import ListingCreator from './ListingCreator';
+import ListingDescription from './ListingDescription';
+import ContactForm from './ContactForm';
 
-import './ListingDetails.css'
-import ListingCreator from './ListingCreator'
-import ListingDescription from './ListingDescription'
+export default function ListingDetails({ ad }) {
+  const [showContactForm, setShowContactForm] = useState(false);
 
-export default function ListingDetails({ad}) {
+  const toggleContactForm = () => {
+    setShowContactForm(!showContactForm);
+  };
+
   return (
     <div className='details-container'>
-      <ListingCreator ad={ad}/>
+      <ListingCreator ad={ad} onContactClick={toggleContactForm} />
       <ListingDescription ad={ad}/>
+      {showContactForm && <ContactForm ad={ad} />}
     </div>
-  )
+  );
 }

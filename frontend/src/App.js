@@ -22,7 +22,6 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
   const user = localStorage.getItem('user');
   const url = window.location.href;
-  console.log(user)
 
   return (
     <div className="App">
