@@ -11,6 +11,8 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ListingPage from "./pages/ListingPage";
 import SearchPage from "./pages/SearchPage";
+import { useAuthContext } from "./hooks/useAuthContext"
+import NotFoundPage from './pages/NotFoundPage';
 import UserAdsPage from "./pages/UserAdsPage";
 
 //Components
@@ -39,6 +41,7 @@ function App() {
             <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
             <Route path="/admin" element={user ? <AdminPage/> : <Navigate to='/register'/>} />
             <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </BrowserRouter>
