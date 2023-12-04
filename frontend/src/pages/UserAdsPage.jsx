@@ -19,8 +19,6 @@ const UserAdsPage = () => {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
-        if (!response.ok) throw new Error("Network response was not ok");
-
         const data = await response.json();
         setAds(data);
       } catch (err) {
