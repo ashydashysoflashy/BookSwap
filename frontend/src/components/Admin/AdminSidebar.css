@@ -3,6 +3,36 @@
     flex-direction: row;
 }
 
+.admin_right_button {
+    display: none;
+    position: absolute;
+    top: 5%;
+    left: -1px;
+
+    width: fit-content;
+    height: 35px;
+    padding-left: 3px;
+    padding-right: 2px;
+    text-align: left;
+
+    border: none;
+    border-radius: 3px;
+    background-color: var(--button_background);
+    z-index: 1;
+}
+
+#admin_sidebar_menu {
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 20%;
+    height: 100svh;
+
+    background-color: var(--secondary_background);
+}
+
 .sidebar_container {
     position: fixed;
     display: flex;
@@ -10,7 +40,7 @@
     justify-content: space-between;
 
     width: 20%;
-    height: 100vh;
+    height: 100svh;
 
     background-color: var(--secondary_background);
 }
@@ -29,7 +59,7 @@
 
 .sidebar_top_title {
     margin: 2.3vh 0;
-    font: 700 1.8rem Inter, sans-serif;
+    font: 700 1.7vw Inter, sans-serif;
     text-align: center;
 }
 
@@ -54,7 +84,7 @@
     text-align: start;
 
     color: black;
-    font: 500 1.5rem Inter, sans-serif;
+    font: 500 1.4vw Inter, sans-serif;
 
     margin: 10px 20px;
     padding-left: 5px;
@@ -68,4 +98,33 @@
 .sidebar_bottom_content {
     display: flex;
     flex-direction: column;
+}
+
+@media only screen and (orientation: portrait) {
+    .admin_page {
+        flex-direction: column;
+    }
+    .sidebar_container {
+        display: none;
+    }
+    #admin_sidebar_menu {
+        display: flex;
+        right: 100%;
+        width: 100%;
+        justify-content: flex-start;
+        transition: 0.6s ease;
+    }
+    .sidebar_top_title {
+        font-size: 7vw;
+    }
+    .sidebar_button {
+        font-size: 5.6vw;
+        margin: 3.5vh 0;
+    }
+    .sidebar_button_container, .sidebar_bottom_content {
+        align-items: center;
+    }
+    .admin_right_button {
+        display: block;
+    }
 }

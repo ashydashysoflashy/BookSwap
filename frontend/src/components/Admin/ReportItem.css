@@ -12,14 +12,19 @@
     margin: 20px 0px;
 }
 
+.report_left_container {
+    width: 65%;
+    display: flex;
+    flex-direction: row;
+}
+
 .report_image {
     height: 20vh;
-    max-width: 18%;
+    width: 30%;
     object-fit: contain;
 }
 
 .report_post_info {
-    max-width: 35%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -33,35 +38,50 @@
 
 .report_post_title {
     margin: 0.3% 0;
-    font: 600 1.2rem Inter, sans-serif;
+    font: 600 1.25vw Inter, sans-serif;
 }
 
 .report_post_price {
     margin: 0.3% 0;
-    font: 600 1.2rem Inter, sans-serif;
+    font: 600 1.25vw Inter, sans-serif;
     color: var(--button_background);
 }
 
 .report_post_description {
     margin: 0.3% 0;
-    font: 400 1rem Inter, sans-serif;
+    font: 400 1.1vw Inter, sans-serif;
+    word-wrap: break-word;
 }
 
 .report_post_bottom_info p {
     margin: 0;
-    font: 400 0.9rem Inter, sans-serif;
+    font: 400 1vw Inter, sans-serif;
     color: var(--secondary_text);
+}
+
+.report_horizontal_line {
+    display: none;
+    height: 2px;
+    min-width: 100%;
+    margin: 1% 0;
+    background-color: var(--element_stroke);
 }
 
 .report_verticle_line {
     width: 2px;
+    min-width: 2px;
     min-height: 100%;
     margin: 0 0.5%;
     background-color: var(--element_stroke);
 }
 
+.report_right_container {
+    display: flex;
+    flex-direction: row;
+}
+
 .report_post_data {
-    max-width: 30%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -87,7 +107,7 @@
     background-color: transparent;
 
     color: var(--button_background);
-    font: 500 1rem Inter, sans-serif;
+    font: 500 1.15vw Inter, sans-serif;
 
     margin: 5% auto;
 }
@@ -103,7 +123,7 @@
     background-color: transparent;
 
     color: #FF8B8B;
-    font: 500 1rem Inter, sans-serif;
+    font: 500 1.15vw Inter, sans-serif;
 
     margin: 5% auto;
 }
@@ -111,4 +131,43 @@
 .report_delete_action:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+@media only screen and (orientation: portrait) {
+    .report_container {
+        flex-direction: column;
+    }
+    .report_left_container {
+        width: 100%;
+    }
+    .report_image {
+        width: 20%;
+        height: auto;
+    }
+    .report_post_title, .report_post_price {
+        font-size: 3vw;
+    }
+    .report_post_description {
+        font-size: 2.5vw;
+    }
+    .report_post_bottom_info p{
+        font-size: 2vw;
+    }
+
+    .report_horizontal_line {
+        display: block;
+    }
+    .report_right_container {
+        width: 100%;
+    }
+    .report_post_data {
+        width: 80%;
+    }
+    .report_action_buttons {
+        margin-bottom: 1vh;
+    }
+    .report_action_buttons button, .report_delete_action {
+        margin: .3vh auto;
+        font-size: 2vw;
+    }
 }
