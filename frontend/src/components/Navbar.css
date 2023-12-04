@@ -138,10 +138,6 @@
 }
 
 .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
-    height: 2.7vw;
-    padding: 10px 10px 35px 10px;
-    width:90px;
-
     font-size: 1.3rem;
     font-weight: 700;
 
@@ -250,5 +246,17 @@
     .navbar_acc_section a {
         width: 80px;
         text-align: center;
+    }
+
+    .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
+        padding: 10px;
+        width: 90px;
+    }
+}
+
+@media (min-width:1116px) {
+    .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
+        height:2.7vh;
+        padding: 0 1.4vw;
     }
 }
