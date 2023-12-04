@@ -121,7 +121,7 @@ export default function SearchFilters({
 
         <Select
             value={selectedCourseCode}
-            options={tagOptions}
+            options={optionsCourseCode}
             className={`react-select-container ${activeDropdown === 'courseCode' ? 'active-dropdown' : ''}`}
             onMenuOpen={() => setActiveDropdown('courseCode')}
             onMenuClose={() => setActiveDropdown('')}
@@ -135,7 +135,7 @@ export default function SearchFilters({
 
         <Select
             value={selectedSchool}
-            options={universityOptions}
+            options={optionsSchool}
             className={`react-select-container ${activeDropdown === 'school' ? 'active-dropdown' : ''}`}
             onMenuOpen={() => setActiveDropdown('school')}
             onMenuClose={() => setActiveDropdown('')}
