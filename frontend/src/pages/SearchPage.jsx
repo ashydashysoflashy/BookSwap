@@ -15,12 +15,33 @@ export default function SearchPage() {
     searchParams.get("query") || ""
   );
   const [sortOption, setSortOption] = useState("");
+  const [showFilters, setShowFilters] = useState(window.innerWidth > 768);
   // Update searchQuery state when URL search param changes
   useEffect(() => {
+
+    const handleResize = () => {
+      setShowFilters(window.innerWidth > 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+
     setSearchQuery(searchParams.get("query") || "");
   }, [searchParams]);
-  return (
+
+    return (
     <div className="search-container">
+      {/* Show button only on smaller screens */}
+      {window.innerWidth <= 768 && (
+        <button
+            className="filters-toggle-button"
+            onClick={() => setShowFilters(!showFilters)}
+        >
+            {showFilters ? "Hide Filters" : "Show Filters"}
+        </button>)}
+
+        {showFilters && (
       <SearchFilters
         setLocation={setLocation}
         setCourseCode={setCourseCode}
@@ -29,6 +50,7 @@ export default function SearchPage() {
         setSchool={setSchool}
         setSearchQuery={setSearchQuery}
       />
+            )}
       <SearchResults
         location={location}
         courseCode={courseCode}
