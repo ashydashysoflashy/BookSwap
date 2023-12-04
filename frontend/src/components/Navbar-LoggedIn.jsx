@@ -6,8 +6,6 @@ import locationIcon from '../assets/location_icon.png'
 
 import './Navbar.css'
 
-
-
 const Navbar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");

@@ -5,10 +5,7 @@ import React, { useState } from "react";
 import CreateAd from "./pages/CreateAd";
 import UpdateAd from "./pages/UpdateAd";
 import Browse from "./pages/Browse";
-
-//Components
-import Navbar from "./components/Navbar";
-import NavbarLoggedIn from "./components/Navbar-LoggedIn";
+import AdminPage from "./pages/AdminPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
@@ -17,14 +14,21 @@ import SearchPage from "./pages/SearchPage";
 import { useAuthContext } from "./hooks/useAuthContext"
 import NotFoundPage from './pages/NotFoundPage';
 import UserAdsPage from "./pages/UserAdsPage";
+
+//Components
+import Navbar from "./components/Navbar";
+import NavbarLoggedIn from "./components/Navbar-LoggedIn";
+import { useAuthContext } from "./hooks/useAuthContext"
+
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
   const user = localStorage.getItem('user');
+  const url = window.location.href;
 
   return (
     <div className="App">
       <BrowserRouter>
-        {user ? <NavbarLoggedIn /> : <Navbar />}
+        {user ? <>{url.includes('admin') ? null : <NavbarLoggedIn />}</> : <Navbar />}
         <div className="pages">
           <Routes>
             <Route path="/login" element={!user ? <LoginPage/> : <Navigate to='/'/>}/>
@@ -35,6 +39,7 @@ function App() {
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
+            <Route path="/admin" element={user ? <AdminPage/> : <Navigate to='/register'/>} />
             <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
