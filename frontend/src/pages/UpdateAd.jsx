@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 const UpdateAd = () => {
   const { id } = useParams(); // Get the ad ID from the URL
   const [adData, setAdData] = useState(null);
+  console.log("here")
 
   useEffect(() => {
     // Fetch the existing ad data from the server

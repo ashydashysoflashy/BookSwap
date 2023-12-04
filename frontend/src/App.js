@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 
 //Pages
 import CreateAd from "./pages/CreateAd";
@@ -18,7 +18,8 @@ import { useAuthContext } from "./hooks/useAuthContext"
 import UserAdsPage from "./pages/UserAdsPage";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
-  const { user } = useAuthContext();
+  const user = localStorage.getItem('user')
+  console.log(user)
 
   return (
     <div className="App">
@@ -26,7 +27,6 @@ function App() {
         {user ? <NavbarLoggedIn /> : <Navbar />}
         <div className="pages">
           <Routes>
-            <Route path="/" element={!user ? <HomePage /> : <Navigate to='/home'/>} />
             <Route path="/login" element={!user ? <LoginPage/> : <Navigate to='/'/>}/>
             <Route path="/register" element={!user ? <RegisterPage/> : <Navigate to='/'/>}/>
             <Route path="/create" element={user ? <CreateAd /> : <Navigate to='/register'/>} />
@@ -35,6 +35,7 @@ function App() {
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
+            <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
           </Routes>
         </div>
       </BrowserRouter>
