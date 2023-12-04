@@ -154,12 +154,6 @@
         font-size:15px;
     }
 
-    /* Mobile Filter Toggle */
-    filters-container {
-        /* Initially hide the filters on mobile */
-        display: none;
-    }
-
     .results-container {
         width: 100%;
     }
