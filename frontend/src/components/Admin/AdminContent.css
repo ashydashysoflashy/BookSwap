@@ -1,0 +1,25 @@
+.admin_content_container {
+    width: 100%;
+    margin-left: 25%;
+    margin-top: 2%;
+    margin-right: 5%;
+/* 
+    background-color: red;
+    height: 10px; */
+}
+
+.admin_content_top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.admin_content_top h1 {
+    font: 700 1.7rem Inter, sans-serif;
+}
+
+.admin_report_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
