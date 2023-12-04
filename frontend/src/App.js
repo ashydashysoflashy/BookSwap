@@ -11,7 +11,6 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ListingPage from "./pages/ListingPage";
 import SearchPage from "./pages/SearchPage";
-import { useAuthContext } from "./hooks/useAuthContext"
 import NotFoundPage from './pages/NotFoundPage';
 import UserAdsPage from "./pages/UserAdsPage";
 
