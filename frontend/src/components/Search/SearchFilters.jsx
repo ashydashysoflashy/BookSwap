@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import "./Search.css";
 import Select from "react-select";
 import ReactSlider from "react-slider";
-import { tagOptions } from "../tagOptions"; //**Reminder: Use Tag Options for the Course Code
-import { universityOptions } from "../universityOptions";
 
 import { IoFilter } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
