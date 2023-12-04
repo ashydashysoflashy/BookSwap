@@ -175,9 +175,6 @@ const updateAd = async (req, res) => {
       return res.status(404).json({ error: "The Ad does not exist" });
     }
 
-    console.log(ad.user_id.toString());
-    console.log(req.user._id.toString());
-
     // Check if the logged-in user is the owner of the ad
     if (ad.user_id.toString() !== req.user._id.toString()) {
       return res.status(403).json({ error: "Unauthorized to update this ad" });

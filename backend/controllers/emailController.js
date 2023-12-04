@@ -3,7 +3,6 @@ const { getUserEmailById } = require('./userController'); // Import the function
 
 
 const sendEmail = async (req, res) => {
-  console.log('Received request body:', req.body);
 
   // Extract email details from request body
   const { senderEmail, receiverID, subject, message } = req.body;

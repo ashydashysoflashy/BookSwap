@@ -4,9 +4,8 @@ import './ContactForm.css';
 
 
 const ContactForm = ({ ad }) => {
-   const { user } = useAuthContext();
-  console.log(ad.user_id)
-  console.log(user.id)
+  const { user } = useAuthContext();
+  const [isSuccess, setIsSuccess] = useState(false);
   const [emailData, setEmailData] = useState({
     senderEmail: '',
     receiverID: '',
@@ -47,13 +46,20 @@ const ContactForm = ({ ad }) => {
       if (response.ok) {
         console.log('Email sent:', result.message);
         // Handle success (e.g., showing a success message)
+        setEmailData({
+                senderEmail: '',
+                receiverID: '',
+                subject: '',
+                message: ''
+            });
+            setIsSuccess(true);
       } else {
         console.error('Failed to send email:', result.error);
-        // Handle failure (e.g., showing an error message)
+        setIsSuccess(false);
       }
     } catch (error) {
       console.error('Error:', error);
-      // Handle error (e.g., showing an error message)
+      setIsSuccess(false);
     }
   };
 
@@ -91,6 +97,8 @@ const ContactForm = ({ ad }) => {
         </div>
         <button type="submit">Send Message</button>
       </form>
+      {isSuccess && <div className="success-message">Email sent successfully!</div>}
+
     </div>
   );
 };

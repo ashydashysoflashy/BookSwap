@@ -18,8 +18,7 @@ import { useAuthContext } from "./hooks/useAuthContext"
 import UserAdsPage from "./pages/UserAdsPage";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
-  const user = localStorage.getItem('user')
-  console.log(user)
+  const user = localStorage.getItem('user');
 
   return (
     <div className="App">
