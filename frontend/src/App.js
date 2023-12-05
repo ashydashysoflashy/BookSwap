@@ -24,8 +24,6 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
   const user = localStorage.getItem('user');
 
-
-
   function DecideNavbar() {
     const url = useLocation();
     if (user) {

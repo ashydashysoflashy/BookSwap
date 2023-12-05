@@ -12,6 +12,10 @@
     margin: 20px 0px;
 }
 
+.report_container a {
+    text-decoration: none;
+}
+
 .report_left_container {
     width: 60%;
     display: flex;
@@ -39,6 +43,11 @@
 .report_post_title {
     margin: 0.3% 0;
     font: 600 1.25vw Inter, sans-serif;
+}
+
+.report_post_title:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .report_post_price {

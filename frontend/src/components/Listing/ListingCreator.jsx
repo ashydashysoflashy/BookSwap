@@ -64,10 +64,8 @@ export default function ListingCreator({ ad, onContactClick }) {
     e.preventDefault();
     if (!displayReport) setDisplayReport(!displayReport);
     setReportError(null)
-    if (newReport.reason === "") {
-      console.log("return");
-      return;
-    }
+    if (newReport.reason === "") return;
+
     //Functionality for reporting a listing
     const adData = {
       reports: [...ad.reports, newReport]
@@ -80,7 +78,9 @@ export default function ListingCreator({ ad, onContactClick }) {
         Authorization: `Bearer ${user.token}`,
       },
     });
+    console.log(response);
     const jsonData = await response.json();
+    console.log(jsonData);
     if (!response.ok) {
       setReportError(jsonData.error);
     } else {

@@ -221,6 +221,8 @@ const updateAdReports = async (req, res) => {
     return res.status(404).json({ error: "The Ad does not exist" });
   }
 
+  
+
   try {
     const ad = await Ad.findById(id);
 
@@ -228,10 +230,10 @@ const updateAdReports = async (req, res) => {
       return res.status(404).json({ error: "The Ad does not exist" });
     }
 
-    console.log(keys[0])
-    if (keys.length !== 1 || keys[0] !== 'reports') {
-      return res.status(400).json({ error: "Invalid request body" });
-    }
+    // console.log(keys[0])
+    // if (keys.length !== 1 || keys[0] !== 'reports') {
+    //   return res.status(400).json({ error: "Invalid request body" });
+    // }
 
     // If authorized, update the ad
     const updatedAd = await Ad.findByIdAndUpdate(
