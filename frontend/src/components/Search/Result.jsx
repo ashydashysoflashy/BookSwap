@@ -71,21 +71,19 @@ export default function ResultItem({ad}) {
             />
           )}
         </div>
-        <div className='result-info'>
-          <div className='result-price-message-container'>
-            <div className='result-price-mobile'>$50.00</div>
-            <div className='result-message-icon'>
-              <FaRegMessage color='#97aefd' size={24}/>
-            </div>
-          </div>
-          <div className='result-title'>{ad.title ? (ad.title) : ("No Title") }</div>
-          <div className='result-title-mobile'>{ad.title ? (ad.title) : ("No Title") }</div>
-          <div className='result-price'>{ad.price ? (`$${ad.price}.00`) : ("Contact For Price") }</div>
-          <div className='result-description'>{ad.description}</div>
-          <div className='result-location'>
-            <div>{ad.location} | {formatDate(ad.createdAt)}</div>
-          </div>
-        </div>
+      <div className='result-info'>
+        <div className='result-title'>{ad.title ? ad.title : "No Title"}</div>
+        <div className='result-price'>{ad.price ? `$${ad.price}.00` : "Contact For Price"}</div>
+        <div className='result-description'>{ad.description}</div>
+        <div className='result-location'>{ad.location} | {formatDate(ad.createdAt)}</div>
+        {/*<div className='result-message-icon'>
+          <FaRegMessage color='#97aefd' size={24} />
+        </div>*/}
+        {/* Add View Listing Button and remove Icon*/}
+        <button className='view-listing-button' onClick={handleClick}>
+          View Listing
+        </button>
+      </div>
     </div>
   )
 }
