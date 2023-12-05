@@ -52,11 +52,12 @@ const getAdminAds = async (req, res) => {
   query.reports = { $exists: true, $not: { $size: 0 } };
 
   let sortOptions = { "reports.length": -1 }; // default sorting
-  if (sort === "most_reports") sortOptions = { "reports.length": -1 };
-  if (sort === "least_reports") sortOptions = { "reports.length": 1 };
+  if (sort === "most_reports") sortOptions = { "reports": 1 };
+  if (sort === "least_reports") sortOptions = { "reports": -1 };
 
   try {
     const ads = await Ad.find(query).sort(sortOptions);
+    console.log("fetched ads", ads);
     res.status(200).json(ads);
   } catch (error) {
     res.status(400).json({ error: error.message });
