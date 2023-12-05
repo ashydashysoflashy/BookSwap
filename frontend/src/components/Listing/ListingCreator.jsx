@@ -6,29 +6,35 @@ import { IoMdStar } from "react-icons/io";
 import { IoMdStarOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import {useAuthContext} from '../../hooks/useAuthContext'
-import {useAdsContext} from '../../hooks/useAdsContext';
+import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAdsContext } from '../../hooks/useAdsContext';
 
-export default function ListingCreator({ onContactClick }) {
+export default function ListingCreator({ ad, onContactClick }) {
   const navigate = useNavigate();
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [newReport,setNewReport] = useState({user_id:user.id,reason:""});
-  const [reportError,setReportError] = useState(null)
+  const [newReport, setNewReport] = useState({ user_id: user.id, reason: "" });
+  const [reportError, setReportError] = useState(null)
   const { dispatch } = useAdsContext();
   const [displayReport, setDisplayReport] = useState();
-  const [reportSuccess,setReportSuccess] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
+  
   const reportOptions = [
     { value: "prohibited", label: "Prohibited Content" },
     { value: "illegal", label: "Illegal Content" }
   ];
+
+  const onViewOtherListingsClick = () => {
+    navigate(`../userads/${ad.user_id}`)
+  };
+
   useEffect(() => {
     // Check if the current user has already reported the ad
     if (ad.reports.some(report => report.user_id === user.id)) {
       setReportSuccess(true)
-    } 
+    }
   }, [ad, user.id]);
 
 
@@ -58,13 +64,13 @@ export default function ListingCreator({ onContactClick }) {
     e.preventDefault();
     if (!displayReport) setDisplayReport(!displayReport);
     setReportError(null)
-    if (newReport.reason === ""){
+    if (newReport.reason === "") {
       console.log("return");
       return;
     }
     //Functionality for reporting a listing
     const adData = {
-      reports: [...ad.reports,newReport]
+      reports: [...ad.reports, newReport]
     };
     const response = await fetch(`http://localhost:4000/api/ads/report/${ad._id}`, {
       method: "PATCH",
@@ -109,7 +115,7 @@ export default function ListingCreator({ onContactClick }) {
         </div>
       </div>
 
-      <button className='other-button' onClick = {onViewOtherListingsClick}>View Other Listings </button>
+      <button className='other-button' onClick={onViewOtherListingsClick}>View Other Listings </button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
       {reportSuccess && <p>Your report has been submitted.</p>}
       {!reportSuccess && (ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
@@ -117,7 +123,7 @@ export default function ListingCreator({ onContactClick }) {
       {reportError && <p id='report_text'>{reportError.message}</p>}
       {displayReport && !reportSuccess ? <Select
         options={reportOptions}
-        onChange={(selectedOption) => setNewReport((prev) => ({...prev,reason: selectedOption.value}))}
+        onChange={(selectedOption) => setNewReport((prev) => ({ ...prev, reason: selectedOption.value }))}
         className="react-select-container"
         classNamePrefix="react-select"
         placeholder="Reason for Reporting"
