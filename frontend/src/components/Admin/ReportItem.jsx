@@ -203,6 +203,7 @@ const ReportItem = (props) => {
         <div className='report_action_container'>
           <div className='report_action_buttons'>
             <button onClick={handleDeleteListing}>Delete Listing</button>
+            <button onClick={null}>Resolve Reports</button>
           </div>
           <button onClick={handleBanUser} className='report_delete_action'>Ban User</button>
         </div>
