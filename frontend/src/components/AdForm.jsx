@@ -7,6 +7,7 @@ import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
 import { useAuthContext } from "../hooks/useAuthContext";
+import uploadIcon from "../assets/upload.png";
 import "./AdForm.css";
 
 const config = {
@@ -163,21 +164,23 @@ const AdForm = () => {
           />
 
           <div className="ad_images">
-            <p>Images</p>
+
             {files.map((file, i) => (
-              <div key={i} className="image-preview">
-                <img src={URL.createObjectURL(file)} alt={file.name} />
-                <button onClick={() => handleRemoveImage(file.name)}>
-                  Remove
-                </button>
-              </div>
+                <div key={i} className="image-preview">
+                  <img src={URL.createObjectURL(file)} alt={file.name} />
+                  <button onClick={() => handleRemoveImage(file.name)}>Remove</button>
+                </div>
             ))}
-            <label id="upload_button" htmlFor="upload_image"></label>
+            <label htmlFor="upload_image" className="upload_button_label">
+              <img src={uploadIcon} alt="Upload" />
+              <span>Upload Images</span>
+            </label>
             <input
-              type="file"
-              id="upload_image"
-              style={{ display: "none" }}
-              onChange={handleAddImage}
+                type="file"
+                id="upload_image"
+                style={{ display: "none" }}
+                onChange={handleAddImage}
+                multiple
             ></input>
           </div>
         </div>
