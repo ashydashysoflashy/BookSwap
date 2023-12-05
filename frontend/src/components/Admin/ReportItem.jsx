@@ -2,11 +2,17 @@ import './ReportItem.css'
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom"
 import { S3 } from "aws-sdk";
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useAdsContext } from '../../hooks/useAdsContext';
+
 const ReportItem = (props) => {
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const ad = props.ad;
+  const admin = props.admin;
+  const { user } = useAuthContext();
+  const { ads, dispatch } = useAdsContext();
 
   function findCommonComplaints() {
     const temp = []
@@ -17,6 +23,8 @@ const ReportItem = (props) => {
     return temp;
   }
   const complaints = findCommonComplaints();
+  
+  console.log(ad)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,6 +95,32 @@ const ReportItem = (props) => {
     );
   };
 
+  //function to delete ad
+  const handleDeleteListing = async () => {
+    try {
+      // Construct the query parameters
+      const response = await fetch(`http://localhost:4000/api/ads/${ad._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },body: JSON.stringify({
+          admin: admin,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: "DELETE_AD", payload: ad._id});
+      } else {
+        throw new Error(data.error || "Failed to fetch results");
+      }
+    } catch (err) {
+      console.log(err.message)
+      setError(err.message);
+    } 
+  }
+
   return (
     <div className="report_container">
       <div className='report_left_container'>
@@ -122,7 +156,7 @@ const ReportItem = (props) => {
         <div className='report_action_container'>
           <div className='report_action_buttons'>
             <button>Ban User</button>
-            <button>Delete Listing</button>
+            <button onClick={handleDeleteListing}>Delete Listing</button>
           </div>
           <button className='report_delete_action'>Delete User</button>
         </div>

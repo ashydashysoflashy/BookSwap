@@ -160,16 +160,14 @@ const deleteAd = async (req, res) => {
 
   try {
     const ad = await Ad.findById(id);
-
     if (!ad) {
       return res.status(404).json({ error: "The Ad does not exist" });
     }
-
-    // Check if the logged-in user is the owner of the ad
-    if (ad.user_id.toString() !== req.user._id.toString()) {
+    console.log(req.body.admin !== true)
+    // Check if the logged-in user is the not the owner of the ad and not an admin
+    if (ad.user_id.toString() !== req.user._id.toString() && req.body.admin !== true) {
       return res.status(403).json({ error: "Unauthorized to delete this ad" });
     }
-
     // If authorized, delete the ad
     await Ad.findOneAndDelete({ _id: id });
 
