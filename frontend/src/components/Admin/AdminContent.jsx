@@ -29,12 +29,6 @@ const AdminContent = () => {
     fetchAds();
   }, [dispatch, sort]);
 
-  // Use another useEffect to ensure the component re-renders when ads change
-  useEffect(() => {
-    // Your logic to handle ads change
-    console.log(ads);
-  }, [ads]);
-
   return (
     <div className="admin_content_container">
       <div className='admin_content_top'>

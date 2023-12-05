@@ -26,11 +26,6 @@ const AdminSidebar = () => {
           <img alt='BookSwap logo' src={logo} />
           <h1 className='sidebar_top_title'>Admin Dashboard</h1>
           <div className='sidebar_line'></div>
-          <div className='sidebar_button_container'>
-            <button className='sidebar_button'>Reported Listings</button>
-            <button className='sidebar_button'>Deleted Listings</button>
-            <button className='sidebar_button'>Banned Users</button>
-          </div>
         </div>
         <div className='sidebar_bottom_content'>
           <button className='sidebar_button'>Back to Site</button>
@@ -42,11 +37,6 @@ const AdminSidebar = () => {
           <img alt='BookSwap logo' src={logo} />
           <h1 className='sidebar_top_title'>Admin Dashboard</h1>
           <div className='sidebar_line'></div>
-          <div className='sidebar_button_container'>
-            <button className='sidebar_button'>Reported Listings</button>
-            <button className='sidebar_button'>Deleted Listings</button>
-            <button className='sidebar_button'>Banned Users</button>
-          </div>
         </div>
         <div className='sidebar_bottom_content'>
           <button className='sidebar_button'>Back to Site</button>
