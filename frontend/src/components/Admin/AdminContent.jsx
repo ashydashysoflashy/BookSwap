@@ -7,6 +7,7 @@ import ReportItem from './ReportItem';
 const AdminContent = ({admin}) => {
   const { ads, dispatch } = useAdsContext();
   const [sort, setSort] = useState("most_reports");
+  const [sortedAds,setSortedAds] = useState([])
 
   const sortOptions = [
     { value: "most_reports", label: "Most Reports first" },
@@ -24,10 +25,15 @@ const AdminContent = ({admin}) => {
 
       if (response.ok) {
         dispatch({ type: "SET_ADS", payload: json });
+        setSortedAds(json)
       }
     };
     fetchAds();
   }, [dispatch, sort]);
+
+  const handleDeleteListingParent = (deletedAdId) => {
+    setSortedAds((prevAds) => prevAds.filter((ad) => ad._id !== deletedAdId));
+  };
 
   return (
     <div className="admin_content_container">
@@ -43,7 +49,7 @@ const AdminContent = ({admin}) => {
 
       </div>
       <div className='admin_report_container'>
-        {ads && ads.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch}/>)}
+        {sortedAds && sortedAds.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch} handleDeleteListingParent={handleDeleteListingParent}/>)}
       </div>
     </div>
   )

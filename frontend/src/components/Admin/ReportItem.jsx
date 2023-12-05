@@ -11,8 +11,10 @@ const ReportItem = (props) => {
   const [error, setError] = useState(null);
   const ad = props.ad;
   const admin = props.admin;
+  const handleDeleteListingParent = props.handleDeleteListingParent
   const { user } = useAuthContext();
   const { ads, dispatch } = useAdsContext();
+
 
   function findCommonComplaints() {
     const temp = []
@@ -112,6 +114,7 @@ const ReportItem = (props) => {
 
       if (response.ok) {
         dispatch({ type: "DELETE_AD", payload: ad._id});
+        handleDeleteListingParent(ad._id)
       } else {
         throw new Error(data.error || "Failed to fetch results");
       }
