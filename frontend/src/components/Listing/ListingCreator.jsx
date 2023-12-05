@@ -4,12 +4,18 @@ import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
 import { IoMdStarOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 
 
 
+export default function ListingCreator({ ad, onContactClick }) {
 
-export default function ListingCreator({ onContactClick }) {
+  const navigate = useNavigate();
+
+  const onViewOtherListingsClick = () => {
+    navigate(`../userads/${ad.user_id}`)
+};
   return (
     <div className='creator-container'>
       <div className='creator-info-container'>
@@ -36,7 +42,7 @@ export default function ListingCreator({ onContactClick }) {
         </div>
       </div>
 
-      <button className='other-button'>View Other Listings</button>
+      <button className='other-button' onClick = {onViewOtherListingsClick}>View Other Listings </button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
     </div>
     
