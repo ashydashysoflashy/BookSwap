@@ -123,6 +123,29 @@ const ReportItem = (props) => {
     } 
   }
 
+  //for if a listing is resolved, we update its reports to be [] and remove it from parent
+  const handleResolveListing = async () => {
+    //set reports to []
+    const adData = {
+      reports: []
+    };
+    const response = await fetch(`http://localhost:4000/api/ads/report/${ad._id}`, {
+      method: "PATCH",
+      body: JSON.stringify(adData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const jsonData = await response.json();
+    if (!response.ok) {
+      setError(jsonData.error);
+    } else {
+      dispatch({ type: "UPDATE_AD", payload: jsonData });
+      handleDeleteListingParent(ad._id)
+    }
+  }
+
     const handleBanUser = async () => {
     try {
       // Construct the query parameters to delete all their ads
@@ -203,7 +226,7 @@ const ReportItem = (props) => {
         <div className='report_action_container'>
           <div className='report_action_buttons'>
             <button onClick={handleDeleteListing}>Delete Listing</button>
-            <button onClick={null}>Resolve Reports</button>
+            <button onClick={handleResolveListing}>Resolve Reports</button>
           </div>
           <button onClick={handleBanUser} className='report_delete_action'>Ban User</button>
         </div>
