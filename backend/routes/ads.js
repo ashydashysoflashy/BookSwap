@@ -6,6 +6,7 @@ const requireAuth = require("../middleware/requireAuth");
 //All Ad Controller functions
 const {
   getAds,
+  getAdminAds,
   getAd,
   createAd,
   deleteAd,
@@ -15,6 +16,8 @@ const {
 
 //Get all the Ads
 router.get("/", getAds);
+
+router.get("/getadminads", getAdminAds);
 
 //Get a single Ad
 router.get("/:id", getAd);

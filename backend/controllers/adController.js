@@ -44,6 +44,26 @@ const getAds = async (req, res) => {
   }
 };
 
+//Get all Ads
+const getAdminAds = async (req, res) => {
+  const { sort } = req.query;
+
+  let query = {};
+
+  query.reports = { $exists: true, $not: { $size: 0 } };
+
+  let sortOptions = { "reports.length": -1 }; // default sorting
+  if (sort === "most_reports") sortOptions = { "reports.length": -1 };
+  if (sort === "least_reports") sortOptions = { "reports.length": 1 };
+
+  try {
+    const ads = await Ad.find(query).sort(sortOptions);
+    res.status(200).json(ads);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Get a single Ad
 const getAd = async (req, res) => {
   // Check if the ID is valid
@@ -215,6 +235,7 @@ const getAdsByUser = async (req, res) => {
 //Export these functions
 module.exports = {
   getAds,
+  getAdminAds,
   getAd,
   createAd,
   deleteAd,

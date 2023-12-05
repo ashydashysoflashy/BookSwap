@@ -6,17 +6,20 @@ import ReportItem from './ReportItem';
 
 const AdminContent = () => {
   const { ads, dispatch } = useAdsContext();
-  const [sort, setSort] = useState();
+  const [sort, setSort] = useState("most_reports");
 
   const sortOptions = [
-    { value: "test", label: "Most Reports first" },
-    { value: "test1", label: "Least Reports first" },
-    { value: "test2", label: "Newly Reported" }
+    { value: "most_reports", label: "Most Reports first" },
+    { value: "least_reports", label: "Least Reports first" }
   ];
 
   useEffect(() => {
     const fetchAds = async () => {
-      const response = await fetch("http://localhost:4000/api/ads");
+      const params = new URLSearchParams({
+        sort: sort
+      });
+
+      const response = await fetch(`http://localhost:4000/api/ads/getadminads${params}`);
       const json = await response.json();
 
       if (response.ok) {
@@ -38,6 +41,7 @@ const AdminContent = () => {
           className="react-select-container-results admin_sort_select"
           classNamePrefix="react-select"
           placeholder="Sort by" />
+          
       </div>
       <div className='admin_report_container'>
         {ads && ads.map((ad) => <ReportItem key={ad._id} ad={ad} />)}
