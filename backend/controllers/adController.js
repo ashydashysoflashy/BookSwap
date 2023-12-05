@@ -112,6 +112,7 @@ const createAd = async (req, res) => {
       title,
       description,
       files: fileNames,
+      reports: [],
       category,
       location,
       tags,
