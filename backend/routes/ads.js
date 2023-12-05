@@ -11,6 +11,7 @@ const {
   deleteAd,
   updateAd,
   getAdsByUser,
+  updateAdReports
 } = require("../controllers/adController");
 
 //Get all the Ads
@@ -18,6 +19,9 @@ router.get("/", getAds);
 
 //Get a single Ad
 router.get("/:id", getAd);
+
+//Update an Ad
+router.patch("/report/:id", updateAdReports);
 
 //ALL THE FUNCTIONS AFTER THIS LINE OF CODE REQUIRE AUTHORIZATION
 router.use(requireAuth);

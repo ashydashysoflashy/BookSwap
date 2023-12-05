@@ -64,7 +64,7 @@ export default function ListingCreator({ ad, onContactClick }) {
     const adData = {
       reports: [...ad.reports,newReport]
     };
-    const response = await fetch(`http://localhost:4000/api/ads/${ad._id}`, {
+    const response = await fetch(`http://localhost:4000/api/ads/report/${ad._id}`, {
       method: "PATCH",
       body: JSON.stringify(adData),
       headers: {
