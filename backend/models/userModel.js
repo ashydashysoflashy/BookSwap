@@ -18,6 +18,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  isAdmin:{
+    type: Boolean,
+  },
   ad_ids: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -27,10 +35,18 @@ const userSchema = new Schema({
 });
 
 //static method to aid with signing up a user instead of doing everything in the controller
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email,password,username) {
   //if theres no email or password throw an error
-  if (!email || !password) {
-    throw Error("All fields must be filled");
+  if (!email) {
+    throw Error("email must be filled");
+  }
+
+  if (!password ) {
+    throw Error("password must be filled");
+  }
+
+  if (!username) {
+    throw Error("username must be filled");
   }
 
   //check if email already exists in database, if so then send back error response
@@ -39,12 +55,18 @@ userSchema.statics.signup = async function (email, password) {
     throw Error("Email already in use");
   }
 
+  //check if username already exists in database, if so then send back error response
+  const usernameExists = await this.findOne({ username });
+  if (usernameExists) {
+    throw Error("Username must be unique",usernameExists);
+  }
+
   //hash the password - salts are added to end of password ex password123agkeaghaeh
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
   //create the user in the database and return it
-  const user = await this.create({ email, password: hash });
+  const user = await this.create({ email, password: hash, username,isAdmin: false});
   return user;
 };
 

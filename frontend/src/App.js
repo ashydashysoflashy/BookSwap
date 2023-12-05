@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {user ? <>{url.includes('admin') ? null : <NavbarLoggedIn />}</> : <Navbar />}
+        {user ? <>{url.includes('admin') ? null : <Navbar/>}</> : <Navbar />}
         <div className="pages">
           <Routes>
             <Route path="/login" element={!user ? <LoginPage/> : <Navigate to='/'/>}/>
