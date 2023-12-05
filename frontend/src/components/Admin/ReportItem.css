@@ -19,7 +19,7 @@
 }
 
 .report_image {
-    height: 20vh;
+    min-height: 10vh;
     width: 30%;
     object-fit: contain;
 }

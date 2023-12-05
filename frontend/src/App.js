@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 
 //Pages
@@ -23,25 +23,35 @@ import { useAuthContext } from "./hooks/useAuthContext"
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
   const user = localStorage.getItem('user');
-  const url = window.location.href;
+
+
+
+  function DecideNavbar() {
+    const url = useLocation();
+    if (user) {
+      if (url.pathname === '/admin') return null;
+      else return <NavbarLoggedIn />;
+    }
+    else return <Navbar />;
+  }
 
   return (
     <div className="App">
       <BrowserRouter>
-        {user ? <>{url.includes('admin') ? null : <Navbar/>}</> : <Navbar />}
+        <DecideNavbar />
         <div className="pages">
           <Routes>
-            <Route path="/login" element={!user ? <LoginPage/> : <Navigate to='/'/>}/>
-            <Route path="/register" element={!user ? <RegisterPage/> : <Navigate to='/'/>}/>
-            <Route path="/create" element={user ? <CreateAd /> : <Navigate to='/register'/>} />
-            <Route path="/update/:id" element={user ? <UpdateAd /> : <Navigate to='/register'/>} />
+            <Route path="/login" element={!user ? <LoginPage /> : <Navigate to='/' />} />
+            <Route path="/register" element={!user ? <RegisterPage /> : <Navigate to='/' />} />
+            <Route path="/create" element={user ? <CreateAd /> : <Navigate to='/register' />} />
+            <Route path="/update/:id" element={user ? <UpdateAd /> : <Navigate to='/register' />} />
             <Route path="/home" element={<Browse />} />
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
-            <Route path="/userads/:id" element={user ? <OtherUserAdsPage/> : <Navigate to='/register'/>} />
-            <Route path="/admin" element={user ? <AdminPage/> : <Navigate to='/register'/>} />
-            <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
+            <Route path="/myads" element={user ? <UserAdsPage /> : <Navigate to='/register' />} />
+            <Route path="/userads/:id" element={user ? <OtherUserAdsPage /> : <Navigate to='/register' />} />
+            <Route path="/admin" element={user ? <AdminPage /> : <Navigate to='/register' />} />
+            <Route path="/" element={!user ? <HomePage /> : <Browse />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
