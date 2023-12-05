@@ -9,6 +9,7 @@ const {
     getUserEmailById,
     getUsername,
     getUserAdmin,
+    getIsBanned,
     banUser
 } = require('../controllers/userController');
 
@@ -24,6 +25,8 @@ router.get("/:id", getUsername);
 
 //Get a single user
 router.get("/isAdmin/:id", getUserAdmin);
+
+router.get("/isBanned/:id", getIsBanned);
 
 //Delete a user
 router.post("/admin/banuser/:id", banUser);

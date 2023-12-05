@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //Pages
 import CreateAd from "./pages/CreateAd";
@@ -18,7 +18,7 @@ import OtherUserAdsPage from "./pages/OtherUserAdsPage";
 //Components
 import Navbar from "./components/Navbar";
 import NavbarLoggedIn from "./components/Navbar-LoggedIn";
-import { useAuthContext } from "./hooks/useAuthContext"
+import BanCheck from "./components/BanCheck"
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
 function App() {
@@ -36,7 +36,8 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <DecideNavbar />
+        <BanCheck />
+        {!user ? <Navbar /> : <DecideNavbar />}
         <div className="pages">
           <Routes>
             <Route path="/login" element={!user ? <LoginPage /> : <Navigate to='/' />} />

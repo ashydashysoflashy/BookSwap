@@ -1,16 +1,16 @@
-import {React,useState,useEffect} from "react"
+import { React, useState, useEffect } from "react"
 import AdminSidebar from "../components/Admin/AdminSidebar";
 import AdminContent from "../components/Admin/AdminContent";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
-  const {user} = useAuthContext();
-  const [error,setError] = useState('')
-  const [isLoading,setIsLoading] = useState(null)
-  const [admin,setAdmin] = useState()
+  const { user } = useAuthContext();
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(null)
+  const [admin, setAdmin] = useState()
   const navigate = useNavigate()
-  const [adminFetched,setAdminFetched] = useState(false)
+  const [adminFetched, setAdminFetched] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,16 +35,16 @@ const AdminPage = () => {
     fetchData();
   }, [user]);
 
-  useEffect(() =>{
-    if(!adminFetched) return;
-    if(admin) return;
+  useEffect(() => {
+    if (!adminFetched) return;
+    if (admin) return;
     navigate("/")
-  },[admin])
+  }, [admin])
 
   return (
     <div className="admin_page">
-      {adminFetched && <AdminSidebar admin={admin}/>}
-      {adminFetched && <AdminContent admin={admin}/>}
+      {adminFetched && <AdminSidebar admin={admin} />}
+      {adminFetched && <AdminContent admin={admin} />}
     </div>
   )
 }

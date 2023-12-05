@@ -4,10 +4,10 @@ import Select from 'react-select';
 import './AdminContent.css'
 import ReportItem from './ReportItem';
 
-const AdminContent = ({admin}) => {
+const AdminContent = ({ admin }) => {
   const { ads, dispatch } = useAdsContext();
   const [sort, setSort] = useState("most_reports");
-  const [sortedAds,setSortedAds] = useState([])
+  const [sortedAds, setSortedAds] = useState([])
 
   const sortOptions = [
     { value: "most_reports", label: "Most Reports first" },
@@ -53,7 +53,7 @@ const AdminContent = ({admin}) => {
 
       </div>
       <div className='admin_report_container'>
-        {sortedAds && sortedAds.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch} handleDeleteListingParent={handleDeleteListingParent} handleBanUserParent={handleBanUserParent}/>)}
+        {sortedAds && sortedAds.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch} handleDeleteListingParent={handleDeleteListingParent} handleBanUserParent={handleBanUserParent} />)}
       </div>
     </div>
   )

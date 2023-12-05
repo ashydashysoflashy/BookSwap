@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import logo from '../assets/logo_large.png'
 import locationIcon from '../assets/location_icon.png'
 
 import './Navbar.css'
-import {useLogout} from "../hooks/useLogout";
+import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -14,8 +15,36 @@ const Navbar = () => {
   const { logout } = useLogout();
   const dropdownRef = useRef(null);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const { user } = useAuthContext();
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(null)
+  const [admin, setAdmin] = useState()
+  const [adminFetched, setAdminFetched] = useState(false)
 
-  const handleLogout =  async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Construct the query parameters
+        const response = await fetch(`http://localhost:4000/api/user/isAdmin/${user.id}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setAdmin(data);
+          setAdminFetched(true)
+        } else {
+          throw new Error(data.error || "Failed to fetch results");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  const handleLogout = async () => {
     await logout();
     window.location.reload(); // This will reload the page
     console.log('User logged out');
@@ -92,11 +121,11 @@ const Navbar = () => {
               <div className="profile-dropdown-container" ref={dropdownRef}>
                 <button className='profile' onClick={() => setShowDropdown(!showDropdown)}></button>
                 {showDropdown && (
-                    <div className="profile-dropdown">
-                      <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
-                      <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>
-                      <button onClick={handleLogout}>Log Out</button>
-                    </div>
+                  <div className="profile-dropdown">
+                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
+                    {admin && <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>}
+                    <button onClick={handleLogout}>Log Out</button>
+                  </div>
                 )}
               </div>
               <Link to="/create"><button className='navbar_login_button'>Post Ad</button></Link>

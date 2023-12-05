@@ -32,10 +32,10 @@ const loginUser = async (req, res) => {
 //signup user function
 const signupUser = async (req, res) => {
   //get the email and password from req body
-  const { email, password,username} = req.body;
+  const { email, password, username } = req.body;
   //try to create the user - if theres an error we catch it
   try {
-    const user = await User.signup(email, password,username);
+    const user = await User.signup(email, password, username);
     //create a token
     const token = createToken(user._id);
     //no error so send a good response with the token for the user
@@ -92,6 +92,29 @@ const getUserAdmin = async (req, res) => {
   }
 };
 
+// Check if use is banned or not
+const getIsBanned = async (req, res) => {
+  // Check if the ID is valid
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "The user does not exist" });
+  }
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(id);
+    // If the ad doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ error: "The user does not exist" });
+    }
+    // Return the user
+    res.status(200).json(user.isBanned);
+  } catch (error) {
+    // If an error occurs, return an error status
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const getUserEmailById = async (userId) => {
 
   try {
@@ -136,4 +159,4 @@ const banUser = async (req, res) => {
 };
 
 //export these functions
-module.exports = { loginUser, signupUser, getUserEmailById,getUsername,getUserAdmin,banUser};
+module.exports = { loginUser, signupUser, getUserEmailById, getUsername, getUserAdmin, getIsBanned, banUser };

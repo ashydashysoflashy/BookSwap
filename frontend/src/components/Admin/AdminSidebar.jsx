@@ -1,9 +1,14 @@
 import './AdminSidebar.css'
 import logo from '../../assets/logo_large.png';
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-const AdminSidebar = ({admin}) => {
+import {useLogout} from "../../hooks/useLogout";
+
+const AdminSidebar = ({ admin }) => {
 
   const [menuState, setMenuState] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useLogout();
 
   const showMenu = (e) => {
     const menu = document.getElementById('admin_sidebar_menu');
@@ -18,6 +23,12 @@ const AdminSidebar = ({admin}) => {
     }
   }
 
+  const handleLogout =  async () => {
+    await logout();
+    window.location.reload(); // This will reload the page
+    navigate('/');
+  };
+
   return (
     <>
       <button className='admin_right_button' onClick={showMenu}>&#11208;</button>
@@ -28,8 +39,8 @@ const AdminSidebar = ({admin}) => {
           <div className='sidebar_line'></div>
         </div>
         <div className='sidebar_bottom_content'>
-          <button className='sidebar_button'>Back to Site</button>
-          <button className='sidebar_button'>Log Out</button>
+          <button className='sidebar_button' onClick={()=>navigate('/home')}>Back to Site</button>
+          <button className='sidebar_button' onClick={handleLogout}>Log Out</button>
         </div>
       </div>
       <div className="sidebar_container" id='admin_sidebar_menu'>
@@ -39,8 +50,8 @@ const AdminSidebar = ({admin}) => {
           <div className='sidebar_line'></div>
         </div>
         <div className='sidebar_bottom_content'>
-          <button className='sidebar_button'>Back to Site</button>
-          <button className='sidebar_button'>Log Out</button>
+          <button className='sidebar_button' onClick={()=>navigate('/home')}>Back to Site</button>
+          <button className='sidebar_button' onClick={handleLogout}>Log Out</button>
         </div>
       </div>
     </>

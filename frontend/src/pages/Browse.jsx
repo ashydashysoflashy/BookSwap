@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
+import { useLocation } from "react-router-dom";
 
 import AdOverview from "../components/AdOverview";
 import ResultItem from '../components/Search/Result'
