@@ -69,6 +69,28 @@ const getUsername = async (req, res) => {
   }
 };
 
+// Get a single users name
+const getUserAdmin = async (req, res) => {
+  // Check if the ID is valid
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "The user does not exist" });
+  }
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(id);
+    // If the ad doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ error: "The user does not exist" });
+    }
+    // Return the user
+    res.status(200).json(user.isAdmin);
+  } catch (error) {
+    // If an error occurs, return an error status
+    res.status(400).json({ error: error.message });
+  }
+};
 
 const getUserEmailById = async (userId) => {
 
@@ -84,4 +106,4 @@ const getUserEmailById = async (userId) => {
 };
 
 //export these functions
-module.exports = { loginUser, signupUser, getUserEmailById,getUsername};
+module.exports = { loginUser, signupUser, getUserEmailById,getUsername,getUserAdmin};

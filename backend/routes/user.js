@@ -8,6 +8,7 @@ const {
     loginUser,
     getUserEmailById,
     getUsername,
+    getUserAdmin,
 } = require('../controllers/userController');
 
 //login route - call the control loginUser function
@@ -19,6 +20,9 @@ router.post('/signup',signupUser)
 
 //Get a single user
 router.get("/:id", getUsername);
+
+//Get a single user
+router.get("/isAdmin/:id", getUserAdmin);
 
 
 //export the router
