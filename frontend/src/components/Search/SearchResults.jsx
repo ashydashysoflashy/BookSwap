@@ -80,7 +80,7 @@ export default function SearchResults({
       {isLoading && <div>Loading...</div>}
       {error && <div>Error:{error}</div>}
       {results.length > 0 ? (
-        results.map((result) => <ResultItem key={result._id} ad={result}/>)
+        results.map((result) => <ResultItem key={result._id} ad={result} />)
       ) : (
         <div>No results found.</div>
       )}

@@ -7,7 +7,6 @@ import { IoMdStarOutline } from "react-icons/io";
 import Select from "react-select";
 
 export default function ListingCreator({ ad, onContactClick }) {
-
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
