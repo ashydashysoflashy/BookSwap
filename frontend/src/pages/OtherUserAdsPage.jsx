@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import ResultItem from "../components/Search/Result";
+import AdOverview from "../components/AdOverview";
 
 const OtherUserAdsPage = () => {
   const [id, setId] = useState();
@@ -48,12 +49,16 @@ const OtherUserAdsPage = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>User's Active Listings</h1>
-      <div className="ads">
-        {ads.map((ad) => (
-          <ResultItem key={ad._id} ad={ad} />
-        ))}
+    <div className="user-ads-page">
+      <h1 className="page-title">User's Ads</h1>
+      {isLoading && <div className="loading">Loading...</div>}
+      {error && <div className="error-message">Error: {error}</div>}
+      <div className="ads-container">
+        {ads.length > 0 ? (
+          ads.map((ad) => <AdOverview key={ad._id} ad={ad} creator={false}/>)
+        ) : (
+          <p className="no-ads-message">You haven't posted any ads yet.</p>
+        )}
       </div>
     </div>
   );
