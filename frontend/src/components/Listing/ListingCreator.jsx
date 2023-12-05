@@ -15,7 +15,7 @@ export default function ListingCreator({ ad, onContactClick }) {
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [newReport, setNewReport] = useState({ user_id: user.id, reason: "" });
+  const [newReport, setNewReport] = useState({user_id: null, reason: "" });
   const [reportError, setReportError] = useState(null)
   const { dispatch } = useAdsContext();
   const [displayReport, setDisplayReport] = useState();
@@ -31,11 +31,12 @@ export default function ListingCreator({ ad, onContactClick }) {
   };
 
   useEffect(() => {
+    if(!user || !user.id) return;
     // Check if the current user has already reported the ad
     if (ad.reports.some(report => report.user_id === user.id)) {
       setReportSuccess(true)
     }
-  }, [ad, user.id]);
+  }, [ad, user]);
 
 
   useEffect(() => {
@@ -61,10 +62,15 @@ export default function ListingCreator({ ad, onContactClick }) {
   }, [ad]);
 
   const handleReport = async (e) => {
+    if(!user) return
     e.preventDefault();
     if (!displayReport) setDisplayReport(!displayReport);
-    setReportError(null)
     if (newReport.reason === "") return;
+    setReportError(null)
+    setNewReport((prev) => ({
+      ...prev,
+      user_id: user.id
+    }));
 
     //Functionality for reporting a listing
     const adData = {
@@ -118,7 +124,7 @@ export default function ListingCreator({ ad, onContactClick }) {
       <button className='other-button' onClick={onViewOtherListingsClick}>View Other Listings </button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
       {reportSuccess && <p>Your report has been submitted.</p>}
-      {!reportSuccess && (ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
+      {!reportSuccess && (user && ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
       {displayReport && newReport.reason === "" && <p id='report_text'>Please input a reason for reporting</p>}
       {reportError && <p id='report_text'>{reportError.message}</p>}
       {displayReport && !reportSuccess ? <Select
