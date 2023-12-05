@@ -19,7 +19,7 @@ const AdminContent = () => {
         sort: sort
       });
 
-      const response = await fetch(`http://localhost:4000/api/ads/getadminads${params}`);
+      const response = await fetch(`http://localhost:4000/api/ads/getadminads?${params}`);
       const json = await response.json();
 
       if (response.ok) {
@@ -27,8 +27,13 @@ const AdminContent = () => {
       }
     };
     fetchAds();
-  }, [dispatch]);
-  console.log(ads);
+  }, [dispatch, sort]);
+
+  // Use another useEffect to ensure the component re-renders when ads change
+  useEffect(() => {
+    // Your logic to handle ads change
+    console.log(ads);
+  }, [ads]);
 
   return (
     <div className="admin_content_container">
@@ -41,7 +46,7 @@ const AdminContent = () => {
           className="react-select-container-results admin_sort_select"
           classNamePrefix="react-select"
           placeholder="Sort by" />
-          
+
       </div>
       <div className='admin_report_container'>
         {ads && ads.map((ad) => <ReportItem key={ad._id} ad={ad} />)}

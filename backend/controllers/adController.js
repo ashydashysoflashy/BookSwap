@@ -44,10 +44,9 @@ const getAds = async (req, res) => {
   }
 };
 
-//Get all Ads
+//Get all Ads from Admin screen
 const getAdminAds = async (req, res) => {
   const { sort } = req.query;
-
   let query = {};
 
   query.reports = { $exists: true, $not: { $size: 0 } };
