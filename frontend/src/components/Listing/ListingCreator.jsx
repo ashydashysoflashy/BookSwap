@@ -22,7 +22,6 @@ export default function ListingCreator({ ad, onContactClick }) {
     { value: "prohibited", label: "Prohibited Content" },
     { value: "illegal", label: "Illegal Content" }
   ];
-
   useEffect(() => {
     // Check if the current user has already reported the ad
     if (ad.reports.some(report => report.user_id === user.id)) {
@@ -86,7 +85,6 @@ export default function ListingCreator({ ad, onContactClick }) {
   return (
     <div className='creator-container'>
       <div className='creator-info-container'>
-
         <div className='creator-left'>
           <FaRegUser size={30} color='grey' />
           <div className='creator-left-inner'>
@@ -112,7 +110,7 @@ export default function ListingCreator({ ad, onContactClick }) {
       <button className='other-button'>View Other Listings</button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
       {reportSuccess && <p>Your report has been submitted.</p>}
-      {!reportSuccess && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
+      {!reportSuccess && (ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
       {displayReport && newReport.reason === "" && <p id='report_text'>Please input a reason for reporting</p>}
       {reportError && <p id='report_text'>{reportError.message}</p>}
       {displayReport && !reportSuccess ? <Select
