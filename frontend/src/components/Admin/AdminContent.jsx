@@ -4,7 +4,7 @@ import Select from 'react-select';
 import './AdminContent.css'
 import ReportItem from './ReportItem';
 
-const AdminContent = () => {
+const AdminContent = ({admin}) => {
   const { ads, dispatch } = useAdsContext();
   const [sort, setSort] = useState("most_reports");
 
@@ -29,12 +29,6 @@ const AdminContent = () => {
     fetchAds();
   }, [dispatch, sort]);
 
-  // Use another useEffect to ensure the component re-renders when ads change
-  useEffect(() => {
-    // Your logic to handle ads change
-    console.log(ads);
-  }, [ads]);
-
   return (
     <div className="admin_content_container">
       <div className='admin_content_top'>
@@ -49,7 +43,7 @@ const AdminContent = () => {
 
       </div>
       <div className='admin_report_container'>
-        {ads && ads.map((ad) => <ReportItem key={ad._id} ad={ad} />)}
+        {ads && ads.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch}/>)}
       </div>
     </div>
   )

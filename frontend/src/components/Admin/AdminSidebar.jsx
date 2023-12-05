@@ -1,7 +1,7 @@
 import './AdminSidebar.css'
 import logo from '../../assets/logo_large.png';
 import { useState } from 'react';
-const AdminSidebar = () => {
+const AdminSidebar = ({admin}) => {
 
   const [menuState, setMenuState] = useState(false);
 

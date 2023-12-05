@@ -41,11 +41,10 @@ const AdminPage = () => {
     navigate("/")
   },[admin])
 
-
   return (
     <div className="admin_page">
-      <AdminSidebar />
-      <AdminContent />
+      {adminFetched && <AdminSidebar admin={admin}/>}
+      {adminFetched && <AdminContent admin={admin}/>}
     </div>
   )
 }
