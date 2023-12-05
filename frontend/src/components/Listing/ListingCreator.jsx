@@ -5,12 +5,31 @@ import { FaRegUser } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
 import { IoMdStarOutline } from "react-icons/io";
 import Select from "react-select";
+import {useAuthContext} from '../../hooks/useAuthContext'
+import {useAdsContext} from '../../hooks/useAdsContext';
 
 export default function ListingCreator({ ad, onContactClick }) {
-
+  const {user} = useAuthContext();
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [newReport,setNewReport] = useState({user_id:user.id,reason:""});
+  const [reportError,setReportError] = useState(null)
+  const { dispatch } = useAdsContext();
+  const [displayReport, setDisplayReport] = useState();
+  const [reportSuccess,setReportSuccess] = useState(false);
+  const reportOptions = [
+    { value: "prohibited", label: "Prohibited Content" },
+    { value: "illegal", label: "Illegal Content" }
+  ];
+
+  useEffect(() => {
+    // Check if the current user has already reported the ad
+    if (ad.reports.some(report => report.user_id === user.id)) {
+      setReportSuccess(true)
+    } 
+  }, [ad, user.id]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,24 +53,34 @@ export default function ListingCreator({ ad, onContactClick }) {
     fetchData();
   }, [ad]);
 
-  const [report, setReport] = useState(null);
-  const [displayReport, setDisplayReport] = useState();
-
-  const reportOptions = [
-    { value: "business", label: "Prohibited Content" },
-    { value: "computerScience", label: "Illegal Content" }
-  ];
-
-  const handleReport = () => {
+  const handleReport = async (e) => {
+    e.preventDefault();
     if (!displayReport) setDisplayReport(!displayReport);
-    else {
-      console.log(report);
-      if (report === null) document.getElementById("report_text").style.display = "block";
-      else {
-        //Functionality for reporting a listing
-      }
+    setReportError(null)
+    if (newReport.reason === ""){
+      return;
     }
-  }
+    //Functionality for reporting a listing
+    const adData = {
+      reports: [...ad.reports,newReport]
+    };
+    const response = await fetch(`http://localhost:4000/api/ads/${ad._id}`, {
+      method: "PATCH",
+      body: JSON.stringify(adData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const jsonData = await response.json();
+    if (!response.ok) {
+      setReportError(jsonData.error);
+    } else {
+      dispatch({ type: "UPDATE_AD", payload: jsonData });
+      setReportSuccess(true);
+    }
+
+  };
 
   return (
     <div className='creator-container'>
@@ -81,18 +110,20 @@ export default function ListingCreator({ ad, onContactClick }) {
 
       <button className='other-button'>View Other Listings</button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
-      <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>
-      {displayReport ? <Select
+      {reportSuccess && <p>Your report has been submitted.</p>}
+      {!reportSuccess && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
+      {displayReport && newReport.reason === "" && <p id='report_text'>Please input a reason for reporting</p>}
+      {reportError && <p id='report_text'>{reportError.message}</p>}
+      {displayReport && !reportSuccess ? <Select
         options={reportOptions}
-        onChange={(selectedOption) => setReport(selectedOption.value)}
+        onChange={(selectedOption) => setNewReport((prev) => ({...prev,reason: selectedOption.value}))}
         className="react-select-container"
         classNamePrefix="react-select"
         placeholder="Reason for Reporting"
         value={reportOptions.find(
-          (option) => option.value === report
+          (option) => option.value === newReport
         )}
       /> : null}
-      <p id='report_text'>Please input a reason for reporting</p>
     </div>
 
   )
