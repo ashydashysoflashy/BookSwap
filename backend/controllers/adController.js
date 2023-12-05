@@ -57,7 +57,6 @@ const getAdminAds = async (req, res) => {
 
   try {
     const ads = await Ad.find(query).sort(sortOptions);
-    console.log("fetched ads", ads);
     res.status(200).json(ads);
   } catch (error) {
     res.status(400).json({ error: error.message });

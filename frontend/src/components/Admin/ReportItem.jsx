@@ -5,8 +5,18 @@ const ReportItem = (props) => {
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const ad = props.ad;
+
+  function findCommonComplaints() {
+    const temp = []
+    for (let i = 0; i < ad.reports.length; i++) {
+      if (temp.includes(ad.reports[i].reason)) continue;
+      else temp.push(ad.reports[i].reason);
+    }
+    return temp;
+  }
+  const complaints = findCommonComplaints();
+  console.log(complaints);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,9 +91,9 @@ const ReportItem = (props) => {
     <div className="report_container">
       <div className='report_left_container'>
         {imageUrls.length > 0 ? <img className='report_image' alt='Listing Book' src={imageUrls[0]}></img>
-        : <img className='report_image' alt='Not Available' 
-        src={'https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg'}></img>}
-        
+          : <img className='report_image' alt='Not Available'
+            src={'https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg'}></img>}
+
         <div className='report_post_info'>
           <div className='report_post_top_info'>
             <h1 className='report_post_title'>{ad.title.slice(0, 40)}{(ad.title.length > 40) ? '...' : ''}</h1>
@@ -100,8 +110,11 @@ const ReportItem = (props) => {
       <div className='report_right_container'>
         <div className='report_post_data'>
           <p className='report_post_description'><strong>Author:</strong> {username}</p>
-          <p className='report_post_description'><strong>Complaints:</strong> {null}</p>
-          <p className='report_post_description'><strong>Common Reports:</strong> {null}</p>
+          <p className='report_post_description'><strong>Complaints:</strong> {ad.reports.length}</p>
+          <p className='report_post_description'><strong>Common Reports:</strong> {complaints.map((data, i) => {
+            if (i === ad.reports.length - 1) return `${data}`
+            else return `${data}, `
+          })}</p>
         </div>
         <div className='report_verticle_line'></div>
         <div className='report_action_container'>

@@ -38,7 +38,7 @@ const AdminContent = () => {
   return (
     <div className="admin_content_container">
       <div className='admin_content_top'>
-        <h1>Showing 1-40 of 340 results</h1>
+        <h1>{`Showing ${ads && ads.length} Results`}</h1>
         <Select
           options={sortOptions}
           value={sortOptions.find((option) => option.value === sort)}
