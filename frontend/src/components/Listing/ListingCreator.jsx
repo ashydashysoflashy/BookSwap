@@ -58,6 +58,7 @@ export default function ListingCreator({ ad, onContactClick }) {
     if (!displayReport) setDisplayReport(!displayReport);
     setReportError(null)
     if (newReport.reason === ""){
+      console.log("return");
       return;
     }
     //Functionality for reporting a listing
