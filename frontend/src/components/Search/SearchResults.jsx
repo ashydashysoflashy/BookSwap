@@ -68,23 +68,27 @@ export default function SearchResults({
   };
 
   return (
-    <div className="results-container">
-      <Select
-        options={optionsSort}
-        value={optionsSort.find((option) => option.value === sortOption)}
-        onChange={handleSortChange} // Added onChange handler
-        className="react-select-container-results"
-        classNamePrefix="react-select"
-        placeholder="Sort by"
-      />
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Error:{error}</div>}
-      {results.length > 0 ? (
-        results.map((result) => <ResultItem key={result._id} ad={result} />)
-      ) : (
-        <div>No results found.</div>
-      )}
-    </div>
+      <div className="search-results-wrapper">
+        <div className="sorting-container">
+          <Select
+              options={optionsSort}
+              value={optionsSort.find(option => option.value === sortOption)}
+              onChange={handleSortChange}
+              className="react-select-container-results"
+              classNamePrefix="react-select"
+              placeholder="Sort by"
+          />
+        </div>
+        <div className="results-grid">
+          {isLoading && <div>Loading...</div>}
+          {error && <div>Error: {error}</div>}
+          {results.length > 0 ? (
+              results.map(result => <ResultItem key={result._id} ad={result} />)
+          ) : (
+              <div>No results found.</div>
+          )}
+        </div>
+      </div>
   );
 }
 

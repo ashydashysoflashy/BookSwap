@@ -13,6 +13,7 @@ import ListingPage from "./pages/ListingPage";
 import SearchPage from "./pages/SearchPage";
 import NotFoundPage from './pages/NotFoundPage';
 import UserAdsPage from "./pages/UserAdsPage";
+import OtherUserAdsPage from "./pages/OtherUserAdsPage";
 
 //Components
 import Navbar from "./components/Navbar";
@@ -38,6 +39,7 @@ function App() {
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/myads" element={user ? <UserAdsPage/> : <Navigate to='/register'/>} />
+            <Route path="/userads/:id" element={user ? <OtherUserAdsPage/> : <Navigate to='/register'/>} />
             <Route path="/admin" element={user ? <AdminPage/> : <Navigate to='/register'/>} />
             <Route path="/" element={!user ? <HomePage /> : <Browse/>}/>
             <Route path="*" element={<NotFoundPage />} />

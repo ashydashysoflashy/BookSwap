@@ -1,20 +1,44 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import logo from '../assets/logo_large.png'
 import locationIcon from '../assets/location_icon.png'
 
 import './Navbar.css'
+import {useLogout} from "../hooks/useLogout";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { logout } = useLogout();
+  const dropdownRef = useRef(null);
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
+
+  const handleLogout =  async () => {
+    await logout();
+    window.location.reload(); // This will reload the page
+    console.log('User logged out');
+    navigate('/');
+  };
 
   const handleSearchSubmit = () => {
     const searchURL = searchQuery.trim()
       ? `/search?query=${encodeURIComponent(searchQuery.trim())}`
       : "/search";
     navigate(searchURL);
+  };
+
+  /* Handle clicks around toggle for user account so toggle button is hidden */
+  const handleClickOutside = (event) => {
+    // If the click is outside the dropdown, close it
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+    }
+  };
+
+  const handleLinkClick = () => {
+    setShowDropdown(false); // Close the dropdown when a link is clicked
   };
 
   function keyboardHandler(e) {
@@ -28,6 +52,19 @@ const Navbar = () => {
     document.addEventListener('keydown', keyboardHandler)
     return () => { document.removeEventListener('keydown', keyboardHandler) }
   })
+
+  useEffect(() => {
+    // Add event listener for clicks outside the dropdown
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
 
   return (
     <header>
@@ -52,9 +89,18 @@ const Navbar = () => {
               <button className='book_check'></button>
               <button className='chat'></button>
               <button className='notif'></button>
-              <button className='profile'></button>
+              <div className="profile-dropdown-container" ref={dropdownRef}>
+                <button className='profile' onClick={() => setShowDropdown(!showDropdown)}></button>
+                {showDropdown && (
+                    <div className="profile-dropdown">
+                      <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
+                      <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>
+                      <button onClick={handleLogout}>Log Out</button>
+                    </div>
+                )}
+              </div>
+              <Link to="/create"><button className='navbar_login_button'>Post Ad</button></Link>
             </div>
-            <Link to="/create"><button className='navbar_login_button'>Post Ad</button></Link>
           </div>
         </div>
         <div className="navbar_bottom">

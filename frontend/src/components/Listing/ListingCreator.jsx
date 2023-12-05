@@ -4,11 +4,13 @@ import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
 import { IoMdStarOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {useAuthContext} from '../../hooks/useAuthContext'
 import {useAdsContext} from '../../hooks/useAdsContext';
 
-export default function ListingCreator({ ad, onContactClick }) {
+export default function ListingCreator({ onContactClick }) {
+  const navigate = useNavigate();
   const {user} = useAuthContext();
   const [username, setUsername] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -107,7 +109,7 @@ export default function ListingCreator({ ad, onContactClick }) {
         </div>
       </div>
 
-      <button className='other-button'>View Other Listings</button>
+      <button className='other-button' onClick = {onViewOtherListingsClick}>View Other Listings </button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
       {reportSuccess && <p>Your report has been submitted.</p>}
       {!reportSuccess && (ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
