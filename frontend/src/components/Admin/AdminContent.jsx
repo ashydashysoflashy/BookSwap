@@ -35,10 +35,14 @@ const AdminContent = ({admin}) => {
     setSortedAds((prevAds) => prevAds.filter((ad) => ad._id !== deletedAdId));
   };
 
+  const handleBanUserParent = (deletedUserId) => {
+    setSortedAds((prevAds) => prevAds.filter((ad) => ad.user_id !== deletedUserId));
+  };
+
   return (
     <div className="admin_content_container">
       <div className='admin_content_top'>
-        <h1>{`Showing ${ads && ads.length} Results`}</h1>
+        <h1>{`Showing ${sortedAds && sortedAds.length} Results`}</h1>
         <Select
           options={sortOptions}
           value={sortOptions.find((option) => option.value === sort)}
@@ -49,7 +53,7 @@ const AdminContent = ({admin}) => {
 
       </div>
       <div className='admin_report_container'>
-        {sortedAds && sortedAds.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch} handleDeleteListingParent={handleDeleteListingParent}/>)}
+        {sortedAds && sortedAds.map((ad) => <ReportItem key={ad._id} ad={ad} admin={admin} dispatch={dispatch} handleDeleteListingParent={handleDeleteListingParent} handleBanUserParent={handleBanUserParent}/>)}
       </div>
     </div>
   )

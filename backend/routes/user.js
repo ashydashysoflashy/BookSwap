@@ -9,6 +9,7 @@ const {
     getUserEmailById,
     getUsername,
     getUserAdmin,
+    banUser
 } = require('../controllers/userController');
 
 //login route - call the control loginUser function
@@ -23,6 +24,9 @@ router.get("/:id", getUsername);
 
 //Get a single user
 router.get("/isAdmin/:id", getUserAdmin);
+
+//Delete a user
+router.post("/admin/banuser/:id", banUser);
 
 
 //export the router

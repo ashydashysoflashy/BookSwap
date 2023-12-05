@@ -17,12 +17,12 @@ const LoginPage = () => {
     e.preventDefault();
     //wait to login 
     await login(email,password)
-    window.location.reload(); // This will reload the page
   };
   
   //if theres a user go back to home page
   useEffect(() => {
     if(user){
+      window.location.reload(); // This will reload the page
       navigate('/Home')
     }
   },[user])

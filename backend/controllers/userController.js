@@ -105,5 +105,35 @@ const getUserEmailById = async (userId) => {
   }
 };
 
+// Get a single users name
+const banUser = async (req, res) => {
+  // Check if the ID is valid
+  const { id } = req.params;
+
+  // Check if the logged-in user is the not the owner of the ad and not an admin
+  if (req.body.admin !== true) {
+    return res.status(403).json({ error: "Unauthorized to delete this user" });
+  }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "The user does not exist" });
+  }
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(id);
+    // If the ad doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ error: "The user does not exist" });
+    }
+    // Set isBanned to true and save the user
+    user.isBanned = true;
+    await user.save();
+    res.status(200).json("user succesfully banned");
+  } catch (error) {
+    // If an error occurs, return an error status
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //export these functions
-module.exports = { loginUser, signupUser, getUserEmailById,getUsername,getUserAdmin};
+module.exports = { loginUser, signupUser, getUserEmailById,getUsername,getUserAdmin,banUser};

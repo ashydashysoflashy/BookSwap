@@ -12,6 +12,7 @@ const ReportItem = (props) => {
   const ad = props.ad;
   const admin = props.admin;
   const handleDeleteListingParent = props.handleDeleteListingParent
+  const handleBanUserParent = props.handleBanUserParent
   const { user } = useAuthContext();
   const { ads, dispatch } = useAdsContext();
 
@@ -26,8 +27,6 @@ const ReportItem = (props) => {
   }
   const complaints = findCommonComplaints();
   
-  console.log(ad)
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -101,7 +100,7 @@ const ReportItem = (props) => {
   const handleDeleteListing = async () => {
     try {
       // Construct the query parameters
-      const response = await fetch(`http://localhost:4000/api/ads/${ad._id}`, {
+      const response = await fetch(`http://localhost:4000/api/ads/admin/${ad.user_id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -122,6 +121,51 @@ const ReportItem = (props) => {
       console.log(err.message)
       setError(err.message);
     } 
+  }
+
+    const handleBanUser = async () => {
+    try {
+      // Construct the query parameters to delete all their ads
+      const deleteAdsResponse = await fetch(`http://localhost:4000/api/ads/admin/${ad.user_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          admin: admin,
+        }),
+      });
+
+      const deleteAdsData = await deleteAdsResponse.json();
+
+      if (!deleteAdsResponse.ok) {
+        throw new Error(deleteAdsData.error || "Failed to delete ads");
+      }
+
+      // Call the API to ban the user
+      const banUserResponse = await fetch(`http://localhost:4000/api/user/admin/banuser/${ad.user_id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },body: JSON.stringify({
+          admin: admin,
+        }),
+      });
+
+      const banUserData = await banUserResponse.json();
+
+      if (banUserResponse.ok) {
+        // If both API calls are successful, handle the state updates
+        handleBanUserParent(ad.user_id);
+      } else {
+        throw new Error(banUserData.error || "Failed to ban the user");
+      }
+    } catch (err) {
+      console.log(err.message);
+      setError(err.message);
+    }
   }
 
   return (
@@ -158,10 +202,9 @@ const ReportItem = (props) => {
         <div className='report_verticle_line'></div>
         <div className='report_action_container'>
           <div className='report_action_buttons'>
-            <button>Ban User</button>
             <button onClick={handleDeleteListing}>Delete Listing</button>
           </div>
-          <button className='report_delete_action'>Delete User</button>
+          <button onClick={handleBanUser} className='report_delete_action'>Ban User</button>
         </div>
       </div>
     </div>

@@ -12,7 +12,8 @@ const {
   deleteAd,
   updateAd,
   getAdsByUser,
-  updateAdReports
+  updateAdReports,
+  deleteAdsByUser
 } = require("../controllers/adController");
 
 //Get all the Ads
@@ -34,6 +35,9 @@ router.post("/", createAd);
 
 //Delete an Ad
 router.delete("/:id", deleteAd);
+
+//Delete an Ad
+router.delete("/admin/:user_id", deleteAdsByUser);
 
 //Update an Ad
 router.patch("/:id", updateAd);

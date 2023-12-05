@@ -26,6 +26,9 @@ const userSchema = new Schema({
   isAdmin:{
     type: Boolean,
   },
+  isBanned:{
+    type:Boolean,
+  },
   ad_ids: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -66,7 +69,7 @@ userSchema.statics.signup = async function (email,password,username) {
   const hash = await bcrypt.hash(password, salt);
 
   //create the user in the database and return it
-  const user = await this.create({ email, password: hash, username,isAdmin: false});
+  const user = await this.create({ email, password: hash, username,isAdmin: false,isBanned: false});
   return user;
 };
 
@@ -79,6 +82,11 @@ userSchema.statics.login = async function (email, password) {
 
   //find the user of the given email
   const user = await this.findOne({ email });
+
+  //if banned return
+  if (user.isBanned){
+    throw Error("User Is BANNED")
+  }
 
   //if no user found throw an error
   if (!user) {
