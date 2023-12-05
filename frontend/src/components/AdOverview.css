@@ -1,78 +1,121 @@
 .ad_overview {
     display: flex;
-    flex-direction: row;
-    
-    width: 55%;
-    
-
-    background-color: var(--element_background);
-    border: 2px solid var(--element_stroke);
-    border-radius: 5px;
-    margin: 1vw 1vw;
-    overflow: hidden;
+    flex-direction: column; /* Stack elements vertically on mobile */
+    width: 100%;
+    background-color: #ffffff; /* Light background for a clean look */
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* A clean border-radius effect */
+    position: relative;
 }
 
 .ad_images {
-    flex: 1; /* Adjusts based on content */
-    padding: 1vw;
+    width: 100%;
+    padding: 10px;
     display: flex;
-    align-items: center; /* Center images vertically */
-    justify-content: flex-start; /* Center images horizontally */
-    overflow: hidden; /* Hides overflow */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 
 .ad_images img {
-    max-height: 200px; /* Example fixed height */
+    max-height: 150px;
     width: auto;
-    object-fit: cover; /* Adjusts image fit */
-    margin-right: 10px; /* Space between images */}
+    object-fit: cover;
+    margin: 5px;
+    border-radius: 8px; /* Rounded corners for images */
+}
 
 .ad_information {
-    flex: 2; /* Larger flex grow factor */
+    padding: 20px;
+    background-color: #f8f9fa; /* Slightly different background for separation */
+}
+
+.ad_information h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.6rem;
+    color: #333333;
+    font-weight: bold; /* Bold title */
+}
+
+.ad_price {
+    font-size: 1.4rem;
+    color: #8ba5ff; /* Use a highlight color */
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.ad_description {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 15px;
+}
+
+.ad_actions {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 1vw;
-    min-width: 30%;
+    margin-top: 15px;
+    position: absolute;
+    gap: 10px;
+    bottom: 10px; /* Positioned at the bottom */
+    right: 10px; /* Positioned to the right */
 }
 
-.ad_information h2{
-    padding: 0;
-    margin: 0;
-    margin-top: 1vw;
-
-    font-size: 1.5rem;
-    font-weight: 600;
+.ad_actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #8ba5ff;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
 }
 
-.ad_information h3{
-    padding: 0;
-    margin: 0;
-    margin-top: 1vw;
-    
-    color: var(--button_background);
-    font-size: 1.5rem;
-    font-weight: 600;
+.ad_actions button:hover {
+    background-color: #8ba5ff; /* Darker on hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.ad_information h4{
-    padding: 0;
-    margin: 0;
-    margin-top: 1vw;
-    
-    font-size: 1.1rem;
-    font-weight: 400;
+/* Adjustments for larger screens */
+@media (min-width: 768px) {
+    .ad_overview {
+        flex-direction: row;
+    }
+
+    .ad_images {
+        flex: 1;
+        flex-wrap: nowrap;
+    }
+
+    .ad_information {
+        flex: 2;
+    }
+
+    .ad_actions {
+        flex-direction: row; /* Horizontal button layout */
+        position: absolute; /* Keep the position absolute */
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .ad_actions button {
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
 }
 
-.ad_information p{
-    padding: 0;
-    margin: 0;
-    margin: 1vw 0;
-    
-    font-size: 0.9rem;
-    font-weight: 300;
-}
+@media (max-width: 768px) {
+    .ad_actions {
+        position: static; /* Align buttons below the text */
+        width: 100%; /* Span the full width */
+    }
 
-.ad_information span{
-    margin: 1vw 0;
+    .ad_actions button {
+        width: 100%; /* Make each button span the full width */
+        margin-right: 0; /* Reset margin */
+    }
 }
