@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./AdOverview.css";
 import { S3 } from "aws-sdk";
 
-const AdOverview = ({ ad }) => {
+const AdOverview = ({ ad,creator }) => {
   const { dispatch } = useAdsContext();
   const { user } = useAuthContext();
   const navigate = useNavigate();
@@ -99,9 +99,9 @@ const AdOverview = ({ ad }) => {
           <p className="ad_description">Description: {ad.description}</p>
           <p>Date Created: {formatDate(ad.createdAt)}</p>
           <div className="ad_actions">
-            <button onClick={handleViewAd}>View Ad Details</button>
-            <button onClick={handleDelete}>Delete Ad</button>
-            <button onClick={handleUpdate}>Update Ad</button>
+            {<button onClick={handleViewAd}>View Ad Details</button>}
+            {creator && <button onClick={handleDelete}>Delete Ad</button>}
+            {creator && <button onClick={handleUpdate}>Update Ad</button>}
           </div>
         </div>
       </div>
