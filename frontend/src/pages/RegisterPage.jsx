@@ -8,6 +8,7 @@ import { useAuthContext } from '../hooks/useAuthContext'
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username,setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
   //get the signup function from the hook
@@ -27,7 +28,7 @@ const RegisterPage = () => {
     e.preventDefault();
     if (validPassword && password === confirmPassword) {
       //wait to sign up
-      await signup(email, password)
+      await signup(email,password,username)
     } else {
       // Show an error message
       console.log("passwords dont match")
@@ -51,6 +52,15 @@ const RegisterPage = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>

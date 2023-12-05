@@ -12,14 +12,19 @@
     margin: 20px 0px;
 }
 
+.report_container a {
+    text-decoration: none;
+    color: black;
+}
+
 .report_left_container {
-    width: 65%;
+    width: 60%;
     display: flex;
     flex-direction: row;
 }
 
 .report_image {
-    height: 20vh;
+    min-height: 10vh;
     width: 30%;
     object-fit: contain;
 }
@@ -39,6 +44,11 @@
 .report_post_title {
     margin: 0.3% 0;
     font: 600 1.25vw Inter, sans-serif;
+}
+
+.report_post_title:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .report_post_price {
@@ -76,6 +86,7 @@
 }
 
 .report_right_container {
+    flex-grow: 1;
     display: flex;
     flex-direction: row;
 }

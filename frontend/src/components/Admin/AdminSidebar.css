@@ -113,6 +113,7 @@
         width: 100%;
         justify-content: flex-start;
         transition: 0.6s ease;
+        z-index: 1;
     }
     .sidebar_top_title {
         font-size: 7vw;
@@ -126,5 +127,6 @@
     }
     .admin_right_button {
         display: block;
+        z-index: 2;
     }
 }

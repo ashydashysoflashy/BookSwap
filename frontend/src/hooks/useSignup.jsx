@@ -9,13 +9,13 @@ export const useSignup = () => {
     const {dispatch} = useAuthContext()
 
     //function to signup
-    const signup = async (email,password) => {
+    const signup = async (email,password,username) => {
         //initially no error and loading true
         setLoading(true)
         setError("")
 
         //object for userdetails to send to api
-        const userDetails = {email,password};
+        const userDetails = {email,password,username};
         //call the api
         const response = await fetch('http://localhost:4000/api/user/signup', {
             method: 'POST',

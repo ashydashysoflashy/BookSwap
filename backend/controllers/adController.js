@@ -44,6 +44,25 @@ const getAds = async (req, res) => {
   }
 };
 
+//Get all Ads from Admin screen
+const getAdminAds = async (req, res) => {
+  const { sort } = req.query;
+  let query = {};
+
+  query.reports = { $exists: true, $not: { $size: 0 } };
+
+  let sortOptions = { "reports.length": -1 }; // default sorting
+  if (sort === "most_reports") sortOptions = { "reports": 1 };
+  if (sort === "least_reports") sortOptions = { "reports": -1 };
+
+  try {
+    const ads = await Ad.find(query).sort(sortOptions);
+    res.status(200).json(ads);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Get a single Ad
 const getAd = async (req, res) => {
   // Check if the ID is valid
@@ -112,6 +131,7 @@ const createAd = async (req, res) => {
       title,
       description,
       files: fileNames,
+      reports: [],
       category,
       location,
       tags,
@@ -140,16 +160,13 @@ const deleteAd = async (req, res) => {
 
   try {
     const ad = await Ad.findById(id);
-
     if (!ad) {
       return res.status(404).json({ error: "The Ad does not exist" });
     }
-
-    // Check if the logged-in user is the owner of the ad
-    if (ad.user_id.toString() !== req.user._id.toString()) {
+    // Check if the logged-in user is the not the owner of the ad and not an admin
+    if (ad.user_id.toString() !== req.user._id.toString() && req.body.admin !== true) {
       return res.status(403).json({ error: "Unauthorized to delete this ad" });
     }
-
     // If authorized, delete the ad
     await Ad.findOneAndDelete({ _id: id });
 
@@ -193,6 +210,34 @@ const updateAd = async (req, res) => {
   }
 };
 
+// Update an Ad
+const updateAdReports = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "The Ad does not exist" });
+  }
+
+  try {
+    const ad = await Ad.findById(id);
+
+    if (!ad) {
+      return res.status(404).json({ error: "The Ad does not exist" });
+    }
+
+    // If authorized, update the ad
+    const updatedAd = await Ad.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { new: true }
+    );
+
+    res.status(200).json(updatedAd);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Get all ads by a specific user
 const getAdsByUser = async (req, res) => {
   try {
@@ -211,12 +256,37 @@ const getAdsByUser = async (req, res) => {
   }
 };
 
+// Delete all ads by a specific user
+const deleteAdsByUser = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    
+    // Check if the logged-in user is the not the owner of the ad and not an admin
+    if (req.body.admin !== true) {
+      return res.status(403).json({ error: "Unauthorized to delete this ad" });
+    }
+
+    // Find all ads by the user_id
+    const ads = await Ad.find({ user_id: user_id }).sort({ createdAt: -1 });
+
+    // Delete all ads by the user
+    await Ad.deleteMany({ user_id: user_id });
+
+    res.status(200).json({ message: "All ads deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //Export these functions
 module.exports = {
   getAds,
+  getAdminAds,
   getAd,
   createAd,
   deleteAd,
   updateAd,
   getAdsByUser,
+  updateAdReports,
+  deleteAdsByUser,
 };

@@ -46,7 +46,7 @@ const HomePage = () => {
         <h2>Ready to Start Saving?</h2>
         <p>Sign up now to discover how easy it is to buy, sell, or swap textbooks on BookSwap.</p>
         <Link to="/register" className="btn-register">Create Your Account</Link>
-        <Link to="/browse" className="btn-browse">Browse Textbooks</Link>
+        <Link to="/home" className="btn-browse">Browse Textbooks</Link>
       </div>
     </>
   );

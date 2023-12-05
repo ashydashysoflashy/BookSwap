@@ -23,6 +23,12 @@ const adSchema = new Schema(
         type: String,
       },
     ],
+    reports:[
+      {
+        user_id: mongoose.Schema.Types.ObjectId,
+        reason: String,
+      }
+    ],
     category: {
       type: String,
       required: true,
