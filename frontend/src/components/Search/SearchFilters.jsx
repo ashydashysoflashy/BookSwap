@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import "./Search.css";
 import Select from "react-select";
 import ReactSlider from "react-slider";
-
+import { tagOptions } from "../tagOptions";
+import { universityOptions } from "../universityOptions";
+import { categoryOptions } from "../categoryOptions";
 import { IoFilter } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
@@ -115,11 +117,12 @@ export default function SearchFilters({
                 setLocation(selectedOption ? selectedOption.value : ''); // Handle deselection
                 setSelectedLocation(selectedOption);
             }}
+            isClearable
         />
 
         <Select
             value={selectedCourseCode}
-            options={optionsCourseCode}
+            options={tagOptions}
             className={`react-select-container ${activeDropdown === 'courseCode' ? 'active-dropdown' : ''}`}
             onMenuOpen={() => setActiveDropdown('courseCode')}
             onMenuClose={() => setActiveDropdown('')}
@@ -129,11 +132,12 @@ export default function SearchFilters({
                 setCourseCode(selectedOption ? selectedOption.value : ''); // Handle deselection
                 setSelectedCourseCode(selectedOption);
             }}
+            isClearable
         />
 
         <Select
             value={selectedSchool}
-            options={optionsSchool}
+            options={universityOptions}
             className={`react-select-container ${activeDropdown === 'school' ? 'active-dropdown' : ''}`}
             onMenuOpen={() => setActiveDropdown('school')}
             onMenuClose={() => setActiveDropdown('')}
@@ -143,6 +147,7 @@ export default function SearchFilters({
                 setSchool(selectedOption ? selectedOption.value : ''); // Handle deselection
                 setSelectedSchool(selectedOption);
             }}
+            isClearable
         />
 
       <div className="filter-item">

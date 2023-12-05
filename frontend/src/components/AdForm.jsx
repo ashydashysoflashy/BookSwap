@@ -3,6 +3,7 @@ import { useAdsContext } from "../hooks/useAdsContext";
 import { json, useNavigate } from "react-router-dom";
 import { tagOptions } from "./tagOptions";
 import { universityOptions } from "./universityOptions";
+import { categoryOptions } from "./categoryOptions";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
@@ -37,17 +38,6 @@ const AdForm = () => {
   const [price, setPrice] = useState(0);
   const [swapBook, setSwapBook] = useState("");
   const [priceEnabled, setPriceEnabled] = useState(true);
-
-  const categoryOptions = [
-    { value: "business", label: "Business" },
-    { value: "computerScience", label: "Computer Science" },
-    { value: "education", label: "Education" },
-    { value: "engineering", label: "Engineering" },
-    { value: "law", label: "Law" },
-    { value: "math", label: "Mathematics" },
-    { value: "medicine", label: "Medicine" },
-    { value: "naturalScience", label: "Natural Science" },
-  ];
 
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
@@ -166,21 +156,21 @@ const AdForm = () => {
           <div className="ad_images">
 
             {files.map((file, i) => (
-                <div key={i} className="image-preview">
-                  <img src={URL.createObjectURL(file)} alt={file.name} />
-                  <button onClick={() => handleRemoveImage(file.name)}>Remove</button>
-                </div>
+              <div key={i} className="image-preview">
+                <img src={URL.createObjectURL(file)} alt={file.name} />
+                <button onClick={() => handleRemoveImage(file.name)}>Remove</button>
+              </div>
             ))}
             <label htmlFor="upload_image" className="upload_button_label">
               <img src={uploadIcon} alt="Upload" />
               <span>Upload Images</span>
             </label>
             <input
-                type="file"
-                id="upload_image"
-                style={{ display: "none" }}
-                onChange={handleAddImage}
-                multiple
+              type="file"
+              id="upload_image"
+              style={{ display: "none" }}
+              onChange={handleAddImage}
+              multiple
             ></input>
           </div>
         </div>
