@@ -35,6 +35,8 @@ const getAds = async (req, res) => {
   let sortOptions = { createdAt: -1 }; // default sorting
   if (sort === "new") sortOptions = { createdAt: -1 };
   if (sort === "old") sortOptions = { createdAt: 1 };
+  if (sort === "low_high") sortOptions = { price: 1 }; 
+  if (sort === "high_low") sortOptions = { price: -1 }; 
 
   try {
     const ads = await Ad.find(query).sort(sortOptions);
