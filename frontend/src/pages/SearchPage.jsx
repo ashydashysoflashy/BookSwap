@@ -6,6 +6,7 @@ import SearchResults from "../components/Search/SearchResults";
 
 export default function SearchPage() {
   const [searchParams] = useSearchParams();
+  const [category, setCategory] = useState([]);
   const [courseCode, setCourseCode] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -29,27 +30,29 @@ export default function SearchPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, [searchParams]);
 
-    return (
+  return (
     <div className="search-container">
       {/* Show button only on smaller screens */}
       {window.innerWidth <= 768 && (
         <button
-            className="filters-toggle-button"
-            onClick={() => setShowFilters(!showFilters)}
+          className="filters-toggle-button"
+          onClick={() => setShowFilters(!showFilters)}
         >
-            {showFilters ? "Hide Filters" : "Show Filters"}
+          {showFilters ? "Hide Filters" : "Show Filters"}
         </button>)}
 
-        {showFilters && (
-      <SearchFilters
-        setCourseCode={setCourseCode}
-        setMinPrice={setMinPrice}
-        setMaxPrice={setMaxPrice}
-        setSchool={setSchool}
-        setSearchQuery={setSearchQuery}
-      />
-            )}
+      {showFilters && (
+        <SearchFilters
+          setCategory={setCategory}
+          setCourseCode={setCourseCode}
+          setMinPrice={setMinPrice}
+          setMaxPrice={setMaxPrice}
+          setSchool={setSchool}
+          setSearchQuery={setSearchQuery}
+        />
+      )}
       <SearchResults
+        category={category}
         courseCode={courseCode}
         minPrice={minPrice}
         maxPrice={maxPrice}

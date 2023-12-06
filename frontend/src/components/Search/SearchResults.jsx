@@ -3,6 +3,7 @@ import Select from "react-select";
 import ResultItem from './Result'
 
 export default function SearchResults({
+  category,
   courseCode,
   minPrice,
   maxPrice,
@@ -27,6 +28,7 @@ export default function SearchResults({
       try {
         // Construct the query parameters
         const params = new URLSearchParams({
+          category,
           courseCode,
           minPrice,
           maxPrice,
@@ -52,6 +54,7 @@ export default function SearchResults({
 
     fetchData();
   }, [
+    category,
     courseCode,
     minPrice,
     maxPrice,

@@ -81,7 +81,8 @@ const AdForm = () => {
     const json = await response.json();
     if (!response.ok) {
       console.log("error", json);
-      setError(json.error);
+      console.log(json.error);
+      setError(`${json.error} | ${json.emptyFields}`);
       setEmptyFields(json.emptyFields);
     }
     if (response.ok) {
@@ -189,7 +190,7 @@ const AdForm = () => {
           <Select
             options={universityOptions}
             onChange={(selectedOption) => setUniversity(selectedOption.value)}
-            className="react-select-container"
+            className={`react-select-container ${emptyFields.includes("university") ? 'field_error' : ''}`}
             classNamePrefix="react-select"
             placeholder="Select University"
             value={universityOptions.find(

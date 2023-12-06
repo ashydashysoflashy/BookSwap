@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  const { search, courseCode, minPrice, maxPrice, school, sort } =
+  const { search, category, courseCode, minPrice, maxPrice, school, sort } =
     req.query;
   let query = {};
 
@@ -17,6 +17,7 @@ const getAds = async (req, res) => {
   }
 
   //match any ad that has the query course code
+  if (category) query.category = { $in: [category] };
   if (courseCode) query.tags = { $in: [courseCode] };
 
   //Find the ad within the range of the price
