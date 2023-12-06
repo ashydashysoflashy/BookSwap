@@ -92,3 +92,10 @@
 .register_page a:focus {
     text-decoration: underline;
 }
+
+.register-error {
+    text-align: center;
+    color: #FF8B8B;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
