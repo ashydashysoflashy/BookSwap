@@ -38,6 +38,7 @@ const RegisterPage = () => {
   //check everytime user updates if there is one then go home page
   useEffect(() => {
     if (user) {
+      window.location.reload();
       navigate('/Home')
     }
   }, [user])
