@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Search.css";
+import Switch from "react-switch";
 import Select from "react-select";
 import ReactSlider from "react-slider";
 import { tagOptions } from "../tagOptions";
@@ -11,6 +12,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 export default function SearchFilters({
   setCategory,
   setCourseCode,
+  setIncludeSwap,
   setMinPrice,
   setMaxPrice,
   setSchool,
@@ -24,6 +26,7 @@ export default function SearchFilters({
   // State for controlling the Select components
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedCourseCode, setSelectedCourseCode] = useState(null);
+  const [selectedSwapSwitch, setSelectedSwapSwitch] = useState(true);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [searchText, setSearchText] = useState('');
 
@@ -46,6 +49,8 @@ export default function SearchFilters({
 
     setCategory([]);
     setCourseCode([]);
+    setIncludeSwap(true);
+    setSelectedSwapSwitch(true);
     setMinPrice(0);
     setMaxPrice(999);
 
@@ -53,6 +58,15 @@ export default function SearchFilters({
     setSearchQuery('');
   };
 
+  const handleSwitchChange = () => {
+    if (selectedSwapSwitch) {
+      setSelectedSwapSwitch(!selectedSwapSwitch);
+      setIncludeSwap("dont");
+    } else {
+      setSelectedSwapSwitch(!selectedSwapSwitch);
+      setIncludeSwap("include");
+    }
+  }
 
   return (
     <div className="filters-container">
@@ -129,6 +143,11 @@ export default function SearchFilters({
         }}
         isClearable
       />
+
+      <label>
+        <span>Incldude Trade Offers</span><br></br>
+        <Switch onChange={handleSwitchChange} checked={selectedSwapSwitch} />
+      </label>
 
       <div className="filter-item">
         <label>

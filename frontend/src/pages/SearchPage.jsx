@@ -8,6 +8,7 @@ export default function SearchPage() {
   const [searchParams] = useSearchParams();
   const [category, setCategory] = useState([]);
   const [courseCode, setCourseCode] = useState([]);
+  const [includeSwap, setIncludeSwap] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [school, setSchool] = useState("");
@@ -45,6 +46,7 @@ export default function SearchPage() {
         <SearchFilters
           setCategory={setCategory}
           setCourseCode={setCourseCode}
+          setIncludeSwap={setIncludeSwap}
           setMinPrice={setMinPrice}
           setMaxPrice={setMaxPrice}
           setSchool={setSchool}
@@ -54,6 +56,7 @@ export default function SearchPage() {
       <SearchResults
         category={category}
         courseCode={courseCode}
+        includeSwap={includeSwap}
         minPrice={minPrice}
         maxPrice={maxPrice}
         school={school}

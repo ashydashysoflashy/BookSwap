@@ -5,6 +5,7 @@ import ResultItem from './Result'
 export default function SearchResults({
   category,
   courseCode,
+  includeSwap,
   minPrice,
   maxPrice,
   school,
@@ -30,6 +31,7 @@ export default function SearchResults({
         const params = new URLSearchParams({
           category,
           courseCode,
+          includeSwap,
           minPrice,
           maxPrice,
           school,
@@ -56,6 +58,7 @@ export default function SearchResults({
   }, [
     category,
     courseCode,
+    includeSwap,
     minPrice,
     maxPrice,
     school,

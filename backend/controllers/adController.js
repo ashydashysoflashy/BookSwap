@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  const { search, category, courseCode, minPrice, maxPrice, school, sort } =
+  const { search, category, courseCode, includeSwap, minPrice, maxPrice, school, sort } =
     req.query;
   let query = {};
 
@@ -19,6 +19,8 @@ const getAds = async (req, res) => {
   //match any ad that has the query course code
   if (category) query.category = { $in: [category] };
   if (courseCode) query.tags = { $in: [courseCode] };
+
+  if (includeSwap === "dont") query.swapBook = '';
 
   //Find the ad within the range of the price
   if (minPrice || maxPrice) {
