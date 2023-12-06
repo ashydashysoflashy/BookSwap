@@ -1,15 +1,18 @@
-import './AdminSidebar.css'
-import logo from '../../assets/logo_large.png';
+// Import necessary files
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import {useLogout} from "../../hooks/useLogout";
+import logo from '../../assets/logo_large.png';
+import './AdminSidebar.css'
 
 const AdminSidebar = ({ admin }) => {
 
-  const [menuState, setMenuState] = useState(false);
+  // States to be used conditional variable changes and re rendering 
+  const [menuState, setMenuState] = useState(true);
   const navigate = useNavigate();
   const { logout } = useLogout();
 
+  // Function to show menu in mobile view for responsive design 
   const showMenu = (e) => {
     const menu = document.getElementById('admin_sidebar_menu');
     if (!menuState) {
@@ -23,12 +26,14 @@ const AdminSidebar = ({ admin }) => {
     }
   }
 
+  // Function to provoke Logout function
   const handleLogout =  async () => {
     await logout();
     window.location.reload(); // This will reload the page
     navigate('/');
   };
 
+  // Render HTML code
   return (
     <>
       <button className='admin_right_button' onClick={showMenu}>&#11208;</button>

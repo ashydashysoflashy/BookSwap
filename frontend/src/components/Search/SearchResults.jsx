@@ -16,6 +16,7 @@ export default function SearchResults({
   const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState(null); // default sort option
 
+  //values for sorting search results options
   const optionsSort = [
     { value: "new", label: "Posted: newest first" },
     { value: "old", label: "Posted: oldest first" },
@@ -23,13 +24,14 @@ export default function SearchResults({
     { value: "high_low", label: "Price: high to low" },
   ];
 
+  //use effect to fetch posts based on search filters
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        // Construct the query parameters
+        // Construct the database query parameters
         const params = new URLSearchParams({
           category,
           courseCode,
@@ -40,12 +42,13 @@ export default function SearchResults({
           search: searchQuery,
           sort: sortOption, // Corrected parameter name
         });
-
+        //get the data from the response
         const response = await fetch(`http://localhost:4000/api/ads?${params}`);
         const data = await response.json();
-
+        //set the search results state to the data
         if (response.ok) {
           setResults(data);
+         //error handling
         } else {
           throw new Error(data.error || "Failed to fetch results");
         }
@@ -55,7 +58,7 @@ export default function SearchResults({
         setIsLoading(false);
       }
     };
-
+    //fetch the data
     fetchData();
   }, [
     category,
@@ -68,6 +71,7 @@ export default function SearchResults({
     sortOption,
   ]);
 
+  //function to set state depending on which sorting option (price, posted, etc) is selected
   const handleSortChange = (selectedOption) => {
     setSortOption(selectedOption.value);
   };

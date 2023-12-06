@@ -1,3 +1,4 @@
+// Import required files
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -22,6 +23,7 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Registering a user
 const signupUser = async (req, res) => {
   const { email, password, username } = req.body;
   try {
@@ -38,16 +40,15 @@ const forgotPassword = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
-  if (!user) {
-    return res.status(404).json({ error: "User not found." });
-  }
+  // If user not found
+  if (!user) return res.status(404).json({ error: "User not found." });
 
+  // Create a random token
   const resetToken = crypto.randomBytes(20).toString('hex');
   user.resetPasswordToken = resetToken;
   user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
 
   await user.save();
-
   const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
 
   const transporter = nodemailer.createTransport({
@@ -58,17 +59,19 @@ const forgotPassword = async (req, res) => {
     },
   });
 
+  // Mail data
   const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
     to: email,
     subject: 'Password Reset',
     text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-          `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-          `${resetUrl}\n\n` +
-          `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+      `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+      `${resetUrl}\n\n` +
+      `If you did not request this, please ignore this email and your password will remain unchanged.\n`
   };
 
-  transporter.sendMail(mailOptions, function(error, info){
+  // Send email 
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.error('Error sending email:', error);
       return res.status(500).json({ error: 'Error sending email' });
@@ -78,6 +81,7 @@ const forgotPassword = async (req, res) => {
   });
 };
 
+// Reset Password
 const resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
   const user = await User.findOne({
@@ -99,9 +103,10 @@ const resetPassword = async (req, res) => {
   res.status(200).json({ message: "Password has been updated." });
 };
 
+// Change Password function
 const changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
-  const user = await User.findById(req.user._id); 
+  const user = await User.findById(req.user._id);
 
   if (!await bcrypt.compare(currentPassword, user.password)) {
     return res.status(400).json({ error: "Current password is incorrect." });
@@ -132,6 +137,7 @@ const getUsername = async (req, res) => {
   }
 };
 
+// Function to get user Admin status
 const getUserAdmin = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -149,6 +155,7 @@ const getUserAdmin = async (req, res) => {
   }
 };
 
+// Function to get user ban status
 const getIsBanned = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -166,6 +173,7 @@ const getIsBanned = async (req, res) => {
   }
 };
 
+// Function to get user Email
 const getUserEmailById = async (userId) => {
   try {
     const user = await User.findById(userId).select('email');
@@ -176,6 +184,7 @@ const getUserEmailById = async (userId) => {
   }
 };
 
+// Function to ban a user
 const banUser = async (req, res) => {
   const { id } = req.params;
   if (req.body.admin !== true) {
@@ -198,7 +207,7 @@ const banUser = async (req, res) => {
   }
 };
 
-
+// Function to add a favorite listing/ad for a user
 const addFavoriteAd = async (req, res) => {
   const { user_id, ad_id } = req.body;
 
@@ -213,11 +222,11 @@ const addFavoriteAd = async (req, res) => {
     await user.save();
     res.status(200).json({ message: "Ad added to favorites" });
   } catch (error) {
-    console.log(error)
     res.status(400).json({ error: error.message });
   }
 };
 
+// Function to remove a favorited listing from user
 const removeFavoriteAd = async (req, res) => {
   const { user_id, ad_id } = req.body;
 
@@ -234,6 +243,7 @@ const removeFavoriteAd = async (req, res) => {
   }
 };
 
+// Function to get all the favorite ads of a user
 const getFavoriteAds = async (req, res) => {
   const { user_id } = req.params;
 
@@ -252,7 +262,7 @@ const getFavoriteAds = async (req, res) => {
   }
 };
 
-
+// Function to check if an ad is favorited by a specific user
 const getIsFavorite = async (req, res) => {
   const { user_id, ad_id } = req.params;
 

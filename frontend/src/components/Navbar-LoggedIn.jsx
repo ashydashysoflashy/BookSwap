@@ -1,28 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-
-import logo from '../assets/logo_large.png'
-import locationIcon from '../assets/location_icon.png'
-
-import './Navbar.css'
 import { useLogout } from "../hooks/useLogout";
-
 import { CgProfile } from "react-icons/cg";
-
+import logo from '../assets/logo_large.png'
+import './Navbar.css'
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const { logout } = useLogout();
-  const dropdownRef = useRef(null);
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
-  const { user } = useAuthContext();
+  const [admin, setAdmin] = useState()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(null)
-  const [admin, setAdmin] = useState()
   const [adminFetched, setAdminFetched] = useState(false)
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,11 +112,11 @@ const Navbar = () => {
             <div className="right-side-container">
               <div className="profile-dropdown-container" ref={dropdownRef}>
                 <div id="profile-icon" ref={dropdownRef}>
-                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)}  color="#8BA5FFFF"/>
+                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)} color="#8BA5FFFF" />
                 </div>
                 {showDropdown && (
                   <div className="profile-dropdown">
-                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>                   
+                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
                     <Link to="/change-password" onClick={handleLinkClick}>Change Password</Link>
                     <Link to="/myfavorites" onClick={handleLinkClick}>My Favorites</Link>
                     <Link id="test" to="/create" onClick={handleLinkClick}>Post Ad</Link>
@@ -135,7 +129,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
       </div>
     </header>
   )

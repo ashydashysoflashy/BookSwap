@@ -1,16 +1,8 @@
-import React, { useEffect } from 'react'
-import './Listing.css'
 import { FaMapMarkerAlt } from "react-icons/fa";
-import Book1 from '../../assets/book1.jpg'
-import Book2 from '../../assets/book2.jpg'
-import Book3 from '../../assets/book3.jpg'
 import { FaRegHeart, FaRegFlag } from "react-icons/fa";
 import { FaRegMessage } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
-
-
-
-
+import './Listing.css'
 
 export default function Listing({ad, imageUrls}) {
  // Function to format the date
@@ -27,12 +19,8 @@ export default function Listing({ad, imageUrls}) {
   });
 };
 
-  useEffect(() => {
-  },[])
-
   return (
     <div className='listing-container'>
-
       <div className='listing-title'>{ad.title}</div>
       <div className='price-location-container'>
         <div className='listing-price'>{ad.price ? `$${ad.price}.00` : `${(ad.swapBook) ? `Trade for ${ad.swapBook}` : 'Free'}`}</div>

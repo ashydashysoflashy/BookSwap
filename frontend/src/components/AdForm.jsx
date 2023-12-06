@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useAdsContext } from "../hooks/useAdsContext";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { tagOptions } from "./tagOptions";
 import { universityOptions } from "./universityOptions";
 import { categoryOptions } from "./categoryOptions";
+import { useAuthContext } from "../hooks/useAuthContext";
+import uploadIcon from "../assets/upload.png";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
-import { useAuthContext } from "../hooks/useAuthContext";
-import uploadIcon from "../assets/upload.png";
 import "./AdForm.css";
 
 const config = {

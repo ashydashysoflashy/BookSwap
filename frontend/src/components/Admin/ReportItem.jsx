@@ -1,22 +1,29 @@
-import './ReportItem.css'
+// Importing necessary files
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom"
 import { S3 } from "aws-sdk";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useAdsContext } from '../../hooks/useAdsContext';
+import './ReportItem.css'
 
 const ReportItem = (props) => {
-  const [username, setUsername] = useState();
+  // Context to use for updating users and ads in the frontend
+  const { user } = useAuthContext();
+  const { ads, dispatch } = useAdsContext();
+
+  // useStates to use while fetching data
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [username, setUsername] = useState();
+  const [imageUrls, setImageUrls] = useState([]);
+
+  //Props passed to this component
   const ad = props.ad;
   const admin = props.admin;
   const handleDeleteListingParent = props.handleDeleteListingParent
   const handleBanUserParent = props.handleBanUserParent
-  const { user } = useAuthContext();
-  const { ads, dispatch } = useAdsContext();
 
-
+  // Function to find the common complaints against a listing
   function findCommonComplaints() {
     const temp = []
     for (let i = 0; i < ad.reports.length; i++) {
@@ -26,7 +33,8 @@ const ReportItem = (props) => {
     return temp;
   }
   const complaints = findCommonComplaints();
-  
+
+  // Use Effect to fetch use data when the ad data is loaded 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,8 +56,7 @@ const ReportItem = (props) => {
     fetchData();
   }, [ad]);
 
-  const [imageUrls, setImageUrls] = useState([]);
-
+  // Use Effect to gather image files when ad loads 
   useEffect(() => {
     const fetchImageUrls = async () => {
       const s3 = new S3({
@@ -68,7 +75,6 @@ const ReportItem = (props) => {
           });
         })
       );
-
       setImageUrls(urls);
     };
 
@@ -105,25 +111,24 @@ const ReportItem = (props) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
-        },body: JSON.stringify({
+        }, body: JSON.stringify({
           admin: admin,
         }),
       });
       const data = await response.json();
 
       if (response.ok) {
-        dispatch({ type: "DELETE_AD", payload: ad._id});
+        dispatch({ type: "DELETE_AD", payload: ad._id });
         handleDeleteListingParent(ad._id)
       } else {
         throw new Error(data.error || "Failed to fetch results");
       }
     } catch (err) {
-      console.log(err.message)
       setError(err.message);
-    } 
+    }
   }
 
-  //for if a listing is resolved, we update its reports to be [] and remove it from parent
+  //if a listing is resolved, we update its reports to be [] and remove it from parent
   const handleResolveListing = async () => {
     //set reports to []
     const adData = {
@@ -146,7 +151,8 @@ const ReportItem = (props) => {
     }
   }
 
-    const handleBanUser = async () => {
+  // Function to handle banning a user
+  const handleBanUser = async () => {
     try {
       // Construct the query parameters to delete all their ads
       const deleteAdsResponse = await fetch(`http://localhost:4000/api/ads/admin/${ad.user_id}`, {
@@ -172,7 +178,7 @@ const ReportItem = (props) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
-        },body: JSON.stringify({
+        }, body: JSON.stringify({
           admin: admin,
         }),
       });
@@ -186,11 +192,11 @@ const ReportItem = (props) => {
         throw new Error(banUserData.error || "Failed to ban the user");
       }
     } catch (err) {
-      console.log(err.message);
       setError(err.message);
     }
   }
 
+  // Return and render HTML code
   return (
     <div className="report_container">
       <div className='report_left_container'>
