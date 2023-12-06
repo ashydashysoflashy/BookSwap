@@ -22,15 +22,19 @@ export default function ListingCreator({ ad, onContactClick }) {
   const [reportSuccess, setReportSuccess] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   
+  //values for the report user dropdown
   const reportOptions = [
     { value: "prohibited", label: "Prohibited Content" },
     { value: "illegal", label: "Illegal Content" }
   ];
 
+  //function to redirect to a user's ads page
   const onViewOtherListingsClick = () => {
     navigate(`../userads/${ad.user_id}`)
   };
 
+  //use effect that triggers when ad loads and there is a logged in user
+  //gets all the ads a user has favourited
   useEffect(() => {
     const checkFavoriteStatus = async () => {
       try {
@@ -41,12 +45,14 @@ export default function ListingCreator({ ad, onContactClick }) {
         console.error('Error checking favorite status', error);
       }
     };
-
+    //check if the user has favorited this ad
     if (user && user.id) {
       checkFavoriteStatus();
     }
   }, [user, ad._id]);
 
+  //use effect that triggers on page load if there is a logged in user
+  //checks if the user has reported the ad and updates state accordingly
   useEffect(() => {
     if(!user || !user.id) return;
     // Check if the current user has already reported the ad
@@ -55,16 +61,17 @@ export default function ListingCreator({ ad, onContactClick }) {
     }
   }, [ad, user]);
 
-
+  //use effect that gets the username of the creator of the ad on page load
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Construct the query parameters
         const response = await fetch(`http://localhost:4000/api/user/${ad.user_id}`);
         const data = await response.json();
-
+        //update state if response is ok
         if (response.ok) {
           setUsername(data);
+        //otherwise handle the errors
         } else {
           throw new Error(data.error || "Failed to fetch results");
         }
@@ -78,15 +85,19 @@ export default function ListingCreator({ ad, onContactClick }) {
     fetchData();
   }, [ad]);
 
+  //function to favorite/unfavorite an ad
   const toggleFavorite = async () => {
+    //if a user is not logged in, return from the function
     if (!user) {
       alert("Please log in to favorite ads");
       return;
     }
   
+    //determine whether to delete (remove favorite) or post (add favorite) and determine which part of api to send request to
     const method = isFavorite ? 'DELETE' : 'POST';
     const url = `http://localhost:4000/api/user/favorites/${method === 'POST' ? 'add' : 'remove'}`;
   
+    //try contacting the api
     try {
       const response = await fetch(url, {
         method: method,
@@ -96,36 +107,36 @@ export default function ListingCreator({ ad, onContactClick }) {
         },
         body: JSON.stringify({ user_id: user.id, ad_id: ad._id })
       });
-  
+      //if the api sends a bad response throw an error
       if (!response.ok) {
         throw new Error("Failed to update favorite status");
       }
-  
+      //set if the user has favorited the post to the good response from the api
       setIsFavorite(!isFavorite);
     } catch (error) {
       console.error('Error toggling favorite status:', error);
     }
   };
   
-  
-
+  //function to handle if a user has reported a post
   const handleReport = async (e) => {
+    //if there is no user then return
     if(!user) return;
     e.preventDefault();
+    //if the user has not displayed the report dropdown, display it
     if (!displayReport) setDisplayReport(!displayReport);
+    //if the user has not given a reason to report, return
     if (newReport.reason === "") return;
     setReportError(null)
-    console.log("userid",user.id)
-    //setNewReport((prev) => ({
-      //...prev,
-      //user_id: user.id
-    //}));
+    //if the report does not have the id of the logged in user, return
     if(!newReport.user_id) return;
 
     //Functionality for reporting a listing
+    //the data sent to the api is the old reports and the new report
     const adData = {
       reports: [...ad.reports, newReport]
     };
+    //contact api
     const response = await fetch(`http://localhost:4000/api/ads/report/${ad._id}`, {
       method: "PATCH",
       body: JSON.stringify(adData),
@@ -135,8 +146,10 @@ export default function ListingCreator({ ad, onContactClick }) {
       },
     });
     const jsonData = await response.json();
+    //error handling
     if (!response.ok) {
       setReportError(jsonData.error);
+    //update context and set report success
     } else {
       dispatch({ type: "UPDATE_AD", payload: jsonData });
       setReportSuccess(true);
