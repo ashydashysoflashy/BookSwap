@@ -1,16 +1,17 @@
 import { React, useState, useEffect } from "react"
-import AdminSidebar from "../components/Admin/AdminSidebar";
-import AdminContent from "../components/Admin/AdminContent";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
+import AdminSidebar from "../components/Admin/AdminSidebar";
+import AdminContent from "../components/Admin/AdminContent";
+
 
 const AdminPage = () => {
   const { user } = useAuthContext();
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(null)
-  const [admin, setAdmin] = useState()
-  const navigate = useNavigate()
-  const [adminFetched, setAdminFetched] = useState(false)
+  const navigate = useNavigate();
+  const [admin, setAdmin] = useState();
+  const [adminFetched, setAdminFetched] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +40,7 @@ const AdminPage = () => {
     if (!adminFetched) return;
     if (admin) return;
     navigate("/")
-  }, [admin])
+  }, [admin, adminFetched, navigate])
 
   return (
     <div className="admin_page">
