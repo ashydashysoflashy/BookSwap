@@ -1,26 +1,26 @@
 import { React, useState, useEffect } from 'react';
-import './ListingDetails.css'
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
 import { IoMdStarOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import Select from "react-select";
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useAdsContext } from '../../hooks/useAdsContext';
+import Select from "react-select";
+import './ListingDetails.css'
 
 export default function ListingCreator({ ad, onContactClick }) {
   const navigate = useNavigate();
   const { user } = useAuthContext();
+  const { dispatch } = useAdsContext();
   const [username, setUsername] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [newReport, setNewReport] = useState({user_id: null, reason: "" });
   const [reportError, setReportError] = useState(null)
-  const { dispatch } = useAdsContext();
   const [displayReport, setDisplayReport] = useState();
   const [reportSuccess, setReportSuccess] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   
   //values for the report user dropdown
   const reportOptions = [

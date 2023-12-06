@@ -188,7 +188,7 @@
     z-index: 10; /* Ensure it's above other content */
     display: flex;
     flex-direction: column; /* Arrange items vertically */
-    align-items: start; /* Align items to the start */
+    align-items: flex-start; /* Align items to the start */
     padding: 1rem; /* Add some padding */
     background-color: white; /* Choose a background color for readability */
     box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional shadow for depth */

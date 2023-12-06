@@ -6,8 +6,6 @@ import ReactSlider from "react-slider";
 import { tagOptions } from "../tagOptions";
 import { universityOptions } from "../universityOptions";
 import { categoryOptions } from "../categoryOptions";
-import { IoFilter } from "react-icons/io5";
-import { FaMapMarkerAlt } from "react-icons/fa";
 
 export default function SearchFilters({
   setCategory,

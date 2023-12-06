@@ -1,11 +1,10 @@
-import {React, useState, useEffect} from 'react'
-import './Result.css'
-import Book1 from '../../assets/book1.jpg'
-import { FaRegMessage } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from 'react'
 import { S3 } from "aws-sdk";
+import './Result.css'
 
-export default function ResultItem({ad}) {
+
+export default function ResultItem({ ad }) {
   const navigate = useNavigate();
   const [imageUrls, setImageUrls] = useState([]);
 
@@ -63,17 +62,17 @@ export default function ResultItem({ad}) {
 
   return (
     <div className='result-container' onClick={handleClick}>
-        <div className='result-image-container'>
-          {imageUrls.length > 0 ? (
-            <img className='result-image' src={imageUrls[0]} alt={`Listing Content Displayed`} />
-          ) : (
-            <img
-              src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
-              alt="Not available"
-              className='result-image'
-            />
-          )}
-        </div>
+      <div className='result-image-container'>
+        {imageUrls.length > 0 ? (
+          <img className='result-image' src={imageUrls[0]} alt={`Listing Content Displayed`} />
+        ) : (
+          <img
+            src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
+            alt="Not available"
+            className='result-image'
+          />
+        )}
+      </div>
       <div className='result-info'>
         <div className='result-title'>{ad.title ? ad.title : "No Title"}</div>
         <div className='result-price'>{ad.price ? `$${ad.price}.00` : `${(ad.swapBook) ? `Trade for ${ad.swapBook}` : 'Free'}`}</div>

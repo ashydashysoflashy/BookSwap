@@ -1,6 +1,6 @@
 //import the auth context
 import { useAuthContext} from "./useAuthContext"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //function to handle logout request 
 export const useLogout = () => {
