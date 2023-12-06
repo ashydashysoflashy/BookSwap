@@ -58,7 +58,7 @@ const LoginPage = () => {
           </button>
         </div>
         <button type="submit" className="login-button" disabled={loading}>Log In</button>
-        {error && <div className='login-error'>{error}</div>}
+        {error && <div className='register-error'>{error}</div>}
       </form>
       <p className="register-text">
         Not Registered? <Link to="/register">Create an Account</Link>
