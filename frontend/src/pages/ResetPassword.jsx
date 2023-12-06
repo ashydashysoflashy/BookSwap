@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ResetPassword.css'; // Make sure to create a ResetPassword.css file
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
+  const [validPassword, setValidPassword] = useState(false);
   const [message, setMessage] = useState('');
   const { token } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{9,}$/;
+    setValidPassword(passwordRegex.test(newPassword));
+  }, [newPassword]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
+
+    if (!validPassword) {
+      setMessage("Password does not meet requirements.");
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:4000/api/user/reset-password', {
@@ -46,6 +57,9 @@ const ResetPassword = () => {
             onChange={(e) => setNewPassword(e.target.value)}
             required
           />
+          {!validPassword && newPassword && <p className="password-requirements">
+            Password must be at least 9 characters, include an uppercase letter, and a non-alphabetical character.
+          </p>}
         </div>
         <button type="submit" className="login-button">Reset Password</button>
       </form>

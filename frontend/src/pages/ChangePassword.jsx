@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [validPassword, setValidPassword] = useState(false);
   const [message, setMessage] = useState('');
   const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{9,}$/;
+    setValidPassword(passwordRegex.test(newPassword));
+  }, [newPassword]);
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       setMessage('New passwords do not match.');
+      return;
+    }
+
+    if (!validPassword) {
+      setMessage("New password does not meet requirements.");
       return;
     }
 
@@ -31,6 +46,7 @@ const ChangePassword = () => {
         throw new Error(data.error || 'Failed to change password');
       }
       setMessage('Password successfully changed.');
+      setTimeout(() => navigate('/home'), 3000); // Redirect after 3 seconds
     } catch (error) {
       setMessage(error.message);
     }
@@ -39,6 +55,7 @@ const ChangePassword = () => {
   return (
     <div className="login_page">
       <h2>Change Password</h2>
+      {message && <div className='message'>{message}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="currentPassword">Current Password:</label>
@@ -59,6 +76,9 @@ const ChangePassword = () => {
             onChange={(e) => setNewPassword(e.target.value)}
             required
           />
+          {!validPassword && newPassword && <p className="password-requirements">
+            Password must be at least 9 characters, include an uppercase letter, and a non-alphabetical character.
+          </p>}
         </div>
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm New Password:</label>
@@ -71,7 +91,6 @@ const ChangePassword = () => {
           />
         </div>
         <button type="submit" className="login-button">Change Password</button>
-        {message && <div className='message'>{message}</div>}
       </form>
     </div>
   );
