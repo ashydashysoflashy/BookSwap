@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 //Get all Ads
 const getAds = async (req, res) => {
-  const { search, courseCode, location, minPrice, maxPrice, school, sort } =
+  const { search, courseCode, minPrice, maxPrice, school, sort } =
     req.query;
   let query = {};
 
@@ -18,9 +18,6 @@ const getAds = async (req, res) => {
 
   //match any ad that has the query course code
   if (courseCode) query.tags = { $in: [courseCode] };
-
-  //Match any ad that has the query location
-  if (location) query.location = location;
 
   //Find the ad within the range of the price
   if (minPrice || maxPrice) {
@@ -112,7 +109,6 @@ const createAd = async (req, res) => {
   if (!title) emptyFields.push("title");
   if (!description) emptyFields.push("description");
   if (!category) emptyFields.push("category");
-  if (!location) emptyFields.push("location");
   if (!price && !swapBook){
     emptyFields.push("price");
     emptyFields.push("swap");
@@ -135,7 +131,6 @@ const createAd = async (req, res) => {
       files: fileNames,
       reports: [],
       category,
-      location,
       tags,
       price,
       swapBook,

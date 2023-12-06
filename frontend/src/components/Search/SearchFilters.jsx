@@ -9,38 +9,18 @@ import { IoFilter } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 export default function SearchFilters({
-  setLocation,
   setCourseCode,
   setMinPrice,
   setMaxPrice,
   setSchool,
   setSearchQuery,
 }) {
-  const optionsLocation = [
-    { value: "Calgary", label: "Calgary" },
-    { value: "Airdrie", label: "Airdrie" },
-    { value: "Chestermere", label: "Chestermere" },
-  ];
-
-  //These will be retrieved from database later
-  const optionsCourseCode = [
-    { value: "CPSC599", label: "CPSC 599" },
-    { value: "SENG513", label: "SENG 513" },
-    { value: "CPSC457", label: "CPSC 457" },
-  ];
-
-  const optionsSchool = [
-    { value: "uofc", label: "University of Calgary" },
-    { value: "mru", label: "Mount Royal University" },
-    { value: "sait", label: "SAIT" },
-  ];
 
   // Replace optionsPrice with min and max price state
   const [minPriceValue, setMinPriceValue] = useState(0);
   const [maxPriceValue, setMaxPriceValue] = useState(999);
 
     // State for controlling the Select components
-    const [selectedLocation, setSelectedLocation] = useState(null);
     const [selectedCourseCode, setSelectedCourseCode] = useState(null);
     const [selectedSchool, setSelectedSchool] = useState(null);
     const [searchText, setSearchText] = useState('');
@@ -55,7 +35,6 @@ export default function SearchFilters({
 
     // Handler to clear all filters
     const clearFilters = () => {
-        setSelectedLocation(null);
         setSelectedCourseCode(null);
         setSelectedSchool(null);
         setSearchText('');
@@ -65,7 +44,6 @@ export default function SearchFilters({
         // Update the key to force re-render
         setSliderKey(prevKey => prevKey + 1);
 
-        setLocation('');
         setCourseCode([]);
         setMinPrice(0);
         setMaxPrice(999);
@@ -105,20 +83,6 @@ export default function SearchFilters({
         <div>Filter By</div>
         <IoFilter size={24} color="black" />
       </div>*/}
-        <Select
-            value={selectedLocation}
-            options={optionsLocation}
-            className={`react-select-container ${activeDropdown === 'location' ? 'active-dropdown' : ''}`}
-            onMenuOpen={() => setActiveDropdown('location')}
-            onMenuClose={() => setActiveDropdown('')}
-            classNamePrefix="react-select"
-            placeholder="Location"
-            onChange={(selectedOption) => {
-                setLocation(selectedOption ? selectedOption.value : ''); // Handle deselection
-                setSelectedLocation(selectedOption);
-            }}
-            isClearable
-        />
 
         <Select
             value={selectedCourseCode}

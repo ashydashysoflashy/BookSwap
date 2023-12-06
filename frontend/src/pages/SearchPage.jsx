@@ -6,7 +6,6 @@ import SearchResults from "../components/Search/SearchResults";
 
 export default function SearchPage() {
   const [searchParams] = useSearchParams();
-  const [location, setLocation] = useState("");
   const [courseCode, setCourseCode] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -43,7 +42,6 @@ export default function SearchPage() {
 
         {showFilters && (
       <SearchFilters
-        setLocation={setLocation}
         setCourseCode={setCourseCode}
         setMinPrice={setMinPrice}
         setMaxPrice={setMaxPrice}
@@ -52,7 +50,6 @@ export default function SearchPage() {
       />
             )}
       <SearchResults
-        location={location}
         courseCode={courseCode}
         minPrice={minPrice}
         maxPrice={maxPrice}

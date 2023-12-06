@@ -229,7 +229,7 @@ const AdForm = () => {
               ></input>
               <input
                 type="number"
-                onChange={(e) => {setSwapBook(null); setPrice(e.target.value)}}
+                onChange={(e) => {setSwapBook(''); setPrice(e.target.value)}}
                 value={price}
                 min={0}
                 placeholder="Price"
@@ -248,7 +248,7 @@ const AdForm = () => {
               ></input>
               <input
                 type="text"
-                onChange={(e) => {setSwapBook(e.target.value); setPrice(null)}}
+                onChange={(e) => {setSwapBook(e.target.value); setPrice('')}}
                 value={swapBook}
                 placeholder="Swap Book"
                 className={

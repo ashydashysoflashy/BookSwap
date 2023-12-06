@@ -35,13 +35,13 @@ export default function Listing({ad, imageUrls}) {
 
       <div className='listing-title'>{ad.title}</div>
       <div className='price-location-container'>
-        <div className='listing-price'>{`$${ad.price}.00`}</div>
+        <div className='listing-price'>{(ad.price === null) ? `Trade for ${ad.swapBook}` : `$${ad.price}.00`}</div>
         <div className='map-icon'>
           <FaMapMarkerAlt color='grey' size={24}/>
         </div>
         <div className='ad-info-container'> 
           <div className='listing-date'>Post Date: {formatDate(ad.createdAt)}. </div>
-          <div> Post Location: {ad.location} </div>
+          <div> Post Location: {ad.university} </div>
           <div className='course-codes'>Course Codes: {ad.tags}</div>
         </div>
 
