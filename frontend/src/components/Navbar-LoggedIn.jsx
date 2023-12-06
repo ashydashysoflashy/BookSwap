@@ -117,8 +117,8 @@ const Navbar = () => {
           <div className="navbar_acc_section">
             <div className="right-side-container">
               <div className="profile-dropdown-container" ref={dropdownRef}>
-                <div id="profile-icon">
-                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)} ref={dropdownRef} color="#8BA5FFFF"/>
+                <div id="profile-icon" ref={dropdownRef}>
+                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)}  color="#8BA5FFFF"/>
                 </div>
                 {showDropdown && (
                   <div className="profile-dropdown">
