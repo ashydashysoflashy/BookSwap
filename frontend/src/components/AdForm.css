@@ -190,6 +190,7 @@
     .ad_section {
         flex-direction: row; /* Row direction for larger screens */
         justify-content: space-between; /* Space between main and side sections */
+        align-items: flex-start;
     }
 
     .ad_main,
