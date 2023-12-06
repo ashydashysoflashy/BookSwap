@@ -358,7 +358,7 @@ const UpdateAdForm = () => {
         </div>
       </div>
       <button className="post_button">Post Ad</button>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="register-error">{error}</div>}
     </form>
   );
 };
