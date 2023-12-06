@@ -1,3 +1,5 @@
+//these are options for course tags a user can add to their post and other users can search by
+//each option has a label shown to the user on the frontend and a value for the backend
 export const tagOptions = [
     { value: 'acct', label: 'ACCT'},
     { value: 'acsc', label: 'ACSC'},

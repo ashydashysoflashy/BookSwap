@@ -1,14 +1,15 @@
+//Require Mongoose Schema Models for User and Ads/Listings 
 const Ad = require("../models/adModel");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 
-//Get all Ads
+//Get all Ads based on the sorting and filtering queries 
 const getAds = async (req, res) => {
   const { search, category, courseCode, includeSwap, minPrice, maxPrice, school, sort } =
     req.query;
   let query = {};
 
-  // Using regex to match the search query to the title and description of an ad
+  //Using regex to match the search query to the title and description of an ad
   if (search) {
     query.$or = [
       { title: { $regex: search, $options: "i" } },
@@ -16,10 +17,11 @@ const getAds = async (req, res) => {
     ];
   }
 
-  //match any ad that has the query course code
+  //Match category or course code ads
   if (category) query.category = { $in: [category] };
   if (courseCode) query.tags = { $in: [courseCode] };
 
+  //Don't include trade offers
   if (includeSwap === "dont") query.swapBook = '';
 
   //Find the ad within the range of the price
@@ -32,12 +34,16 @@ const getAds = async (req, res) => {
   //Match any ad that has the query school
   if (school) query.university = school;
 
-  let sortOptions = { createdAt: -1 }; // default sorting
+  //Default sorting method
+  let sortOptions = { createdAt: -1 };
+
+  //If sorting in query, set the sorting method
   if (sort === "new") sortOptions = { createdAt: -1 };
   if (sort === "old") sortOptions = { createdAt: 1 };
-  if (sort === "low_high") sortOptions = { price: 1 }; 
-  if (sort === "high_low") sortOptions = { price: -1 }; 
+  if (sort === "low_high") sortOptions = { price: 1 };
+  if (sort === "high_low") sortOptions = { price: -1 };
 
+  //Try to find all the listings/ads based on the filters
   try {
     const ads = await Ad.find(query).sort(sortOptions);
     res.status(200).json(ads);
@@ -46,17 +52,20 @@ const getAds = async (req, res) => {
   }
 };
 
-//Get all Ads from Admin screen
+//Get all Ads with at least 1 report
 const getAdminAds = async (req, res) => {
   const { sort } = req.query;
   let query = {};
 
+  //Make sure the ads contain at least 1 report/complaint
   query.reports = { $exists: true, $not: { $size: 0 } };
 
+  //Sort the listings based on the query
   let sortOptions = { "reports.length": -1 }; // default sorting
   if (sort === "most_reports") sortOptions = { "reports": 1 };
   if (sort === "least_reports") sortOptions = { "reports": -1 };
 
+  //Try to find all the listings/ads based on the filters
   try {
     const ads = await Ad.find(query).sort(sortOptions);
     res.status(200).json(ads);
@@ -65,7 +74,7 @@ const getAdminAds = async (req, res) => {
   }
 };
 
-// Get a single Ad
+//Get a single Ad using id
 const getAd = async (req, res) => {
   // Check if the ID is valid
   const { id } = req.params;
@@ -94,7 +103,7 @@ const getAd = async (req, res) => {
   }
 };
 
-//Post an Ad
+//Post an Ad/Listing
 const createAd = async (req, res) => {
   //Get Title and Description from Request
   const {
@@ -110,16 +119,18 @@ const createAd = async (req, res) => {
   } = req.body;
   let emptyFields = [];
 
+  //Check which fields are empty
   if (!user_id) emptyFields.push("user_id");
   if (!title) emptyFields.push("title");
   if (!description) emptyFields.push("description");
   if (!category) emptyFields.push("category");
-  if (!price && !swapBook){
+  if (!price && !swapBook) {
     emptyFields.push("price");
     emptyFields.push("swap");
-  } 
+  }
   if (!university) emptyFields.push("university");
 
+  //If any empty fields then return an error
   if (emptyFields.length > 0)
     return res
       .status(400)
@@ -127,7 +138,7 @@ const createAd = async (req, res) => {
 
   try {
     //Try and create an Ad Model and respond with status
-    // using just the file names in MongoDB
+    //using just the file names in MongoDB
     const fileNames = files.map((file) => file.name);
     const ad = await Ad.create({
       user_id,
@@ -142,9 +153,8 @@ const createAd = async (req, res) => {
       university,
     });
 
-    // Update the User's ad_ids array
+    //Update the User's ad_ids array
     await User.findByIdAndUpdate(user_id, { $push: { ad_ids: ad._id } });
-
     res.status(200).json(ad);
   } catch (error) {
     //If an error occurs, respond with 400 status and error message
@@ -152,15 +162,17 @@ const createAd = async (req, res) => {
   }
 };
 
-//Delete an Ad
+//Delete an Ad using id
 const deleteAd = async (req, res) => {
   const { id } = req.params;
 
+  //Check if the ID is a valid mongoose ID 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "The Ad does not exist" });
   }
 
   try {
+    //Check if the ad exists
     const ad = await Ad.findById(id);
     if (!ad) {
       return res.status(404).json({ error: "The Ad does not exist" });
@@ -171,69 +183,63 @@ const deleteAd = async (req, res) => {
     }
     // If authorized, delete the ad
     await Ad.findOneAndDelete({ _id: id });
-
     res.status(200).json({ message: "Ad deleted successfully" });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: error.message });
   }
 };
 
-// Update an Ad
+//Update an Ad using ID
 const updateAd = async (req, res) => {
   const { id } = req.params;
 
+  //Check if the ID is a valid mongoose ID 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "The Ad does not exist" });
   }
 
   try {
+    //Check if the ad exists
     const ad = await Ad.findById(id);
-
     if (!ad) {
       return res.status(404).json({ error: "The Ad does not exist" });
     }
-
-    // Check if the logged-in user is the owner of the ad
+    //Check if the logged-in user is the owner of the ad
     if (ad.user_id.toString() !== req.user._id.toString()) {
       return res.status(403).json({ error: "Unauthorized to update this ad" });
     }
-
-    // If authorized, update the ad
+    //If authorized, update the ad
     const updatedAd = await Ad.findByIdAndUpdate(
       id,
       { ...req.body },
       { new: true }
     );
-
     res.status(200).json(updatedAd);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Update an Ad
+//Update an Ad using ID
 const updateAdReports = async (req, res) => {
   const { id } = req.params;
 
+  //Check if the ID is a valid mongoose ID 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "The Ad does not exist" });
   }
 
   try {
     const ad = await Ad.findById(id);
-
     if (!ad) {
       return res.status(404).json({ error: "The Ad does not exist" });
     }
-
     // If authorized, update the ad
     const updatedAd = await Ad.findByIdAndUpdate(
       id,
       { ...req.body },
       { new: true }
     );
-
     res.status(200).json(updatedAd);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -244,12 +250,6 @@ const updateAdReports = async (req, res) => {
 const getAdsByUser = async (req, res) => {
   try {
     const { user_id } = req.params;
-
-    // Check if the logged-in user is the same as the user_id
-    // if (req.user._id.toString() !== user_id) {
-    //  return res.status(403).json({ error: "Unauthorized access" });
-    // }
-
     const ads = await Ad.find({ user_id: user_id }).sort({ createdAt: -1 });
 
     res.status(200).json(ads);
@@ -262,18 +262,14 @@ const getAdsByUser = async (req, res) => {
 const deleteAdsByUser = async (req, res) => {
   try {
     const { user_id } = req.params;
-    
     // Check if the logged-in user is the not the owner of the ad and not an admin
     if (req.body.admin !== true) {
       return res.status(403).json({ error: "Unauthorized to delete this ad" });
     }
-
     // Find all ads by the user_id
     const ads = await Ad.find({ user_id: user_id }).sort({ createdAt: -1 });
-
     // Delete all ads by the user
     await Ad.deleteMany({ user_id: user_id });
-
     res.status(200).json({ message: "All ads deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });

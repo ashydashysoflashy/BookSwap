@@ -1,19 +1,24 @@
+// Import required files
 import { useEffect, useState } from 'react';
 import { useAdsContext } from "../../hooks/useAdsContext";
 import Select from 'react-select';
-import './AdminContent.css'
 import ReportItem from './ReportItem';
+import './AdminContent.css'
 
 const AdminContent = ({ admin }) => {
+  
+  // Using Context and States to re-render each time these are changed
   const { ads, dispatch } = useAdsContext();
   const [sort, setSort] = useState("most_reports");
   const [sortedAds, setSortedAds] = useState([])
 
+  // Sorting options admin page is provided with
   const sortOptions = [
     { value: "most_reports", label: "Most Reports first" },
     { value: "least_reports", label: "Least Reports first" }
   ];
 
+  // Use effect to fetch ads if sorting options are changed or ads are changed from somewhere else
   useEffect(() => {
     const fetchAds = async () => {
       const params = new URLSearchParams({
@@ -31,14 +36,17 @@ const AdminContent = ({ admin }) => {
     fetchAds();
   }, [dispatch, sort]);
 
+  // Function to provoke delete ad
   const handleDeleteListingParent = (deletedAdId) => {
     setSortedAds((prevAds) => prevAds.filter((ad) => ad._id !== deletedAdId));
   };
 
+  // Function to provoke ban user
   const handleBanUserParent = (deletedUserId) => {
     setSortedAds((prevAds) => prevAds.filter((ad) => ad.user_id !== deletedUserId));
   };
 
+  // Return HTML code to be displayed on screen
   return (
     <div className="admin_content_container">
       <div className='admin_content_top'>

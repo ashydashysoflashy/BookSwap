@@ -27,11 +27,13 @@ const Navbar = () => {
   // Fix issue with Mobile Menu staying open
   const location = useLocation();
 
+  //function to handle when a user logs out
   const handleLogout = async () => {
     await logout();
     closeMenu(); // Close menu after logging out
   };
 
+  //function to handle when a user has submitted their search
   const handleSearchSubmit = () => {
     // Construct the search URL based on whether there's a query or not
     const searchURL = searchQuery.trim()
@@ -40,6 +42,7 @@ const Navbar = () => {
     navigate(searchURL);
   };
 
+  //function to see if a user has pressed the enter key
   function keyboardHandler(e) {
     const input = document.getElementById("navbar_logged_out_search")
     if (input.contains(e.target) && e.key === 'Enter') {
@@ -52,6 +55,7 @@ const Navbar = () => {
     setIsMenuOpen(false);
   }, [location]); // This useEffect is specifically for handling location changes
 
+  //add event listeners on page load
   useEffect(() => {
     document.addEventListener('keydown', keyboardHandler)
     return () => { document.removeEventListener('keydown', keyboardHandler) }

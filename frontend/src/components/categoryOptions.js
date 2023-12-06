@@ -1,3 +1,5 @@
+//options for creating an ad and searching for an ad based on the type of category it falls under
+//each option has a label shown to the user on the frontend and a value for the backend
 export const categoryOptions = [
     { value: "business", label: "Business" },
     { value: "computerScience", label: "Computer Science" },
