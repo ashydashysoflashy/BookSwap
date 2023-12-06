@@ -99,7 +99,9 @@ const Navbar = () => {
             <p id="navbar_location_text">Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
+            <div className='create-acc'>
             {!user && <Link to="/register">Create an Account</Link>}
+            </div>
             {!user && (
               <Link to="/login">
                 <button className="navbar_login_button">Log In</button>

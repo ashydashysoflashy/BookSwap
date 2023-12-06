@@ -1,7 +1,6 @@
 .navbar_container {
     display: flex;
     flex-direction: column;
-    padding: 0.9vw 2vw;
     position: relative; /* Set relative positioning */
     background-color: var(--secondary_background);
 }
@@ -29,7 +28,6 @@
 
 .navbar_searchbar {
     width: 31vw;
-    height: 2.7vw;
 
     padding-left: 35px;
     margin: 0 1vw;
@@ -50,16 +48,12 @@
 }
 
 .navbar_search_button {
-    height: 2.7vw;
     padding: 0 1.4vw;
     margin-right: 1vw;
-
     font-size: 1.3rem;
     font-weight: 700;
-
     border: none;
     border-radius: 7px;
-
     background-color: var(--button_background);
     cursor:pointer; /* Fixes issue with pointer not showing up on search button */
 }
@@ -101,6 +95,11 @@
     text-decoration: underline;
 }
 
+.right-side-container{
+    display:flex;
+    align-items: center;
+}
+
 .book_check,
 .chat,
 .notif,
@@ -138,7 +137,6 @@
 }
 
 .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
-    font-size: 1.3rem;
     font-weight: 700;
 
     border: none;
@@ -209,27 +207,90 @@
 }
 
 @media screen and (max-width: 768px) {
-    .navbar_search_section, .navbar_acc_section, .navbar_bottom ul {
-        display: none; /* Hide elements on mobile */
+    /* Search Bar */
+    .navbar_searchbar {
+        height: 5vw;
     }
 
+    /* Hide the search section and location text */
+    .navbar_search_section, #navbar_location_text {
+        display: none;
+    }
+
+    /* Adjust the logo for mobile screens */
+    .navbar_logo {
+        width: 180px; /* Set a fixed width for the logo */
+    }
+
+    /* Ensure the account section is properly aligned and visible */
+    .navbar_acc_section {
+        width: 100%; /* Full width */
+        justify-content: right; /* Center the items */
+        flex-wrap: wrap; /* Allow items to wrap to next line if space is insufficient */
+    }
+
+    /* Adjust the size and margin for the action buttons */
+    .book_check,
+    .chat,
+    .notif,
+    .profile {
+        width: 30px; /* Set a fixed width */
+        height: 30px; /* Set a fixed height */
+        margin: 0 5px; /* Spacing around the buttons */
+    }
+
+    /* Hide 'Post Ad' button on mobile */
+    .navbar_login_button {
+        display: none;
+    }
+
+    /* Adjust hamburger menu display */
     .hamburger_menu {
-        display: block; /* Show hamburger menu on mobile */
+        display: block;
+        position: absolute;
+        right: 10px; /* Position to the right */
+        top: 10px; /* Position from the top */
     }
 
-    .mobile_menu_options {
-        display: block; /* Show mobile menu options when hamburger menu is clicked */
+    /* Adjustments for dropdown */
+    .profile-dropdown-container {
+        position: static; /* Use static positioning for mobile */
     }
 
-    .navbar_bottom.show {
-        display: block; /* Show bottom navbar when isMenuOpen is true */
+    .profile-dropdown {
+        position: static; /* Dropdown should not be absolutely positioned on mobile */
+        box-shadow: none; /* No shadow for a cleaner look */
+        border: none; /* No border for dropdown */
+    }
+
+    /* Hide bottom navbar links */
+    .navbar_bottom {
+        display: none;
+    }
+
+    .profile-dropdown {
+        left: -80%; /* Align the left edge of the dropdown with the center of the profile icon */
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+        font-size: 1.2rem;
+    }
+
+    .navbar_container {
+        padding: 0.9vw 2vw;
+    }
+
+    .navbar_search_button {
+        height: 2.7vw;
+    }
+
+    .create-acc{
+        display:none;
     }
 }
 
-/* Inside the media query */
-.navbar_bottom {
-    display: flex; /* Always show on desktop */
-}
+
 
 @media (min-width:769px) and (max-width:1115px) {
     .navbar_search_section img {
@@ -251,13 +312,64 @@
     .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
         padding: 10px;
         width: 90px;
+        height: 50px;
+        font-size: 1.1rem;
+    }
+
+    .profile-dropdown {
+        left: 80%; /* Align the left edge of the dropdown with the center of the profile icon */
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+        font-size: 1.2rem;
+    }
+
+    /* Search Bar */
+    .navbar_searchbar {
+        height: 50px;
+    }
+
+    .navbar_container {
+        padding: 0.9vw 2vw;
+    }
+
+    .navbar_search_button {
+        height: 50px;
+    }
+
+    .create-acc{
+        display:none;
     }
 }
 
+
 @media (min-width:1116px) {
     .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
-        height:2.7vh;
+        height:50px;
         padding: 0 1.4vw;
+        font-size: 1.1rem;
+    }
+
+    .profile-dropdown {
+        left: 50%; /* Align the left edge of the dropdown with the center of the profile icon */
+    }
+    .profile-dropdown a,
+    .profile-dropdown button {
+        font-size: 1rem;
+    }
+
+    /* Search Bar */
+    .navbar_searchbar {
+        height: 50px;
+    }
+
+    .navbar_search_button {
+        height: 50px;
+    }
+
+    .navbar_container {
+        padding: 0.9vw 2vw;
     }
 }
 
@@ -277,7 +389,6 @@
 .profile-dropdown {
     position: absolute;
     top: 100%; /* Position right below the profile button */
-    left: 50%; /* Align the left edge of the dropdown with the center of the profile icon */
     transform: translateX(-50%); /* Shift the dropdown to the left by half its width */
     right: 0;
     background-color: white;
@@ -301,7 +412,6 @@
     text-decoration: none;
     width: 100%;
     cursor: pointer;
-    font-size: 1rem;
     transition: background-color 0.2s ease; /* Smooth transition for background color */
 }
 
