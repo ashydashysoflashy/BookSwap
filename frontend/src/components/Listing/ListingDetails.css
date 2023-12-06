@@ -91,6 +91,36 @@
     opacity:0.8;
 }
 
+.favorite-button-before {
+    width:70%;
+    height:40px;
+    border-radius: 15px;
+    margin-bottom:1%;
+    background-color:#f4f4f4;
+    font-weight: 700;
+    border:none;
+  }
+
+  .favorite-button-before:hover {
+    cursor:pointer;
+    opacity:0.8;
+  }
+
+  .favorite-button-after {
+    width:70%;
+    height:40px;
+    border-radius: 15px;
+    margin-bottom:1%;
+    background-color:#FF8B8B;
+    font-weight: 700;
+    border:none;
+  }
+
+  .favorite-button-after:hover {
+    cursor:pointer;
+    opacity:0.8;
+  }
+
 .contact-button{
     width:70%;
     height:40px;

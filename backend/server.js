@@ -21,7 +21,7 @@ app.use(express.json());
 //Route for Ads
 app.use('/api/ads', require('./routes/ads'));
 
-//Route for user info (login/signup)
+//Route for user info (login/signup) & favorite ads
 app.use('/api/user',require('./routes/user'))
 
 // Route for email sending

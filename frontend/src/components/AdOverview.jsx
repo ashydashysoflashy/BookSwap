@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./AdOverview.css";
 import { S3 } from "aws-sdk";
 
-const AdOverview = ({ ad,creator }) => {
+const AdOverview = ({ ad,creator,handleDeleteAd }) => {
   const { dispatch } = useAdsContext();
   const { user } = useAuthContext();
   const navigate = useNavigate();
@@ -50,6 +50,7 @@ const AdOverview = ({ ad,creator }) => {
 
     if (response.ok) {
       dispatch({ type: "DELETE_AD", payload: json });
+      handleDeleteAd(ad._id)
     }
   };
 
