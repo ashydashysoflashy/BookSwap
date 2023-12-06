@@ -1,3 +1,4 @@
+// Importing necessary React hooks and components
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './RegisterPage.css';
@@ -5,15 +6,18 @@ import { useSignup } from '../hooks/useSignup'
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext'
 
+// Component for the registration page
 const RegisterPage = () => {
+  // State hooks for form fields and validation
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username,setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
-  //get the signup function from the hook
+  // Get the signup function from the hook
   const { signup, loading, error, setError } = useSignup()
   let navigate = useNavigate();
+  // Accessing user context to determine if a user is logged in
   const { user } = useAuthContext()
 
   // Used ChatGPT to understand how to add functionality for special case checks in password field.
@@ -24,6 +28,7 @@ const RegisterPage = () => {
     setValidPassword(password)
   }, [password]);
 
+  // handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validPassword && password === confirmPassword) {
@@ -35,7 +40,7 @@ const RegisterPage = () => {
     }
   };
 
-  //check everytime user updates if there is one then go home page
+  // Effect hook to navigate to the home page after successful registration
   useEffect(() => {
     if (user) {
       window.location.reload();
@@ -43,6 +48,7 @@ const RegisterPage = () => {
     }
   }, [user])
 
+  // Render the registration form
   return (
     <div className="register_page">
       <h2>Register</h2>

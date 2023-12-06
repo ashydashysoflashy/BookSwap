@@ -1,27 +1,35 @@
+// Importing necessary React hooks and components
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useParams } from "react-router-dom";
-import ResultItem from "../components/Search/Result";
 import AdOverview from "../components/AdOverview";
 import { useNavigate } from "react-router-dom";
 
 const OtherUserAdsPage = () => {
+  // Storing user ID from route parameters
   const [id, setId] = useState();
+  // Extract ID
   const { id: routeId } = useParams();
+  // Hold ads
   const [ads, setAds] = useState([]);
+  // Tracking loading status
   const [isLoading, setIsLoading] = useState(false);
+  // Store errors
   const [error, setError] = useState(null);
+  // Accessing the user context
   const { user } = useAuthContext();
   const navigate = useNavigate()
 
+  // Set the ID when route changes
   useEffect(() => {
     setId(routeId);
   }, [routeId]);
 
+  // Fetch the ads posted by the user (in the route ID)
   useEffect(() => {
     const fetchAds = async () => {
       console.log(user.id,id)
-      //if the id is equal to the user id then go to myads page
+      // If the id is equal to the user id then go to myads page
       if (id === user.id){
         navigate('../myads')
       }
@@ -52,7 +60,7 @@ const OtherUserAdsPage = () => {
     }
   }, [user, id]);
 
-  //dont implement this since you cant delete others ads
+  // Function to handle ad deletion (not implemented for other user ads)
   const handleDeleteAd = () => {
     return null;
   }
@@ -60,6 +68,7 @@ const OtherUserAdsPage = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  // Render the page
   return (
     <div className="user-ads-page">
       <h1 className="page-title">User's Ads</h1>

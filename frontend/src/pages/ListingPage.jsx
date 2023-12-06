@@ -1,16 +1,20 @@
+// Importing necessary React hooks and components
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Listing from '../components/Listing/Listing';
 import ListingDetails from '../components/Listing/ListingDetails';
 import '../components/Listing/Listing.css';
 import { useAdsContext } from '../hooks/useAdsContext';
-import { S3 } from 'aws-sdk'; // Make sure to import AWS SDK
-import ContactForm from '../components/Listing/ContactForm';
+import { S3 } from 'aws-sdk'; // AWS SDK for handling S3 services
 
 export default function ListingPage() {
+  // State for storing current listing ID
   const [id, setId] = useState();
+  // Context hook for ads
   const { dispatch } = useAdsContext();
+  // Extracting ID from the route parameters
   const { id: routeId } = useParams();
+  // State for the current ad details
   const [adItem, setAdItem] = useState({
     id: null,
     title: null,
@@ -19,14 +23,16 @@ export default function ListingPage() {
     createdAt: '',
     price: null,
     category: '',
-    files: [] // Assuming your ad object has a 'files' field with filenames
+    files: [] // Field for storing file names
   });
   const [imageUrls, setImageUrls] = useState([]); // State to hold the image URLs
 
+  // Update the listing ID with the route changes
   useEffect(() => {
     setId(routeId);
   }, [routeId]);
 
+  // Fetch and set the image URL's for the ads
   useEffect(() => {
     const fetchImageUrls = async () => {
       const s3 = new S3({
@@ -35,6 +41,7 @@ export default function ListingPage() {
         secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
       });
 
+      // Map the file name to each URL
       const urls = await Promise.all(adItem.files.map(fileName => { // Use adItem.files
         const filePath = `images/${fileName}`;
         return s3.getSignedUrlPromise('getObject', {
@@ -52,6 +59,7 @@ export default function ListingPage() {
     }
   }, [adItem.files]); // Depend on adItem.files
 
+  // Fetch and set the ad details
   useEffect(() => {
     const fetchAd = async () => {
       try {
@@ -74,12 +82,12 @@ export default function ListingPage() {
           setAdItem(ad); // Set the entire ad object
         } else {
           console.log('ad not found');
-          // Redirect to ad not found page or handle accordingly
         }
       })();
     }
   }, [id]);
 
+  // Render the Listing and Listing Details
   return (
     <div className="main-container">
       {adItem.title && <Listing ad={adItem} imageUrls={imageUrls} />}

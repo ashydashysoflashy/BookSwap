@@ -1,3 +1,4 @@
+// Importing necessary React hooks and components
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
@@ -8,18 +9,20 @@ import {useAuthContext} from '../hooks/useAuthContext'
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //get the signup function from the hook
+  // Get the signup function from the hook (login functionality)
   const {login,loading,error} = useLogin()
   let navigate = useNavigate();
+  // Accessing the user context
   const {user} = useAuthContext()
 
+  // Handle the login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     //wait to login 
     await login(email,password)
   };
   
-  //if theres a user go back to home page
+  // Redirect to homepage if the user is authenticated
   useEffect(() => {
     if(user){
       window.location.reload(); // This will reload the page
@@ -28,6 +31,7 @@ const LoginPage = () => {
   },[user])
 
   // Used ChatGPT to understand how to add functionality onChange.
+  // Render the login form
   return (
     <div className="login_page">
       <h2>Login</h2>
