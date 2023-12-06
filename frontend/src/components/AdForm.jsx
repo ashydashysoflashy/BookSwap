@@ -53,6 +53,11 @@ const AdForm = () => {
       return;
     }
 
+    let swapBookValue = swapBook;
+    if (!priceEnabled && !swapBook.trim()) {
+      swapBookValue = "Please Contact Seller";
+    }
+
     for (const file of files) {
       await S3FileUpload.uploadFile(file, config);
     }
@@ -69,7 +74,7 @@ const AdForm = () => {
       university,
       tags,
       price,
-      swapBook
+      swapBook: swapBookValue
     };
 
     const response = await fetch("http://localhost:4000/api/ads", {

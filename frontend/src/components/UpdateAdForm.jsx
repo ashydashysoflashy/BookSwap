@@ -124,6 +124,17 @@ const UpdateAdForm = () => {
       })
     );
 
+    let currentPrice = price;
+
+    if (!priceEnabled) {
+      currentPrice = 0;
+    }
+    let currentSwapBook = swapBook;
+
+    if (!priceEnabled && !currentSwapBook.trim()) {
+      currentSwapBook = "Please Contact Seller";
+    }
+
     const adData = {
       title,
       description,
@@ -132,8 +143,8 @@ const UpdateAdForm = () => {
       university,
       location,
       tags: tags.map((t) => t.value),
-      price,
-      swapBook,
+      price: currentPrice,
+      swapBook: currentSwapBook,
     };
 
     const response = await fetch(`http://localhost:4000/api/ads/${id}`, {
