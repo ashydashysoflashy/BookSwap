@@ -8,6 +8,9 @@ import locationIcon from '../assets/location_icon.png'
 import './Navbar.css'
 import { useLogout } from "../hooks/useLogout";
 
+import { CgProfile } from "react-icons/cg";
+
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,10 +117,8 @@ const Navbar = () => {
             <p id='navbar_location_text'>Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
-            <div>
+            <div className="right-side-container">
               <button className='book_check'></button>
-              <button className='chat'></button>
-              <button className='notif'></button>
               <div className="profile-dropdown-container" ref={dropdownRef}>
                 <button className='profile' onClick={() => setShowDropdown(!showDropdown)}></button>
                 {showDropdown && (

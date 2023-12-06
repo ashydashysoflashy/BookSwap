@@ -95,6 +95,11 @@
     text-decoration: underline;
 }
 
+.right-side-container{
+    display:flex;
+    align-items: center;
+}
+
 .book_check,
 .chat,
 .notif,
@@ -279,6 +284,10 @@
     .navbar_search_button {
         height: 2.7vw;
     }
+
+    .create-acc{
+        display:none;
+    }
 }
 
 
@@ -328,7 +337,12 @@
     .navbar_search_button {
         height: 50px;
     }
+
+    .create-acc{
+        display:none;
+    }
 }
+
 
 @media (min-width:1116px) {
     .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
