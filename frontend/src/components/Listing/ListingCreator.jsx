@@ -177,7 +177,10 @@ export default function ListingCreator({ ad, onContactClick }) {
         </button>
       )}
       <button className='other-button' onClick={onViewOtherListingsClick}>View Other Listings </button>
-      <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
+      {user && ad.user_id !== user.id && (
+        <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
+      )}
+      
       {reportSuccess && <p>Your report has been submitted.</p>}
       {!reportSuccess && (user && ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
       {displayReport && newReport.reason === "" && <p id='report_text'>Please input a reason for reporting</p>}
