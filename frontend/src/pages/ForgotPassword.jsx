@@ -1,16 +1,22 @@
+// Importing necessary React hooks and components
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './ForgotPassword.css'; // Assuming you have a CSS file named ForgotPassword.css
+// Import stylesheet
+import './ForgotPassword.css';
 
+// ForgotPassword functional component
 const ForgotPassword = () => {
+  // State variables for email and message
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
+  // Submits the password reset request to the server
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
 
     try {
+      // POST request to the password reset endpoint
       const response = await fetch('http://localhost:4000/api/user/forgot-password', {
         method: 'POST',
         headers: {
@@ -19,6 +25,7 @@ const ForgotPassword = () => {
         body: JSON.stringify({ email }),
       });
 
+      // Handling the server response
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || 'Failed to send reset link');
@@ -29,6 +36,7 @@ const ForgotPassword = () => {
     }
   };
 
+  // Render the password reset form
   return (
     <div className="login_page">
       <h2>Forgot Password</h2>

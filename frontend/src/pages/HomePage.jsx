@@ -1,8 +1,10 @@
+// Importing necessary React hooks and components
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 import heroImage from '../assets/landing.jpg';
 
+// Homepage functional component
 const HomePage = () => {
   return (
     <>
