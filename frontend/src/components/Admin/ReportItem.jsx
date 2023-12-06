@@ -203,11 +203,11 @@ const ReportItem = (props) => {
             <Link to={`/listings/${ad._id}`}>
               <h1 className='report_post_title'>{ad.title.slice(0, 40)}{(ad.title.length > 40) ? '...' : ''}</h1>
             </Link>
-            <h1 className='report_post_price'>{ad.price ? `$${ad.price}.00` : "Contact For Price"}</h1>
+            <h1 className='report_post_price'>{ad.price ? `$${ad.price}.00` : `Trade for ${ad.swapBook}`}</h1>
             <p className='report_post_description'>{ad.description.slice(0, 130)}{(ad.description.length > 130) ? '...' : ''}</p>
           </div>
           <div className='report_post_bottom_info'>
-            <p>{ad.location} | {formatDate(ad.createdAt)}</p>
+            <p>{ad.university} | {formatDate(ad.createdAt)}</p>
           </div>
         </div>
       </div>

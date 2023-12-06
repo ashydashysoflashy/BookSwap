@@ -17,8 +17,7 @@ import OtherUserAdsPage from "./pages/OtherUserAdsPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
-
-
+import FavoriteAdsPage from "./pages/FavoriteAdsPage";
 
 //Components
 import Navbar from "./components/Navbar";
@@ -56,6 +55,7 @@ function App() {
             <Route path="/listings/:id" element={<ListingPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/myads" element={user ? <UserAdsPage /> : <Navigate to='/register' />} />
+            <Route path="/myfavorites" element={user ? <FavoriteAdsPage /> : <Navigate to='/register' />} />
             <Route path="/userads/:id" element={user ? <OtherUserAdsPage /> : <Navigate to='/register' />} />
             <Route path="/admin" element={user ? <AdminPage /> : <Navigate to='/register' />} />
             <Route path="/" element={!user ? <HomePage /> : <Browse />} />

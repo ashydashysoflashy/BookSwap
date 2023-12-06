@@ -4,7 +4,7 @@ const router = express.Router()
 const requireAuth = require("../middleware/requireAuth");
 
 
-//import the functions to handle user events
+//Import the functions to handle user events
 const {
     signupUser,
     loginUser,
@@ -15,11 +15,15 @@ const {
     getUsername,
     getUserAdmin,
     getIsBanned,
-    banUser
+    banUser, 
+    getFavoriteAds,
+    getIsFavorite,
+    addFavoriteAd,
+    removeFavoriteAd,
 } = require('../controllers/userController');
 
-//login route - call the control loginUser function
-router.post('/login',loginUser)
+// login route
+router.post('/login', loginUser);
 
 //signup route - call the controller signupUser function
 router.post('/signup',signupUser)
@@ -29,17 +33,33 @@ router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 router.post('/change-password', requireAuth, changePassword);
 
-//Get a single user
+
+// signup route
+router.post('/signup', signupUser);
+
+// Get a single user's name
 router.get("/:id", getUsername);
 
-//Get a single user
+// Check if a user is an admin
 router.get("/isAdmin/:id", getUserAdmin);
 
+// Check if a user is banned
 router.get("/isBanned/:id", getIsBanned);
 
-//Delete a user
+// Ban a user
 router.post("/admin/banuser/:id", banUser);
 
+// Get favorite status of an ad for a user
+router.get('/favorites/:user_id/:ad_id', getIsFavorite);
 
-//export the router
-module.exports = router
+// Get all favorite ads for a user
+router.get('/favorites/:user_id', getFavoriteAds);
+
+// Add an ad to a user's favorites
+router.post('/favorites/add', addFavoriteAd);
+
+// Remove an ad from a user's favorites
+router.delete('/favorites/remove', removeFavoriteAd);
+
+// export the router
+module.exports = router;

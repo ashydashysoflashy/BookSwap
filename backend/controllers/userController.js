@@ -198,6 +198,78 @@ const banUser = async (req, res) => {
   }
 };
 
+
+const addFavoriteAd = async (req, res) => {
+  const { user_id, ad_id } = req.body;
+
+  try {
+    const user = await User.findById(user_id);
+    // Check if the ad is already in favorites
+    if (user.favorite_ad_ids.includes(ad_id)) {
+      return res.status(400).json({ message: "Ad already in favorites" });
+    }
+    // Add ad to favorites
+    user.favorite_ad_ids.push(ad_id);
+    await user.save();
+    res.status(200).json({ message: "Ad added to favorites" });
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const removeFavoriteAd = async (req, res) => {
+  const { user_id, ad_id } = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(user_id, {
+      $pull: { favorite_ad_ids: ad_id }
+    }, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ message: "Ad removed from favorites" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getFavoriteAds = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const user = await User.findById(user_id).populate({
+      path: 'favorite_ad_ids',
+      model: 'Ad'
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const favoriteAds = user.favorite_ad_ids; // This now contains full ad documents
+    res.status(200).json(favoriteAds);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+const getIsFavorite = async (req, res) => {
+  const { user_id, ad_id } = req.params;
+
+  try {
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const isFavorite = user.favorite_ad_ids.includes(ad_id);
+    res.status(200).json({ isFavorite });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+// Export Functions
 module.exports = {
   loginUser,
   signupUser,
@@ -208,5 +280,9 @@ module.exports = {
   banUser,
   forgotPassword,
   resetPassword,
-  changePassword
+  changePassword,
+  getFavoriteAds,
+  getIsFavorite,
+  addFavoriteAd,
+  removeFavoriteAd
 };
