@@ -24,10 +24,12 @@ const AdForm = () => {
   const { user } = useAuthContext();
   let navigate = useNavigate();
 
+  //global state and error handling
   const { dispatch } = useAdsContext();
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
+  //state for all the input fields in the form
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
@@ -41,27 +43,31 @@ const AdForm = () => {
   /* Fix selector layer order */
   const [activeDropdown, setActiveDropdown] = useState('');
 
+  //function to handle state between price radio and bookswap radio
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
     else setPriceEnabled(false);
   };
+
+  //function to submit the create ad form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    //if no user then return
     if (!user) {
       setError("Must be logged in to create an ad");
       return;
     }
 
+    //check if user has selected to "swap book" instead of selecting a price
     let swapBookValue = swapBook;
     if (!priceEnabled && !swapBook.trim()) {
       swapBookValue = "Please Contact Seller";
     }
-
+    //upload the images of the ad to aws s3 storage
     for (const file of files) {
       await S3FileUpload.uploadFile(file, config);
     }
-
+    //structure containing all the details of an ad
     const ad = {
       user_id: user.id,
       title,
@@ -76,7 +82,7 @@ const AdForm = () => {
       price,
       swapBook: swapBookValue
     };
-
+    //send a POST request to the api with the ad as the body
     const response = await fetch("http://localhost:4000/api/ads", {
       method: "POST",
       body: JSON.stringify(ad),
@@ -87,12 +93,14 @@ const AdForm = () => {
     });
 
     const json = await response.json();
+    //error handling
     if (!response.ok) {
       console.log("error", json);
       console.log(json.error);
       setError(`${json.error} | ${json.emptyFields}`);
       setEmptyFields(json.emptyFields);
     }
+    //reset the form
     if (response.ok) {
       setTitle("");
       setDescription("");
@@ -103,12 +111,13 @@ const AdForm = () => {
       setSwapBook("");
       setError(null);
       setEmptyFields([]);
+      //update global state
       dispatch({ type: "CREATE_AD", payload: json });
-
+      //navigate to home page
       navigate("/home");
     }
   };
-
+  //function to add an image to the array of images 
   const handleAddImage = (e) => {
     if (e.target.files.length > 0) {
       let newFiles = [...files];
@@ -125,6 +134,7 @@ const AdForm = () => {
     e.target.value = null;
   };
 
+  //function to remove an image from the array of images
   const handleRemoveImage = (fileName) => {
     setFiles(files.filter((file) => file.name !== fileName));
   };

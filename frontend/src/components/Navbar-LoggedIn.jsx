@@ -18,16 +18,18 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  //fetch if a user is an admin to display the button to view the admin page
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Construct the query parameters
         const response = await fetch(`http://localhost:4000/api/user/isAdmin/${user.id}`);
         const data = await response.json();
-
+        //set admin to true if the response is ok and setfetched to true so it doesnt fetch again
         if (response.ok) {
           setAdmin(data);
           setAdminFetched(true)
+        //error handling
         } else {
           throw new Error(data.error || "Failed to fetch results");
         }
@@ -41,13 +43,14 @@ const Navbar = () => {
     fetchData();
   }, [user]);
 
+  //function when a user clicks the logout button
   const handleLogout = async () => {
     await logout();
     window.location.reload(); // This will reload the page
     console.log('User logged out');
     navigate('/');
   };
-
+  //function when a user enters something into the searchbar and searches
   const handleSearchSubmit = () => {
     const searchURL = searchQuery.trim()
       ? `/search?query=${encodeURIComponent(searchQuery.trim())}`
@@ -63,10 +66,12 @@ const Navbar = () => {
     }
   };
 
+  //function if a user clicks any link, closes the dropdown
   const handleLinkClick = () => {
     setShowDropdown(false); // Close the dropdown when a link is clicked
   };
 
+  //if a user clicks enter on the searchbar, then search
   function keyboardHandler(e) {
     const input = document.getElementById("navbar_logged_in_search")
     if (input.contains(e.target) && e.key === 'Enter') {
@@ -74,13 +79,14 @@ const Navbar = () => {
     }
   }
 
+  //on page load add event listener for pressing keys (to see if enter key pressed)
   useEffect(() => {
     document.addEventListener('keydown', keyboardHandler)
     return () => { document.removeEventListener('keydown', keyboardHandler) }
-  })
+  },[])
 
+  // Add event listener for clicks outside the dropdown
   useEffect(() => {
-    // Add event listener for clicks outside the dropdown
     if (showDropdown) {
       document.addEventListener('mousedown', handleClickOutside);
     }
