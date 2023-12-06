@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import {useAuthContext} from './useAuthContext'
 
+//function to handle api request for user login
 export const useLogin = () => {
     //state for loading
     const [error,setError] = useState(null)

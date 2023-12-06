@@ -1,6 +1,8 @@
 import {useState} from 'react'
 import {useAuthContext} from './useAuthContext'
 
+//function to handle api request for creating an account
+//updates global state and handles responses
 export const useSignup = () => {
     //state for loading
     const [error,setError] = useState("")
