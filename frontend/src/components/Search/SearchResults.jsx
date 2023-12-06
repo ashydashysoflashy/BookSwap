@@ -14,11 +14,13 @@ export default function SearchResults({
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sortOption, setSortOption] = useState("new"); // default sort option
+  const [sortOption, setSortOption] = useState(null); // default sort option
 
   const optionsSort = [
     { value: "new", label: "Posted: newest first" },
     { value: "old", label: "Posted: oldest first" },
+    { value: "low_high", label: "Price: low to high" },
+    { value: "high_low", label: "Price: high to low" },
   ];
 
   useEffect(() => {
