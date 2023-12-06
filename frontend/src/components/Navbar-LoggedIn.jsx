@@ -123,6 +123,7 @@ const Navbar = () => {
                 {showDropdown && (
                   <div className="profile-dropdown">
                     <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
+                    <Link to="/myfavorites" onClick={handleLinkClick}>My Favorites</Link>
                     {admin && <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>}
                     <button onClick={handleLogout}>Log Out</button>
                   </div>

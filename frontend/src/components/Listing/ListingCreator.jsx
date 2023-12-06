@@ -20,6 +20,7 @@ export default function ListingCreator({ ad, onContactClick }) {
   const { dispatch } = useAdsContext();
   const [displayReport, setDisplayReport] = useState();
   const [reportSuccess, setReportSuccess] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   
   const reportOptions = [
     { value: "prohibited", label: "Prohibited Content" },
@@ -29,6 +30,22 @@ export default function ListingCreator({ ad, onContactClick }) {
   const onViewOtherListingsClick = () => {
     navigate(`../userads/${ad.user_id}`)
   };
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/user/favorites/${user.id}/${ad._id}`);
+        const data = await response.json();
+        setIsFavorite(data.isFavorite);
+      } catch (error) {
+        console.error('Error checking favorite status', error);
+      }
+    };
+
+    if (user && user.id) {
+      checkFavoriteStatus();
+    }
+  }, [user, ad._id]);
 
   useEffect(() => {
     if(!user || !user.id) return;
@@ -60,6 +77,37 @@ export default function ListingCreator({ ad, onContactClick }) {
 
     fetchData();
   }, [ad]);
+
+  const toggleFavorite = async () => {
+    if (!user) {
+      alert("Please log in to favorite ads");
+      return;
+    }
+  
+    const method = isFavorite ? 'DELETE' : 'POST';
+    const url = `http://localhost:4000/api/user/favorites/${method === 'POST' ? 'add' : 'remove'}`;
+  
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`, // Assuming you're using Bearer tokens
+        },
+        body: JSON.stringify({ user_id: user.id, ad_id: ad._id })
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update favorite status");
+      }
+  
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('Error toggling favorite status:', error);
+    }
+  };
+  
+  
 
   const handleReport = async (e) => {
     if(!user) return
@@ -119,8 +167,15 @@ export default function ListingCreator({ ad, onContactClick }) {
           <IoCheckmarkDoneSharp size={24} color='#8ba5ff' />
           <div className='trusted-text'>Trusted Seller</div>
         </div>
-      </div>
-
+      </div>  
+      {user && ad.user_id !== user.id && (
+        <button 
+          className={isFavorite ? 'favorite-button-after' : 'favorite-button-before'} 
+          onClick={toggleFavorite}
+        >
+          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+        </button>
+      )}
       <button className='other-button' onClick={onViewOtherListingsClick}>View Other Listings </button>
       <button className='contact-button' onClick={onContactClick}>Contact Seller</button>
       {reportSuccess && <p>Your report has been submitted.</p>}

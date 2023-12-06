@@ -35,6 +35,12 @@ const userSchema = new Schema({
       ref: "Ad",
     },
   ],
+  favorite_ad_ids: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Ad",
+    },
+  ],
 });
 
 //static method to aid with signing up a user instead of doing everything in the controller
