@@ -62,15 +62,17 @@ export default function ListingCreator({ ad, onContactClick }) {
   }, [ad]);
 
   const handleReport = async (e) => {
-    if(!user) return
+    if(!user) return;
     e.preventDefault();
     if (!displayReport) setDisplayReport(!displayReport);
     if (newReport.reason === "") return;
     setReportError(null)
-    setNewReport((prev) => ({
-      ...prev,
-      user_id: user.id
-    }));
+    console.log("userid",user.id)
+    //setNewReport((prev) => ({
+      //...prev,
+      //user_id: user.id
+    //}));
+    if(!newReport.user_id) return;
 
     //Functionality for reporting a listing
     const adData = {
@@ -84,9 +86,7 @@ export default function ListingCreator({ ad, onContactClick }) {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    console.log(response);
     const jsonData = await response.json();
-    console.log(jsonData);
     if (!response.ok) {
       setReportError(jsonData.error);
     } else {
@@ -127,9 +127,9 @@ export default function ListingCreator({ ad, onContactClick }) {
       {!reportSuccess && (user && ad.user_id !== user.id) && <button className='report-button' onClick={handleReport}>{!displayReport ? 'Report Listing' : 'Report'}</button>}
       {displayReport && newReport.reason === "" && <p id='report_text'>Please input a reason for reporting</p>}
       {reportError && <p id='report_text'>{reportError.message}</p>}
-      {displayReport && !reportSuccess ? <Select
+      {displayReport && !reportSuccess && user ? <Select
         options={reportOptions}
-        onChange={(selectedOption) => setNewReport((prev) => ({ ...prev, reason: selectedOption.value }))}
+        onChange={(selectedOption) => setNewReport((prev) => ({ user_id: user.id, reason: selectedOption.value }))}
         className="react-select-container"
         classNamePrefix="react-select"
         placeholder="Reason for Reporting"
