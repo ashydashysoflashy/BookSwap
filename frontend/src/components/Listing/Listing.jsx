@@ -47,21 +47,6 @@ export default function Listing({ad, imageUrls}) {
 
       </div>
 
-      <div className='listing-action-menu'>
-        <div>
-          <FaRegHeart size={30}/>
-        </div>
-        <div>
-          <FaRegFlag size={30}/>
-        </div>
-        <div>
-          <FaRegMessage size={30}/>
-        </div>
-        <div>
-          <MdOutlineEmail size={30}/>
-        </div>
-      </div>
-
       <div className='listing-images-container'>
         {imageUrls && imageUrls.length > 0 ? (
           imageUrls.map((url, index) => (
