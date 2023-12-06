@@ -101,7 +101,6 @@ const createAd = async (req, res) => {
     description,
     files,
     category,
-    location,
     tags,
     price,
     swapBook,
@@ -114,7 +113,10 @@ const createAd = async (req, res) => {
   if (!description) emptyFields.push("description");
   if (!category) emptyFields.push("category");
   if (!location) emptyFields.push("location");
-  if (!price) emptyFields.push("price");
+  if (!price && !swapBook){
+    emptyFields.push("price");
+    emptyFields.push("swap");
+  } 
   if (!university) emptyFields.push("university");
 
   if (emptyFields.length > 0)

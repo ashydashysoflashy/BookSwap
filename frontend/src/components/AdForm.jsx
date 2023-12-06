@@ -33,7 +33,6 @@ const AdForm = () => {
   const [files, setFiles] = useState([]);
   const [university, setUniversity] = useState("");
   const [category, setCategory] = useState("");
-  const [location, setLocation] = useState("");
   const [tags, setTags] = useState([]);
   const [price, setPrice] = useState(0);
   const [swapBook, setSwapBook] = useState("");
@@ -43,7 +42,6 @@ const AdForm = () => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
     else setPriceEnabled(false);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,6 +53,7 @@ const AdForm = () => {
     for (const file of files) {
       await S3FileUpload.uploadFile(file, config);
     }
+
     const ad = {
       user_id: user.id,
       title,
@@ -65,10 +64,9 @@ const AdForm = () => {
       })),
       category,
       university,
-      location,
       tags,
       price,
-      swapBook,
+      swapBook
     };
 
     const response = await fetch("http://localhost:4000/api/ads", {
@@ -91,7 +89,6 @@ const AdForm = () => {
       setDescription("");
       setFiles([]);
       setCategory("");
-      setLocation("");
       setTags("");
       setPrice(0);
       setSwapBook("");
@@ -200,19 +197,6 @@ const AdForm = () => {
             )}
           />
 
-          <input
-            type="text"
-            onChange={(e) => setLocation(e.target.value)}
-            value={location}
-            placeholder="Location"
-            className={
-              emptyFields.includes("location")
-                ? "input_field field_error"
-                : "input_field"
-            }
-            required
-          />
-
           <CreatableSelect
             isMulti
             options={tagOptions}
@@ -245,7 +229,7 @@ const AdForm = () => {
               ></input>
               <input
                 type="number"
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {setSwapBook(null); setPrice(e.target.value)}}
                 value={price}
                 min={0}
                 placeholder="Price"
@@ -264,7 +248,7 @@ const AdForm = () => {
               ></input>
               <input
                 type="text"
-                onChange={(e) => setSwapBook(e.target.value)}
+                onChange={(e) => {setSwapBook(e.target.value); setPrice(null)}}
                 value={swapBook}
                 placeholder="Swap Book"
                 className={
