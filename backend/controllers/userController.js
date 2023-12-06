@@ -3,6 +3,12 @@ const User = require("../models/userModel");
 //use jsonwebtocken package for generating auth tokens
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const crypto = require('crypto'); // Node.js built-in module
+const nodemailer = require('nodemailer');
+const bcrypt = require("bcrypt");
+
+
+
 
 //function to create a token for logging in and signing up
 //takes in the _id from a mongodb user which will be part of the payload of the token
@@ -43,6 +49,97 @@ const signupUser = async (req, res) => {
   } catch (error) {
     //since theres an error, send a bad response
     res.status(400).json({ error: error.message });
+  }
+};
+
+// Function to handle forgot password
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found." });
+  }
+
+  // Generate a token
+  const resetToken = crypto.randomBytes(20).toString('hex');
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
+
+  await user.save();
+
+  // Send email
+  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+  
+  // Nodemailer setup
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_ADDRESS, // Sender address
+    to: email, // Recipient address
+    subject: 'Password Reset',
+    text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+          `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+          `${resetUrl}\n\n` +
+          `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ error: 'Error sending email' });
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).json({ message: "Password reset link sent to email." });
+    }
+  });
+};
+
+const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return res.status(400).json({ error: "Password reset token is invalid or has expired." });
+  }
+
+  // Set new password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  res.status(200).json({ message: "Password has been updated." });
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id); // req.user should be set by your auth middleware
+    const { currentPassword, newPassword } = req.body;
+
+    if (!await bcrypt.compare(currentPassword, user.password)) {
+      return res.status(400).json({ error: "Current password is incorrect." });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password successfully updated." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -159,4 +256,4 @@ const banUser = async (req, res) => {
 };
 
 //export these functions
-module.exports = { loginUser, signupUser, getUserEmailById, getUsername, getUserAdmin, getIsBanned, banUser };
+module.exports = { loginUser, signupUser, getUserEmailById, getUsername, getUserAdmin, getIsBanned, banUser, forgotPassword, resetPassword, changePassword };

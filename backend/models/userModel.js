@@ -35,6 +35,12 @@ const userSchema = new Schema({
       ref: "Ad",
     },
   ],
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  },
 });
 
 //static method to aid with signing up a user instead of doing everything in the controller

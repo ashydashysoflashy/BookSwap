@@ -54,7 +54,7 @@ const LoginPage = () => {
         </div>
         <div className="form-group">
           <button type="button" className="text-button">
-            Forgot Password?
+            <Link to="/forgot-password">Forgot Password?</Link>
           </button>
         </div>
         <button type="submit" className="login-button" disabled={loading}>Log In</button>
