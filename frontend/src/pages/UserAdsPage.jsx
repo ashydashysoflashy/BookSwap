@@ -9,6 +9,11 @@ const UserAdsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const handleDeleteAd = (deletedAdId) => {
+    setAds((prevAds) => prevAds.filter((ad) => ad._id !== deletedAdId));
+  };
+
+
   useEffect(() => {
     const fetchAds = async () => {
       setIsLoading(true);
@@ -39,7 +44,7 @@ const UserAdsPage = () => {
         {error && <div className="error-message">Error: {error}</div>}
         <div className="ads-container">
           {ads.length > 0 ? (
-              ads.map(ad => <AdOverview key={ad._id} ad={ad} creator={true}/>)
+              ads.map(ad => <AdOverview key={ad._id} ad={ad} creator={true} handleDeleteAd={handleDeleteAd}/>)
           ) : (
               <p className="no-ads-message">You haven't posted any ads yet.</p>
           )}
