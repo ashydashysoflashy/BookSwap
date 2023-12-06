@@ -38,6 +38,9 @@ const AdForm = () => {
   const [swapBook, setSwapBook] = useState("");
   const [priceEnabled, setPriceEnabled] = useState(true);
 
+  /* Fix selector layer order */
+  const [activeDropdown, setActiveDropdown] = useState('');
+
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
     else setPriceEnabled(false);
@@ -178,11 +181,9 @@ const AdForm = () => {
             onChange={(e) => {
               setCategory(e.value);
             }}
-            className={
-              emptyFields.includes("category")
-                ? "react-select-container select_field field_error"
-                : "react-select-container select_field"
-            }
+            className={`react-select-container ${activeDropdown === 'category' ? 'active-dropdown' : ''}`}
+            onMenuOpen={() => setActiveDropdown('category')}
+            onMenuClose={() => setActiveDropdown('')}
             classNamePrefix="react-select"
             placeholder="Select Category"
           />
@@ -190,7 +191,9 @@ const AdForm = () => {
           <Select
             options={universityOptions}
             onChange={(selectedOption) => setUniversity(selectedOption.value)}
-            className={`react-select-container ${emptyFields.includes("university") ? 'field_error' : ''}`}
+            className={`react-select-container ${activeDropdown === 'university' ? 'active-dropdown' : ''}`}
+            onMenuOpen={() => setActiveDropdown('university')}
+            onMenuClose={() => setActiveDropdown('')}
             classNamePrefix="react-select"
             placeholder="Select University"
             value={universityOptions.find(
@@ -209,11 +212,9 @@ const AdForm = () => {
               )
             }
             value={tags.map((tag) => ({ label: tag, value: tag }))}
-            className={
-              emptyFields.includes("tags")
-                ? "react-select-container select_field field_error"
-                : "react-select-container select_field"
-            }
+            className={`react-select-container ${activeDropdown === 'tag' ? 'active-dropdown' : ''}`}
+            onMenuOpen={() => setActiveDropdown('tag')}
+            onMenuClose={() => setActiveDropdown('')}
             classNamePrefix="react-select"
             placeholder="Select Tags"
           />
@@ -230,9 +231,10 @@ const AdForm = () => {
               ></input>
               <input
                 type="number"
-                onChange={(e) => {setSwapBook(''); setPrice(e.target.value)}}
+                onChange={(e) => { setSwapBook(''); setPrice(e.target.value) }}
                 value={price}
                 min={0}
+                max={500}
                 placeholder="Price"
                 className={
                   emptyFields.includes("price")
@@ -249,7 +251,7 @@ const AdForm = () => {
               ></input>
               <input
                 type="text"
-                onChange={(e) => {setSwapBook(e.target.value); setPrice(0)}}
+                onChange={(e) => { setSwapBook(e.target.value); setPrice(0) }}
                 value={swapBook}
                 placeholder="Swap Book"
                 className={
