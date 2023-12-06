@@ -113,19 +113,19 @@ const Navbar = () => {
               onChange={(e) => setSearchQuery(e.target.value)}>
             </input>
             <Link to="/search"><button className='navbar_search_button'>Search</button></Link>
-            <img src={locationIcon} alt='Location Icon'></img>
-            <p id='navbar_location_text'>Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
             <div className="right-side-container">
-              <button className='book_check'></button>
               <div className="profile-dropdown-container" ref={dropdownRef}>
-                <button className='profile' onClick={() => setShowDropdown(!showDropdown)}></button>
+                <div id="profile-icon">
+                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)} ref={dropdownRef} color="#8BA5FFFF"/>
+                </div>
                 {showDropdown && (
                   <div className="profile-dropdown">
                     <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>                   
                     <Link to="/change-password" onClick={handleLinkClick}>Change Password</Link>
                     <Link to="/myfavorites" onClick={handleLinkClick}>My Favorites</Link>
+                    <Link id="test" to="/create" onClick={handleLinkClick}>Post Ad</Link>
                     {admin && <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>}
                     <button onClick={handleLogout}>Log Out</button>
                   </div>

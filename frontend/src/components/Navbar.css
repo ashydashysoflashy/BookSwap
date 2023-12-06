@@ -97,7 +97,12 @@
 
 .right-side-container{
     display:flex;
+    height:100%;
     align-items: center;
+}
+
+.profile-dropdown-container{
+    height:100%;
 }
 
 .book_check,
@@ -130,10 +135,6 @@
 
 .notif {
     background-image: url('../assets/bell.png');
-}
-
-.profile {
-    background-image: url('../assets/user.png');
 }
 
 .navbar_login_button,.navbar_logout_button{ /* Adds hover effect for button */
@@ -204,6 +205,11 @@
 .mobile_menu_options a:hover {
     text-decoration: underline; /* Hover effect */
     background-color: #8BA5FFFF; /* Background color on hover */
+}
+
+#profile-icon:hover{
+    opacity:0.7;
+    cursor:pointer;
 }
 
 @media screen and (max-width: 768px) {
@@ -293,6 +299,10 @@
 
 
 @media (min-width:769px) and (max-width:1115px) {
+    #test{
+        display:none;
+    }
+
     .navbar_search_section img {
         display:none;
     }
@@ -370,6 +380,10 @@
 
     .navbar_container {
         padding: 0.9vw 2vw;
+    }
+
+    #test{
+        display:none;
     }
 }
 

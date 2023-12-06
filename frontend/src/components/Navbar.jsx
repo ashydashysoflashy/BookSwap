@@ -95,8 +95,6 @@ const Navbar = () => {
             >
               Search
             </button>
-            <img src={locationIcon} alt="Location Icon"></img>
-            <p id="navbar_location_text">Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
             <div className='create-acc'>
