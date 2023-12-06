@@ -21,7 +21,7 @@ export default function SearchFilters({
 
   // Replace optionsPrice with min and max price state
   const [minPriceValue, setMinPriceValue] = useState(0);
-  const [maxPriceValue, setMaxPriceValue] = useState(999);
+  const [maxPriceValue, setMaxPriceValue] = useState(500);
 
   // State for controlling the Select components
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -42,7 +42,7 @@ export default function SearchFilters({
     setSelectedSchool(null);
     setSearchText('');
     setMinPriceValue(0);
-    setMaxPriceValue(999);
+    setMaxPriceValue(500);
 
     // Update the key to force re-render
     setSliderKey(prevKey => prevKey + 1);
@@ -52,7 +52,7 @@ export default function SearchFilters({
     setIncludeSwap(true);
     setSelectedSwapSwitch(true);
     setMinPrice(0);
-    setMaxPrice(999);
+    setMaxPrice(500);
 
     setSchool('');
     setSearchQuery('');
@@ -67,6 +67,11 @@ export default function SearchFilters({
       setIncludeSwap("include");
     }
   }
+
+  const onApplyPrice = () => {
+    setMinPrice(minPriceValue);
+    setMaxPrice(maxPriceValue);
+  };
 
   return (
     <div className="filters-container">
@@ -145,7 +150,7 @@ export default function SearchFilters({
       />
 
       <label>
-        <span>Incldude Trade Offers</span><br></br>
+        <span>Include Trade Offers</span><br></br>
         <Switch onChange={handleSwitchChange} checked={selectedSwapSwitch} />
       </label>
 
@@ -164,16 +169,17 @@ export default function SearchFilters({
           pearling
           minDistance={10}
           min={0} // Minimum value of the slider
-          max={999} // Maximum value of the slider
+          max={500} // Maximum value of the slider
           onChange={(values) => {
             setMinPriceValue(values[0]);
             setMaxPriceValue(values[1]);
-            setMinPrice(values[0]);
-            setMaxPrice(values[1]);
           }}
           className="react-slider-container"
           classNamePrefix="react-slider"
         />
+        <button onClick={onApplyPrice} className="apply-price-button">
+        Apply Price Range
+      </button>
         <button className="clear-filters-button" onClick={clearFilters}>
           Clear Filters
         </button>
