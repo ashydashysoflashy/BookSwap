@@ -96,7 +96,7 @@ const AdOverview = ({ ad,creator,handleDeleteAd }) => {
         </div>
         <div className="ad_information">
           <h2>{ad.title}</h2>
-          <p className="ad_price">{ad.price ? `$${ad.price}.00` : `Trade for ${ad.swapBook}`}</p>
+          <p className="ad_price">{ad.price ? `$${ad.price}.00` : `${(ad.swapBook) ? `Trade for ${ad.swapBook}` : 'Free'}`}</p>
           <p className="ad_description">Description: {ad.description}</p>
           <p>Date Created: {formatDate(ad.createdAt)}</p>
           <div className="ad_actions">

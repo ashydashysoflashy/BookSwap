@@ -35,7 +35,7 @@ export default function Listing({ad, imageUrls}) {
 
       <div className='listing-title'>{ad.title}</div>
       <div className='price-location-container'>
-        <div className='listing-price'>{(ad.price === null) ? `Trade for ${ad.swapBook}` : `$${ad.price}.00`}</div>
+        <div className='listing-price'>{ad.price ? `$${ad.price}.00` : `${(ad.swapBook) ? `Trade for ${ad.swapBook}` : 'Free'}`}</div>
         <div className='map-icon'>
           <FaMapMarkerAlt color='grey' size={24}/>
         </div>
