@@ -112,19 +112,6 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        {/* Bottom Navbar */}
-        <div className={`navbar_bottom ${window.innerWidth <= 768 && isMenuOpen ? 'show' : ''}`}>
-          <ul>
-            <li>Business</li>
-            <li>Computer Science</li>
-            <li>Education</li>
-            <li>Engineering</li>
-            <li>Law</li>
-            <li>Mathematics</li>
-            <li>Medicine</li>
-            <li>Natural Science</li>
-          </ul>
-        </div>
       </div>
     </header>
   );

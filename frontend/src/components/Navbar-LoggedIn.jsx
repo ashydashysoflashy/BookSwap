@@ -135,18 +135,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="navbar_bottom">
-          <ul>
-            <li>Business</li>
-            <li>Computer Science</li>
-            <li>Education</li>
-            <li>Engineering</li>
-            <li>Law</li>
-            <li>Mathematics</li>
-            <li>Medicine</li>
-            <li>Natural Science</li>
-          </ul>
-        </div>
+
       </div>
     </header>
   )
