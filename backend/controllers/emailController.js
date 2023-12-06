@@ -1,7 +1,8 @@
+//Use nodemailer to control the emailing functionality
 const nodemailer = require('nodemailer');
 const { getUserEmailById } = require('./userController'); // Import the function
 
-
+//Send an email
 const sendEmail = async (req, res) => {
 
   // Extract email details from request body
@@ -14,10 +15,10 @@ const sendEmail = async (req, res) => {
   if (senderEmail === recipientEmail) {
     return res.status(400).json({ error: "Cannot send email to yourself." });
   }
-  
+
   // Nodemailer configuration
   const transporter = nodemailer.createTransport({
-    service: 'gmail', 
+    service: 'gmail',
     auth: {
       user: process.env.EMAIL_ADDRESS,
       pass: process.env.EMAIL_PASSWORD,
