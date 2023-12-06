@@ -1,19 +1,23 @@
+// Importing necessary React hooks and components
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import AdOverview from "../components/AdOverview";
 import './UserAdsPage.css';
 
+// Component to display a user's own ads
 const UserAdsPage = () => {
   const { user } = useAuthContext();
   const [ads, setAds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Function to handle deletion of an ad
   const handleDeleteAd = (deletedAdId) => {
     setAds((prevAds) => prevAds.filter((ad) => ad._id !== deletedAdId));
   };
 
 
+  // Effect to fetch the user's ads from the server
   useEffect(() => {
     const fetchAds = async () => {
       setIsLoading(true);
@@ -36,6 +40,7 @@ const UserAdsPage = () => {
     if (user) fetchAds();
   }, [user]);
 
+  // Render the user ads page
   return (
       <div className="user-ads-page">
         <h1 className="page-title">My Ads</h1>

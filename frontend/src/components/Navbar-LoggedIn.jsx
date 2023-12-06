@@ -1,39 +1,35 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-
-import logo from '../assets/logo_large.png'
-import locationIcon from '../assets/location_icon.png'
-
-import './Navbar.css'
 import { useLogout } from "../hooks/useLogout";
-
 import { CgProfile } from "react-icons/cg";
-
+import logo from '../assets/logo_large.png'
+import './Navbar.css'
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const { logout } = useLogout();
-  const dropdownRef = useRef(null);
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
-  const { user } = useAuthContext();
+  const [admin, setAdmin] = useState()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(null)
-  const [admin, setAdmin] = useState()
   const [adminFetched, setAdminFetched] = useState(false)
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
+  //fetch if a user is an admin to display the button to view the admin page
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Construct the query parameters
         const response = await fetch(`http://localhost:4000/api/user/isAdmin/${user.id}`);
         const data = await response.json();
-
+        //set admin to true if the response is ok and setfetched to true so it doesnt fetch again
         if (response.ok) {
           setAdmin(data);
           setAdminFetched(true)
+        //error handling
         } else {
           throw new Error(data.error || "Failed to fetch results");
         }
@@ -47,13 +43,14 @@ const Navbar = () => {
     fetchData();
   }, [user]);
 
+  //function when a user clicks the logout button
   const handleLogout = async () => {
     await logout();
     window.location.reload(); // This will reload the page
     console.log('User logged out');
     navigate('/');
   };
-
+  //function when a user enters something into the searchbar and searches
   const handleSearchSubmit = () => {
     const searchURL = searchQuery.trim()
       ? `/search?query=${encodeURIComponent(searchQuery.trim())}`
@@ -69,10 +66,12 @@ const Navbar = () => {
     }
   };
 
+  //function if a user clicks any link, closes the dropdown
   const handleLinkClick = () => {
     setShowDropdown(false); // Close the dropdown when a link is clicked
   };
 
+  //if a user clicks enter on the searchbar, then search
   function keyboardHandler(e) {
     const input = document.getElementById("navbar_logged_in_search")
     if (input.contains(e.target) && e.key === 'Enter') {
@@ -80,13 +79,14 @@ const Navbar = () => {
     }
   }
 
+  //on page load add event listener for pressing keys (to see if enter key pressed)
   useEffect(() => {
     document.addEventListener('keydown', keyboardHandler)
     return () => { document.removeEventListener('keydown', keyboardHandler) }
-  })
+  },[])
 
+  // Add event listener for clicks outside the dropdown
   useEffect(() => {
-    // Add event listener for clicks outside the dropdown
     if (showDropdown) {
       document.addEventListener('mousedown', handleClickOutside);
     }
@@ -118,11 +118,11 @@ const Navbar = () => {
             <div className="right-side-container">
               <div className="profile-dropdown-container" ref={dropdownRef}>
                 <div id="profile-icon" ref={dropdownRef}>
-                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)}  color="#8BA5FFFF"/>
+                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)} color="#8BA5FFFF" />
                 </div>
                 {showDropdown && (
                   <div className="profile-dropdown">
-                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>                   
+                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
                     <Link to="/change-password" onClick={handleLinkClick}>Change Password</Link>
                     <Link to="/myfavorites" onClick={handleLinkClick}>My Favorites</Link>
                     <Link id="test" to="/create" onClick={handleLinkClick}>Post Ad</Link>
@@ -135,7 +135,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
       </div>
     </header>
   )

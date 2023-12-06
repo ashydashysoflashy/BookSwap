@@ -1,4 +1,4 @@
-// UpdateAd.jsx
+// Importing necessary React hooks and components
 import UpdateAdForm from "../components/UpdateAdForm";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from 'react';
@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 const UpdateAd = () => {
   const { id } = useParams(); // Get the ad ID from the URL
   const [adData, setAdData] = useState(null);
-  console.log("here")
 
   useEffect(() => {
     // Fetch the existing ad data from the server
@@ -19,6 +18,7 @@ const UpdateAd = () => {
     fetchAdData();
   }, [id]);
 
+  // Render page
   return (
     <div className="create_ad">
       <h1>Update Your Ad</h1>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './NotFoundPage.css'; // Importing the CSS
 
+// Display the 404 page if the page is not found
 const NotFoundPage = () => {
     return (
         <div className="not-found-container">

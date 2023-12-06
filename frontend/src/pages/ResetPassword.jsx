@@ -1,7 +1,10 @@
+// Importing necessary React hooks and components
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './ResetPassword.css'; // Make sure to create a ResetPassword.css file
+// Import Stylesheet
+import './ResetPassword.css';
 
+// Component for resetting a user's password
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
@@ -9,11 +12,13 @@ const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
 
+  // Effect to validate password against specified requirements
   useEffect(() => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{9,}$/;
     setValidPassword(passwordRegex.test(newPassword));
   }, [newPassword]);
 
+  // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -24,6 +29,7 @@ const ResetPassword = () => {
     }
 
     try {
+      // Attempt to reset password with the token and new password
       const response = await fetch('http://localhost:4000/api/user/reset-password', {
         method: 'POST',
         headers: {
@@ -37,12 +43,14 @@ const ResetPassword = () => {
         throw new Error(data.error || 'Failed to reset password');
       }
       setMessage('Password has been successfully reset.');
+      // Redirect to login page after 3 seconds
       setTimeout(() => navigate('/login'), 3000); // Redirect after 3 seconds
     } catch (error) {
       setMessage(error.message);
     }
   };
 
+  // Render the reset password form
   return (
     <div className="login_page">
       <h2>Reset Password</h2>

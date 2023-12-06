@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+//hook to check for clicks outside of a component
 const useOutsideClick = (ref, callback) => {
     useEffect(() => {
         const handleClickOutside = (event) => {

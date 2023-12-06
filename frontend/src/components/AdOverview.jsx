@@ -6,19 +6,23 @@ import "./AdOverview.css";
 import { S3 } from "aws-sdk";
 
 const AdOverview = ({ ad,creator,handleDeleteAd }) => {
+  //global user and ads state
   const { dispatch } = useAdsContext();
   const { user } = useAuthContext();
   const navigate = useNavigate();
+  //store the urls of all the images from aws
   const [imageUrls, setImageUrls] = useState([]);
 
+  //use effect to get images from aws on ad load
   useEffect(() => {
+    //function to fetch images
     const fetchImageUrls = async () => {
       const s3 = new S3({
         region: process.env.REACT_APP_BUCKET_REGION,
         accessKeyId: process.env.REACT_APP_ACCESS_KEY,
         secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
       });
-
+      //await the fetch promises
       const urls = await Promise.all(
         ad.files.map((fileName) => {
           const filePath = `images/${fileName}`;
@@ -29,16 +33,18 @@ const AdOverview = ({ ad,creator,handleDeleteAd }) => {
           });
         })
       );
-
+      //update the array of image urls so that they can be displayed
       setImageUrls(urls);
     };
-
+    //if there are images only then fetch the images
     if (ad.files && ad.files.length > 0) {
       fetchImageUrls();
     }
   }, [ad.files]);
 
+  //function to delete an ad
   const handleDelete = async () => {
+    //send delete request to ads api
     const response = await fetch("http://localhost:4000/api/ads/" + ad._id, {
       method: "DELETE",
       headers: {
@@ -47,17 +53,19 @@ const AdOverview = ({ ad,creator,handleDeleteAd }) => {
     });
 
     const json = await response.json();
-
+    //update global state and remove from array of ads if deleted
     if (response.ok) {
       dispatch({ type: "DELETE_AD", payload: json });
       handleDeleteAd(ad._id)
     }
   };
 
+  //navigate to update ad page
   const handleUpdate = async () => {
     navigate(`../update/${ad._id}`);
   };
 
+  //function to navigate to listing page
   const handleViewAd = () => {
     navigate(`../listings/${ad._id}`);
   };

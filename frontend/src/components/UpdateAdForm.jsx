@@ -42,7 +42,7 @@ const UpdateAdForm = () => {
 
   /* Fix selector layer order */
   const [activeDropdown, setActiveDropdown] = useState('');
-
+  //options for different categories an ad can have
   const categoryOptions = [
     { value: "business", label: "Business" },
     { value: "computerScience", label: "Computer Science" },
@@ -54,12 +54,13 @@ const UpdateAdForm = () => {
     { value: "naturalScience", label: "Natural Science" },
   ];
 
+  //fetch the ad that will be updated and set state
   useEffect(() => {
     const fetchAd = async () => {
       const response = await fetch(`http://localhost:4000/api/ads/${id}`);
       const adData = await response.json();
       if (response.ok) {
-        console.log(adData);
+        //set all the state for the ad
         setAd(adData);
         setTitle(adData.title);
         setDescription(adData.description);
@@ -79,10 +80,11 @@ const UpdateAdForm = () => {
         // Handle errors or redirect if the ad couldn't be fetched
       }
     };
-
+    //get the ad
     fetchAd();
   }, [id]);
 
+  //fetch all the images from AWS
   useEffect(() => {
     const fetchImageUrls = async () => {
       if (ad && ad.files) {
@@ -108,14 +110,16 @@ const UpdateAdForm = () => {
     }
   }, [ad]);
 
+  //function to check if user is on price radio or book swap radio button
   const radioChanged = (e) => {
     if (e.target.id === "price_radio") setPriceEnabled(true);
     else setPriceEnabled(false);
   };
 
+  //function for when user submits update ad form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    //upload files to aws
     await Promise.all(
       newFiles.map((file) => {
         return S3FileUpload.uploadFile(file, config).then(
@@ -124,17 +128,16 @@ const UpdateAdForm = () => {
       })
     );
 
+    //handle logic between price being book swap option and user setting a $ price
     let currentPrice = price;
-
     if (!priceEnabled) {
       currentPrice = 0;
     }
     let currentSwapBook = swapBook;
-
     if (!priceEnabled && !currentSwapBook.trim()) {
       currentSwapBook = "Please Contact Seller";
     }
-
+    //object for all the data of the ad
     const adData = {
       title,
       description,
@@ -146,7 +149,7 @@ const UpdateAdForm = () => {
       price: currentPrice,
       swapBook: currentSwapBook,
     };
-
+    //api request to patch (update) the ad
     const response = await fetch(`http://localhost:4000/api/ads/${id}`, {
       method: "PATCH",
       body: JSON.stringify(adData),
@@ -158,10 +161,11 @@ const UpdateAdForm = () => {
 
     const jsonData = await response.json();
     if (!response.ok) {
+      //error handling
       setError(jsonData.error);
       navigate(`/Browse`);
-      // setEmptyFields(jsonData.emptyFields);
     } else {
+      //update state
       setTitle("");
       setDescription("");
       setNewFiles([]);
@@ -177,12 +181,14 @@ const UpdateAdForm = () => {
     }
   };
 
+  //function to add image to array of images
   const handleAddImage = (e) => {
     const uploadedFiles = Array.from(e.target.files);
     setNewFiles([...newFiles, ...uploadedFiles]);
     e.target.value = null;
   };
 
+  //function to remove image from array of images
   const handleRemoveExistingImage = (event, fileNameToRemove) => {
     event.preventDefault();
 
@@ -203,6 +209,7 @@ const UpdateAdForm = () => {
     setFetchedImageUrls(updatedUrls);
   };
 
+  //function to remove image from array of images
   const handleRemoveNewImage = (index) => {
     const updatedFiles = newFiles.filter((_, i) => i !== index);
     setNewFiles(updatedFiles);

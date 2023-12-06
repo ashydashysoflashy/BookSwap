@@ -1,26 +1,34 @@
+// Importing necessary React hooks and components
 import { useEffect } from "react";
+// Cook to access context from ads
 import { useAdsContext } from "../hooks/useAdsContext";
-import { useLocation } from "react-router-dom";
-
-import AdOverview from "../components/AdOverview";
+// Components for displays ads
 import ResultItem from '../components/Search/Result'
+// Browse stylesheet import
 import './Browse.css'
 
+// Browse functional component
 const Browse = () => {
+  // Extract ads and dispatch from ads context
   const { ads, dispatch } = useAdsContext();
 
+  // useEffect hook to fetch ads data from the server
   useEffect(() => {
     const fetchAds = async () => {
+      // Fetch ads from server
       const response = await fetch("http://localhost:4000/api/ads");
       const json = await response.json();
 
+      // If response is ok, update ads context
       if (response.ok) {
         dispatch({ type: "SET_ADS", payload: json });
       }
     };
+    // Call the fetchAds function
     fetchAds();
   }, [dispatch]);
 
+  // Rendering the Browse page
   return (
     <div className='browse-container'>
       <h1>Posts For You</h1>
@@ -31,4 +39,5 @@ const Browse = () => {
   );
 };
 
+// Export component
 export default Browse;
