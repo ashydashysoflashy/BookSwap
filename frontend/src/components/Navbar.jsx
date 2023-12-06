@@ -95,11 +95,11 @@ const Navbar = () => {
             >
               Search
             </button>
-            <img src={locationIcon} alt="Location Icon"></img>
-            <p id="navbar_location_text">Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
+            <div className='create-acc'>
             {!user && <Link to="/register">Create an Account</Link>}
+            </div>
             {!user && (
               <Link to="/login">
                 <button className="navbar_login_button">Log In</button>
@@ -111,19 +111,6 @@ const Navbar = () => {
               </button>
             )}
           </div>
-        </div>
-        {/* Bottom Navbar */}
-        <div className={`navbar_bottom ${window.innerWidth <= 768 && isMenuOpen ? 'show' : ''}`}>
-          <ul>
-            <li>Business</li>
-            <li>Computer Science</li>
-            <li>Education</li>
-            <li>Engineering</li>
-            <li>Law</li>
-            <li>Mathematics</li>
-            <li>Medicine</li>
-            <li>Natural Science</li>
-          </ul>
         </div>
       </div>
     </header>

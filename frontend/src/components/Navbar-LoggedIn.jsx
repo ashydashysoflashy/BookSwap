@@ -8,6 +8,9 @@ import locationIcon from '../assets/location_icon.png'
 import './Navbar.css'
 import { useLogout } from "../hooks/useLogout";
 
+import { CgProfile } from "react-icons/cg";
+
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -110,20 +113,19 @@ const Navbar = () => {
               onChange={(e) => setSearchQuery(e.target.value)}>
             </input>
             <Link to="/search"><button className='navbar_search_button'>Search</button></Link>
-            <img src={locationIcon} alt='Location Icon'></img>
-            <p id='navbar_location_text'>Calgary, AB</p>
           </div>
           <div className="navbar_acc_section">
-            <div>
-              <button className='book_check'></button>
-              <button className='chat'></button>
-              <button className='notif'></button>
+            <div className="right-side-container">
               <div className="profile-dropdown-container" ref={dropdownRef}>
-                <button className='profile' onClick={() => setShowDropdown(!showDropdown)}></button>
+                <div id="profile-icon" ref={dropdownRef}>
+                  <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)}  color="#8BA5FFFF"/>
+                </div>
                 {showDropdown && (
                   <div className="profile-dropdown">
-                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
+                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>                   
+                    <Link to="/change-password" onClick={handleLinkClick}>Change Password</Link>
                     <Link to="/myfavorites" onClick={handleLinkClick}>My Favorites</Link>
+                    <Link id="test" to="/create" onClick={handleLinkClick}>Post Ad</Link>
                     {admin && <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>}
                     <button onClick={handleLogout}>Log Out</button>
                   </div>
@@ -133,18 +135,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="navbar_bottom">
-          <ul>
-            <li>Business</li>
-            <li>Computer Science</li>
-            <li>Education</li>
-            <li>Engineering</li>
-            <li>Law</li>
-            <li>Mathematics</li>
-            <li>Medicine</li>
-            <li>Natural Science</li>
-          </ul>
-        </div>
+
       </div>
     </header>
   )

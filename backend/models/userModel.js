@@ -35,6 +35,12 @@ const userSchema = new Schema({
       ref: "Ad",
     },
   ],
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  },
   favorite_ad_ids: [
     {
       type: mongoose.Schema.Types.ObjectId,

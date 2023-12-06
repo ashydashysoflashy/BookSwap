@@ -19,8 +19,8 @@ const RegisterPage = () => {
   // Used ChatGPT to understand how to add functionality for special case checks in password field.
   useEffect(() => {
     // Password must be at least 9 characters, include an uppercase letter and a non-alphabetical character
-    //const passwordRegex = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{9,}/;
-    //setValidPassword(passwordRegex.test(password));
+    const passwordRegex = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{9,}/;
+    setValidPassword(passwordRegex.test(password));
     setValidPassword(password)
   }, [password]);
 
