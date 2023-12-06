@@ -20,7 +20,9 @@ const UpdateAd = () => {
   }, [id]);
 
   return (
-    <div className="update_ad">
+    <div className="create_ad">
+      <h1>Update Your Ad</h1>
+      <p>Fill in the details below to update your ad.</p>
       {adData && <UpdateAdForm ad={adData} />}
     </div>
   )

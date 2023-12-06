@@ -8,6 +8,7 @@ import CreatableSelect from "react-select/creatable";
 import S3FileUpload from "react-s3";
 import { S3 } from "aws-sdk";
 import { useAuthContext } from "../hooks/useAuthContext";
+import uploadIcon from "../assets/upload.png";
 import "./AdForm.css";
 
 const config = {
@@ -38,6 +39,9 @@ const UpdateAdForm = () => {
   const [swapBook, setSwapBook] = useState("");
   const [priceEnabled, setPriceEnabled] = useState(true);
   const [fetchedImageUrls, setFetchedImageUrls] = useState([]);
+
+  /* Fix selector layer order */
+  const [activeDropdown, setActiveDropdown] = useState('');
 
   const categoryOptions = [
     { value: "business", label: "Business" },
@@ -224,17 +228,13 @@ const UpdateAdForm = () => {
           />
 
           <div className="ad_images">
-            <p>Images</p>
+            {/* <p>Images</p> */}
             {fetchedImageUrls &&
               fetchedImageUrls.length > 0 &&
               fetchedImageUrls.map((imageUrl, index) => (
-                <div key={index} className="image-container">
+                <div key={index} className="image-preview">
                   <img src={imageUrl} alt={`Content ${index + 1}`} />
-                  <button
-                    onClick={(e) =>
-                      handleRemoveExistingImage(e, ad.files[index])
-                    }
-                  >
+                  <button onClick={(e) => handleRemoveExistingImage(e, ad.files[index])}>
                     Remove
                   </button>
                 </div>
@@ -243,7 +243,7 @@ const UpdateAdForm = () => {
             {newFiles &&
               newFiles.length > 0 &&
               newFiles.map((file, i) => (
-                <div key={i} className="image-container">
+                <div key={i} className="image-preview">
                   <img src={URL.createObjectURL(file)} alt={file.name} />
                   <button onClick={() => handleRemoveNewImage(i)}>
                     Remove
@@ -251,15 +251,16 @@ const UpdateAdForm = () => {
                 </div>
               ))}
 
-            <label id="upload_button" htmlFor="upload_image">
-              Upload Image
+            <label htmlFor="update_upload" className="upload_button_label">
+              <img src={uploadIcon} alt="Upload" />
+              <span>Upload Images</span>
             </label>
             <input
               type="file"
-              id="upload_image"
+              id="update_upload"
               style={{ display: "none" }}
-              multiple
               onChange={handleAddImage}
+              multiple
             ></input>
           </div>
         </div>
@@ -268,10 +269,9 @@ const UpdateAdForm = () => {
             options={categoryOptions}
             value={categoryOptions.find((option) => option.value === category)}
             onChange={(selectedOption) => setCategory(selectedOption.value)}
-            className={
-              "react-select-container select_field" +
-              (emptyFields.includes("category") ? " field_error" : "")
-            }
+            className={`react-select-container ${activeDropdown === 'category' ? 'active-dropdown' : ''}`}
+            onMenuOpen={() => setActiveDropdown('category')}
+            onMenuClose={() => setActiveDropdown('')}
             classNamePrefix="react-select"
             placeholder="Select Category"
           />
@@ -281,22 +281,11 @@ const UpdateAdForm = () => {
               (option) => option.value === university
             )}
             onChange={(selectedOption) => setUniversity(selectedOption.value)}
-            className="react-select-container"
+            className={`react-select-container ${activeDropdown === 'university' ? 'active-dropdown' : ''}`}
+            onMenuOpen={() => setActiveDropdown('university')}
+            onMenuClose={() => setActiveDropdown('')}
             classNamePrefix="react-select"
             placeholder="Select University"
-          />
-
-          <input
-            type="text"
-            onChange={(e) => setLocation(e.target.value)}
-            value={location}
-            placeholder="Location"
-            className={
-              emptyFields.includes("location")
-                ? "input_field field_error"
-                : "input_field"
-            }
-            required
           />
 
           <CreatableSelect
@@ -304,10 +293,9 @@ const UpdateAdForm = () => {
             options={tagOptions}
             value={tags} // tags should be an array of objects like [{ label: 'tag1', value: 'tag1' }]
             onChange={(selectedOptions) => setTags(selectedOptions || [])}
-            className={
-              "react-select-container select_field" +
-              (emptyFields.includes("tags") ? " field_error" : "")
-            }
+            className={`react-select-container ${activeDropdown === 'tag' ? 'active-dropdown' : ''}`}
+            onMenuOpen={() => setActiveDropdown('tag')}
+            onMenuClose={() => setActiveDropdown('')}
             classNamePrefix="react-select"
             placeholder="Select Tags"
           />
@@ -327,6 +315,7 @@ const UpdateAdForm = () => {
                 onChange={(e) => setPrice(e.target.value)}
                 value={price}
                 min={0}
+                max={500}
                 placeholder="Price"
                 className={
                   emptyFields.includes("price")
