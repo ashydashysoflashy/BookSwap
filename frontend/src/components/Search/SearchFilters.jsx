@@ -38,6 +38,7 @@ export default function SearchFilters({
 
   // Handler to clear all filters
   const clearFilters = () => {
+    //reset state variables
     setSelectedCourseCode(null);
     setSelectedSchool(null);
     setSearchText('');
@@ -47,6 +48,7 @@ export default function SearchFilters({
     // Update the key to force re-render
     setSliderKey(prevKey => prevKey + 1);
 
+    //reset state variables
     setCategory([]);
     setCourseCode([]);
     setIncludeSwap(true);
@@ -58,6 +60,8 @@ export default function SearchFilters({
     setSearchQuery('');
   };
 
+  //function to determine if a user has set a price for the book
+  //or if the user has chosen to "swap" the book with other books instead
   const handleSwitchChange = () => {
     if (selectedSwapSwitch) {
       setSelectedSwapSwitch(!selectedSwapSwitch);
@@ -68,6 +72,7 @@ export default function SearchFilters({
     }
   }
 
+  //function to adjust the price filters 
   const onApplyPrice = () => {
     setMinPrice(minPriceValue);
     setMaxPrice(maxPriceValue);
@@ -76,18 +81,6 @@ export default function SearchFilters({
   return (
     <div className="filters-container">
       <div className="filters-title">All Textbooks in Calgary</div>
-      {/*<div className="location-post-container">
-          <div className="location-post-left">
-          <FaMapMarkerAlt size={24} color="black" />
-          <Select
-            options={optionsLocation}
-            className="react-select-container-mobile"
-            classNamePrefix="react-select"
-            placeholder="Location"
-          />
-        </div>
-        <button className="post-button">Post ad</button>
-      </div>*/}
       <input
         value={searchText}
         className="searchbar"
@@ -98,12 +91,6 @@ export default function SearchFilters({
           setSearchText(e.target.value);
         }}
       />
-      {/*<div className="page-results">Page 1 - 340 results</div>
-      <div className="filter-by">
-        <div>Filter By</div>
-        <IoFilter size={24} color="black" />
-      </div>*/}
-
       <Select
         value={selectedCourseCode}
         options={tagOptions}
