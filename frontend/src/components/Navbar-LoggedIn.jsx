@@ -123,7 +123,8 @@ const Navbar = () => {
                 <button className='profile' onClick={() => setShowDropdown(!showDropdown)}></button>
                 {showDropdown && (
                   <div className="profile-dropdown">
-                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>
+                    <Link to="/myads" onClick={handleLinkClick}>My Ads</Link>                   
+                    <Link to="/change-password" onClick={handleLinkClick}>Change Password</Link>
                     <Link to="/myfavorites" onClick={handleLinkClick}>My Favorites</Link>
                     {admin && <Link to="/admin" onClick={handleLinkClick}>Administrator</Link>}
                     <button onClick={handleLogout}>Log Out</button>

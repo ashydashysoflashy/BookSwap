@@ -1,126 +1,174 @@
-//import the user schema
 const User = require("../models/userModel");
-//use jsonwebtocken package for generating auth tokens
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const bcrypt = require("bcrypt");
 
-//function to create a token for logging in and signing up
-//takes in the _id from a mongodb user which will be part of the payload of the token
-//takes secret which is random string from env variables
-//expires in 3 days
+// Helper function to create JWT token
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
-//login user function
+// Authentication Functions
 const loginUser = async (req, res) => {
-  //get the email and password from req body
   const { email, password } = req.body;
-  //try to login - if theres an error we catch it
   try {
     const user = await User.login(email, password);
-    //create a token
     const token = createToken(user._id);
-    //no error so send a good response with the token for the user
     res.status(200).json({ id: user._id, email, token });
   } catch (error) {
-    //since theres an error, send a bad response
     res.status(400).json({ error: error.message });
   }
 };
 
-//signup user function
 const signupUser = async (req, res) => {
-  //get the email and password from req body
   const { email, password, username } = req.body;
-  //try to create the user - if theres an error we catch it
   try {
     const user = await User.signup(email, password, username);
-    //create a token
     const token = createToken(user._id);
-    //no error so send a good response with the token for the user
     res.status(200).json({ id: user._id, email, token });
   } catch (error) {
-    //since theres an error, send a bad response
     res.status(400).json({ error: error.message });
   }
 };
 
-// Get a single users name
+// Password Management Functions
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found." });
+  }
+
+  const resetToken = crypto.randomBytes(20).toString('hex');
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
+
+  await user.save();
+
+  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_ADDRESS,
+    to: email,
+    subject: 'Password Reset',
+    text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+          `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+          `${resetUrl}\n\n` +
+          `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ error: 'Error sending email' });
+    } else {
+      res.status(200).json({ message: "Password reset link sent to email." });
+    }
+  });
+};
+
+const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return res.status(400).json({ error: "Password reset token is invalid or has expired." });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  res.status(200).json({ message: "Password has been updated." });
+};
+
+const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const user = await User.findById(req.user._id); 
+
+  if (!await bcrypt.compare(currentPassword, user.password)) {
+    return res.status(400).json({ error: "Current password is incorrect." });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+  await user.save();
+
+  res.status(200).json({ message: "Password successfully updated." });
+};
+
+// User Information Functions
 const getUsername = async (req, res) => {
-  // Check if the ID is valid
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "The user does not exist" });
   }
 
   try {
-    // Find the user by ID
     const user = await User.findById(id);
-    // If the ad doesn't exist, return an error
     if (!user) {
       return res.status(404).json({ error: "The user does not exist" });
     }
-    // Return the user
     res.status(200).json(user.username);
   } catch (error) {
-    // If an error occurs, return an error status
     res.status(400).json({ error: error.message });
   }
 };
 
-// Get a single users name
 const getUserAdmin = async (req, res) => {
-  // Check if the ID is valid
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "The user does not exist" });
   }
 
   try {
-    // Find the user by ID
     const user = await User.findById(id);
-    // If the ad doesn't exist, return an error
     if (!user) {
       return res.status(404).json({ error: "The user does not exist" });
     }
-    // Return the user
     res.status(200).json(user.isAdmin);
   } catch (error) {
-    // If an error occurs, return an error status
     res.status(400).json({ error: error.message });
   }
 };
 
-// Check if use is banned or not
 const getIsBanned = async (req, res) => {
-  // Check if the ID is valid
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "The user does not exist" });
   }
 
   try {
-    // Find the user by ID
     const user = await User.findById(id);
-    // If the ad doesn't exist, return an error
     if (!user) {
       return res.status(404).json({ error: "The user does not exist" });
     }
-    // Return the user
     res.status(200).json(user.isBanned);
   } catch (error) {
-    // If an error occurs, return an error status
     res.status(400).json({ error: error.message });
   }
 };
 
 const getUserEmailById = async (userId) => {
-
   try {
     const user = await User.findById(userId).select('email');
-
-
     if (!user) throw new Error('User not found');
     return user.email;
   } catch (error) {
@@ -128,12 +176,8 @@ const getUserEmailById = async (userId) => {
   }
 };
 
-// Get a single users name
 const banUser = async (req, res) => {
-  // Check if the ID is valid
   const { id } = req.params;
-
-  // Check if the logged-in user is the not the owner of the ad and not an admin
   if (req.body.admin !== true) {
     return res.status(403).json({ error: "Unauthorized to delete this user" });
   }
@@ -142,21 +186,18 @@ const banUser = async (req, res) => {
   }
 
   try {
-    // Find the user by ID
     const user = await User.findById(id);
-    // If the ad doesn't exist, return an error
     if (!user) {
       return res.status(404).json({ error: "The user does not exist" });
     }
-    // Set isBanned to true and save the user
     user.isBanned = true;
     await user.save();
-    res.status(200).json("user succesfully banned");
+    res.status(200).json("user successfully banned");
   } catch (error) {
-    // If an error occurs, return an error status
     res.status(400).json({ error: error.message });
   }
 };
+
 
 const addFavoriteAd = async (req, res) => {
   const { user_id, ad_id } = req.body;
@@ -228,9 +269,20 @@ const getIsFavorite = async (req, res) => {
 };
 
 
-
-
-
-
-//export these functions
-module.exports = { loginUser, signupUser, getUserEmailById, getUsername, getUserAdmin, getIsBanned, banUser, getFavoriteAds, getIsFavorite, addFavoriteAd, removeFavoriteAd };
+// Export Functions
+module.exports = {
+  loginUser,
+  signupUser,
+  getUserEmailById,
+  getUsername,
+  getUserAdmin,
+  getIsBanned,
+  banUser,
+  forgotPassword,
+  resetPassword,
+  changePassword,
+  getFavoriteAds,
+  getIsFavorite,
+  addFavoriteAd,
+  removeFavoriteAd
+};

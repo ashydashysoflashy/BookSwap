@@ -1,11 +1,16 @@
 //Create the express router
 const express = require('express')
 const router = express.Router()
+const requireAuth = require("../middleware/requireAuth");
+
 
 //Import the functions to handle user events
 const {
     signupUser,
     loginUser,
+    forgotPassword,
+    resetPassword,
+    changePassword,
     getUserEmailById,
     getUsername,
     getUserAdmin,
@@ -19,6 +24,15 @@ const {
 
 // login route
 router.post('/login', loginUser);
+
+//signup route - call the controller signupUser function
+router.post('/signup',signupUser)
+
+//routes for resetting and updating password
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
+router.post('/change-password', requireAuth, changePassword);
+
 
 // signup route
 router.post('/signup', signupUser);

@@ -9,6 +9,12 @@ const sendEmail = async (req, res) => {
 
   // Get the receipient (seller) email by their user id
   const recipientEmail = await getUserEmailById(receiverID);
+
+  // Check if the sender's email is the same as the recipient's
+  if (senderEmail === recipientEmail) {
+    return res.status(400).json({ error: "Cannot send email to yourself." });
+  }
+  
   // Nodemailer configuration
   const transporter = nodemailer.createTransport({
     service: 'gmail', 

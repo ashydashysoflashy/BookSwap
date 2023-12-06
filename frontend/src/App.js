@@ -14,6 +14,9 @@ import SearchPage from "./pages/SearchPage";
 import NotFoundPage from './pages/NotFoundPage';
 import UserAdsPage from "./pages/UserAdsPage";
 import OtherUserAdsPage from "./pages/OtherUserAdsPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import ChangePassword from "./pages/ChangePassword";
 import FavoriteAdsPage from "./pages/FavoriteAdsPage";
 
 //Components
@@ -43,6 +46,9 @@ function App() {
           <Routes>
             <Route path="/login" element={!user ? <LoginPage /> : <Navigate to='/' />} />
             <Route path="/register" element={!user ? <RegisterPage /> : <Navigate to='/' />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/create" element={user ? <CreateAd /> : <Navigate to='/register' />} />
             <Route path="/update/:id" element={user ? <UpdateAd /> : <Navigate to='/register' />} />
             <Route path="/home" element={<Browse />} />
