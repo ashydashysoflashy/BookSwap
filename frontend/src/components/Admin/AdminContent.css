@@ -3,7 +3,7 @@
     margin-left: 25%;
     margin-top: 2%;
     margin-right: 5%;
-/* 
+    /* 
     background-color: red;
     height: 10px; */
 }
@@ -13,6 +13,10 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.admin_content_top h1 {
+    font-size: 2vw;
 }
 
 .admin_sort_select {
@@ -31,11 +35,24 @@
         width: auto;
         margin-left: 5%;
     }
+
     .admin_content_top h1 {
-        font-size: 2vw;
+        font-size: 2.2vw;
     }
+
     .admin_sort_select {
-        width: 30%;
-        font-size: 1.8vw;
+        width: 40%;
+        font-size: 2.2vw;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .admin_content_top h1 {
+        font-size: 3vw;
+    }
+
+    .admin_sort_select {
+        width: auto;
+        font-size: 3vw;
     }
 }
