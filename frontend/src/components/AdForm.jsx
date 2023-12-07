@@ -28,6 +28,7 @@ const AdForm = () => {
   const { dispatch } = useAdsContext();
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+  const [loading,setLoading] = useState(false);
 
   //state for all the input fields in the form
   const [title, setTitle] = useState("");
@@ -51,6 +52,7 @@ const AdForm = () => {
 
   //function to submit the create ad form
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     //if no user then return
     if (!user) {
@@ -99,6 +101,7 @@ const AdForm = () => {
       console.log(json.error);
       setError(`${json.error} | ${json.emptyFields}`);
       setEmptyFields(json.emptyFields);
+      setLoading(false)
     }
     //reset the form
     if (response.ok) {
@@ -111,11 +114,13 @@ const AdForm = () => {
       setSwapBook("");
       setError(null);
       setEmptyFields([]);
+      setLoading(false)
       //update global state
       dispatch({ type: "CREATE_AD", payload: json });
       //navigate to home page
       navigate("/home");
     }
+    setLoading(false)
   };
   //function to add an image to the array of images 
   const handleAddImage = (e) => {
@@ -280,7 +285,7 @@ const AdForm = () => {
           </div>
         </div>
       </div>
-      <button className="post_button">Post Ad</button>
+      <button className="post_button" disabled={loading}>Post Ad</button>
       {error && <div className="register-error">{error}</div>}
     </form>
   );
