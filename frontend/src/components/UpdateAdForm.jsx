@@ -60,6 +60,10 @@ const UpdateAdForm = () => {
       const response = await fetch(`http://localhost:4000/api/ads/${id}`);
       const adData = await response.json();
       if (response.ok) {
+        //if the ad user id is not the logged in users id then go to home page
+        if (user && user.id !== adData.user_id){
+          navigate('../home')
+        }
         //set all the state for the ad
         setAd(adData);
         setTitle(adData.title);
@@ -78,6 +82,7 @@ const UpdateAdForm = () => {
         setFetchedImageUrls(adData.imageUrls);
       } else {
         // Handle errors or redirect if the ad couldn't be fetched
+        console.log("error updating ad")
       }
     };
     //get the ad
@@ -163,7 +168,7 @@ const UpdateAdForm = () => {
     if (!response.ok) {
       //error handling
       setError(jsonData.error);
-      navigate(`/Browse`);
+      navigate(`/home`);
     } else {
       //update state
       setTitle("");
@@ -176,6 +181,7 @@ const UpdateAdForm = () => {
       setSwapBook("");
       setError(null);
       setEmptyFields([]);
+      //update global state and go to listing page
       dispatch({ type: "UPDATE_AD", payload: jsonData });
       navigate(`/listings/${id}`);
     }
@@ -364,7 +370,7 @@ const UpdateAdForm = () => {
           </div>
         </div>
       </div>
-      <button className="post_button">Post Ad</button>
+      <button className="post_button">Update Ad</button>
       {error && <div className="register-error">{error}</div>}
     </form>
   );
