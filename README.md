@@ -45,6 +45,7 @@ Developed By: Saksham Puri, Umar Ahmed, Achraf Abdelrhafour, Harsanjit Bhullar, 
 This should have installed all the needed dependencies for running the project and should have given the you access to the databases and services being used
 
 ## Running the Project
+To run the project both backend and frontend commands must be ran.
 1. Navigate to the backend folder using your terminal and run the following command: 
     ```
     npm run dev
