@@ -15,7 +15,7 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
   // Get the signup function from the hook
-  const { signup, loading, error } = useSignup()
+  const { signup, loading, error, setError } = useSignup()
   let navigate = useNavigate();
   // Accessing user context to determine if a user is logged in
   const { user } = useAuthContext()
@@ -25,7 +25,6 @@ const RegisterPage = () => {
     // Password must be at least 9 characters, include an uppercase letter and a non-alphabetical character
     const passwordRegex = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{9,}/;
     setValidPassword(passwordRegex.test(password));
-    setValidPassword(password)
   }, [password]);
 
   // handle form submission
@@ -36,7 +35,7 @@ const RegisterPage = () => {
       await signup(email, password, username)
     } else {
       // Show an error message
-      console.log("passwords dont match")
+      setError("passwords dont match")
     }
   };
 

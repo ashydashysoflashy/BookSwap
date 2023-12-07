@@ -2,7 +2,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
 import logo from "../assets/logo_large.png";
-import locationIcon from "../assets/location_icon.png";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import useOutsideClick from "../hooks/useOutsideClick";
