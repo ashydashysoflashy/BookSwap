@@ -17,6 +17,8 @@ const Navbar = () => {
   const [adminFetched, setAdminFetched] = useState(false)
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const [userName,setUserName] = useState("")
+  const [userFetched,setUserFetched] = useState(false)
 
   //fetch if a user is an admin to display the button to view the admin page
   useEffect(() => {
@@ -42,6 +44,32 @@ const Navbar = () => {
 
     fetchData();
   }, [user]);
+
+    //fetch a users username
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Construct the query parameters
+          const response = await fetch(`http://localhost:4000/api/user/${user.id}`);
+          const data = await response.json();
+          //set admin to true if the response is ok and setfetched to true so it doesnt fetch again
+          if (response.ok) {
+            setUserName(data);
+            setUserFetched(true)
+            console.log(userName)
+          //error handling
+          } else {
+            throw new Error(data.error || "Failed to fetch results");
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, [user]);
 
   //function when a user clicks the logout button
   const handleLogout = async () => {
@@ -116,6 +144,9 @@ const Navbar = () => {
           </div>
           <div className="navbar_acc_section">
             <div className="right-side-container">
+              <div className="username-div">
+                <div className='username'>{userName === "" ? "" : userName}</div>
+              </div>
               <div className="profile-dropdown-container" ref={dropdownRef}>
                 <div id="profile-icon" ref={dropdownRef}>
                   <CgProfile fontSize={50} onClick={() => setShowDropdown(!showDropdown)} color="#8BA5FFFF" />

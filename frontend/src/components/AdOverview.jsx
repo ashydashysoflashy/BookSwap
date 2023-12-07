@@ -109,8 +109,8 @@ const AdOverview = ({ ad,creator,handleDeleteAd }) => {
           <p>Date Created: {formatDate(ad.createdAt)}</p>
           <div className="ad_actions">
             {<button onClick={handleViewAd}>View Ad Details</button>}
-            {creator && <button onClick={handleDelete}>Delete Ad</button>}
             {creator && <button onClick={handleUpdate}>Update Ad</button>}
+            {creator && <button id="delete-ad" onClick={handleDelete}>Delete Ad</button>}
           </div>
         </div>
       </div>

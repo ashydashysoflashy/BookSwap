@@ -80,6 +80,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+#delete-ad{
+   background-color:rgb(255, 101, 101);
+}
+
 /* Adjustments for larger screens */
 @media (min-width: 768px) {
     .ad_overview {
