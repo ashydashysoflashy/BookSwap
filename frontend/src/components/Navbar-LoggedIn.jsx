@@ -29,7 +29,7 @@ const Navbar = () => {
         if (response.ok) {
           setAdmin(data);
           setAdminFetched(true)
-        //error handling
+          //error handling
         } else {
           throw new Error(data.error || "Failed to fetch results");
         }
@@ -83,7 +83,7 @@ const Navbar = () => {
   useEffect(() => {
     document.addEventListener('keydown', keyboardHandler)
     return () => { document.removeEventListener('keydown', keyboardHandler) }
-  },[])
+  })
 
   // Add event listener for clicks outside the dropdown
   useEffect(() => {
@@ -112,7 +112,7 @@ const Navbar = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}>
             </input>
-            <Link to="/search"><button className='navbar_search_button'>Search</button></Link>
+            <button className='navbar_search_button' onClick={handleSearchSubmit}>Search</button>
           </div>
           <div className="navbar_acc_section">
             <div className="right-side-container">
