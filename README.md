@@ -55,3 +55,9 @@ To run the project both backend and frontend commands must be ran.
     npm start
     ```
 This should connect the API to the backend server and run the frontend locally on [localhost:3000](http://localhost:3000/).
+
+## Admin Account for BookSwap
+Email: admin@gmail.com
+Password: admin
+
+This account is used for accessing admin page in BookSwap
