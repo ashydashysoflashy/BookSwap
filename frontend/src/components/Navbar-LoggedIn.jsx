@@ -145,7 +145,7 @@ const Navbar = () => {
           <div className="navbar_acc_section">
             <div className="right-side-container">
               <div className="username-div">
-                <div className='username'>{userName === "" ? "UnNamed User" : userName}</div>
+                <div className='username'>{userName === "" ? "" : userName}</div>
               </div>
               <div className="profile-dropdown-container" ref={dropdownRef}>
                 <div id="profile-icon" ref={dropdownRef}>
