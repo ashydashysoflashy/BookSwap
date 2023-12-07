@@ -212,6 +212,20 @@
     cursor:pointer;
 }
 
+.username-div{
+    margin-right:5%;
+    font-size:24px;
+    text-align: start;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.username{
+    font-size:24px;
+    font-weight: 500;
+}
+
 @media screen and (max-width: 768px) {
     /* Search Bar */
     .navbar_searchbar {
