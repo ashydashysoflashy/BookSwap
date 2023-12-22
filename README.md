@@ -14,25 +14,26 @@ Technical Demo: https://www.youtube.com/watch?v=j8bzWx25fLo
 **MAKE SURE YOUR AD BLOCKER IS OFF WHEN RUNNING THIS PROJECT**
 
 **Before being able to run the project, ensure you already have:**
-- A MongoDB database: used to store customer and listing data (we used MongoDB Atlas)
-- An Amazon AWS S3 Bucket: used to store the images. Within this bucket create an empty folder called /images, where ad images are fetched by name
+- A MongoDB database: used to store customer and listing data (we used MongoDB Atlas).
+- An Amazon AWS S3 Bucket: used to store the images. Within this bucket create an empty folder called /images, where ad images are fetched by name.
+- You will need keys for both of these databases to make API calls within the code.
 
 ## Setup
-1. Download or Clone the master branch with the "Release" tag [BookSwap github repository](https://github.com/Saksham-P/SENG513-BookSwap) and have it extracted / unzipped on your device.
+1. Download or Clone the master branch with the and have it extracted / unzipped on your device.
 2. Open the project folder in your prefered code editor ([VSCode](https://code.visualstudio.com/) is recommended).
 3. Navigate to the backend folder and create a new file with the name ".env" and within the file, insert your own following information:
     ```
     MONGO_URI<insert your Mongo Database URI link here, with appropriate credentials>
-    PORT=<insert whatever port number you want to use>
+    PORT=3000
     SECRET=<insert a random string here>
     EMAIL_ADDRESS=<insert the email address you wish to use as the website's e-mail>
     EMAIL_PASSWORD=<insert the application password for the e-mail here> 
     ```
     - `MONGO_URI` contains the username and password for a user to connect to the mongoDB database
-    - `PORT` contains the port number that will be used for API connection
+    - `PORT` contains the port number that will be used for API connection, we used 3000 for our backend, but feel free to change the value, make sure to change this value in the part of the code that sends recover emails as well
     - `SECRET` is a key used to help with authentication
     - `EMAIL_ADDRESS` is the email address the website uses to communicate with users
-    - `EMAIL_PASSWORD` is the email password used for authentication of the Email
+    - `EMAIL_PASSWORD` is the email password used for authentication of the Email, this would be an "app password" you would need to create if you used a gmail account
 
 4. Open a terminal and navigate to the backend folder. Now, run the following command: 
     ```
