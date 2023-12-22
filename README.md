@@ -1,9 +1,14 @@
 # SENG513: BookSwap Setup Guide (MERN Stack)
 Developed By: Saksham Puri, Umar Ahmed, Achraf Abdelrhafour, Harsanjit Bhullar, and Youssef Abdelrhafour
 ## Prerequisites
+**This project can be run locally as it is not hosted anywhere at the moment**
 **(Required)** If you don't already have Node.js installed, install Node.js and npm from the [Node.js official website](https://nodejs.org/en)
 
 **MAKE SURE YOUR AD BLOCKER IS OFF WHEN RUNNING THIS PROJECT**
+
+**Before being able to run the project, ensure you already have:**
+- A MongoDB database: used to store customer and listing data (we used MongoDB Atlas)
+- An Amazon AWS S3 Bucket: used to store the images. Within this bucket create an empty folder called /images, where ad images are fetched by name
 
 ## Setup
 1. Download or Clone the master branch with the "Release" tag [BookSwap github repository](https://github.com/Saksham-P/SENG513-BookSwap) and have it extracted / unzipped on your device.
@@ -26,7 +31,7 @@ Developed By: Saksham Puri, Umar Ahmed, Achraf Abdelrhafour, Harsanjit Bhullar, 
     ```
     npm install
     ```
-5. Using your code editor, navigate to the frontend folder and create a new file with the name ".env" once again. This time type the following code in the file:
+5. Using your code editor, navigate to the frontend folder and create a new file with the name ".env" once again. Insert your own information here:
     ```
     REACT_APP_BUCKET_NAME=<insert your Amazon AWS S3 Bucket name here>
     REACT_APP_BUCKET_REGION=<insert your bucket's region here>
