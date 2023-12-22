@@ -8,6 +8,7 @@ Technical Demo: https://www.youtube.com/watch?v=j8bzWx25fLo
 
 ## Prerequisites
 **This project can be run locally as it is not hosted anywhere at the moment**
+
 **(Required)** If you don't already have Node.js installed, install Node.js and npm from the [Node.js official website](https://nodejs.org/en)
 
 **MAKE SURE YOUR AD BLOCKER IS OFF WHEN RUNNING THIS PROJECT**
