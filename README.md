@@ -8,13 +8,13 @@ Developed By: Saksham Puri, Umar Ahmed, Achraf Abdelrhafour, Harsanjit Bhullar, 
 ## Setup
 1. Download or Clone the master branch with the "Release" tag [BookSwap github repository](https://github.com/Saksham-P/SENG513-BookSwap) and have it extracted / unzipped on your device.
 2. Open the project folder in your prefered code editor ([VSCode](https://code.visualstudio.com/) is recommended).
-3. Navigate to the backend folder and create a new file with the name ".env" and within the file, type the following code:
+3. Navigate to the backend folder and create a new file with the name ".env" and within the file, insert your own following information:
     ```
-    MONGO_URI=mongodb+srv://Professor:ZlNAtXBe6sbak2OI@bookswapapp.vgssfij.mongodb.net/?retryWrites=true&w=majority
-    PORT=4000
-    SECRET=idkwhattotypehereidkwhattotypehereidkwhattotypeherethisisasecretkeywhich
-    EMAIL_ADDRESS=bookswap513@gmail.com
-    EMAIL_PASSWORD=hupd hosg tchc pctb
+    MONGO_URI<insert your Mongo Database URI link here, with appropriate credentials>
+    PORT=<insert whatever port number you want to use>
+    SECRET=<insert a random string here>
+    EMAIL_ADDRESS=<insert the email address you wish to use as the website's e-mail>
+    EMAIL_PASSWORD=<insert the application password for the e-mail here> 
     ```
     - `MONGO_URI` contains the username and password for a user to connect to the mongoDB database
     - `PORT` contains the port number that will be used for API connection
@@ -28,10 +28,10 @@ Developed By: Saksham Puri, Umar Ahmed, Achraf Abdelrhafour, Harsanjit Bhullar, 
     ```
 5. Using your code editor, navigate to the frontend folder and create a new file with the name ".env" once again. This time type the following code in the file:
     ```
-    REACT_APP_BUCKET_NAME=seng-513-group-5
-    REACT_APP_BUCKET_REGION=us-east-2
-    REACT_APP_ACCESS_KEY=AKIAR6FT3DBGUCSOTP4L
-    REACT_APP_SECRET_ACCESS_KEY=+bxuRyrBxsgtgsz5NasZsssKDLwTXmrENs7bumbC
+    REACT_APP_BUCKET_NAME=<insert your Amazon AWS S3 Bucket name here>
+    REACT_APP_BUCKET_REGION=<insert your bucket's region here>
+    REACT_APP_ACCESS_KEY=<insert the access key for the bucket here>
+    REACT_APP_SECRET_ACCESS_KEY=<insert the secret access key for the bucket here>
     ```
     - `REACT_APP_BUCKET_NAME` contains the name of the bucket we will be using from AWS
     - `REACT_APP_BUCKET_REGION` contains region we will be using
@@ -57,7 +57,7 @@ To run the project both backend and frontend commands must be ran.
 This should connect the API to the backend server and run the frontend locally on [localhost:3000](http://localhost:3000/).
 
 ## Admin Account for BookSwap
-Email: admin@gmail.com
-Password: admin
+Your admin account would need to be created in the backend (MongoDB), with a boolean value admin set to true.
+This is because admins shouldn't be able to sign up via the website. 
 
-This account is used for accessing admin page in BookSwap
+This account is used for accessing admin page in BookSwap.
