@@ -1,5 +1,10 @@
 # SENG513: BookSwap Setup Guide (MERN Stack)
 Developed By: Saksham Puri, Umar Ahmed, Achraf Abdelrhafour, Harsanjit Bhullar, and Youssef Abdelrhafour
+
+## Project Demo Links
+Product Features Demo: https://www.youtube.com/watch?v=XDlV8RmcyN8
+Technical Demo: https://www.youtube.com/watch?v=j8bzWx25fLo
+
 ## Prerequisites
 **This project can be run locally as it is not hosted anywhere at the moment**
 **(Required)** If you don't already have Node.js installed, install Node.js and npm from the [Node.js official website](https://nodejs.org/en)
